@@ -1,0 +1,26 @@
+manage:
+  roleId: 10
+mybatis:
+  mapper-locations: classpath:./mapper_xml/*.xml
+  type-aliases-package: com.jsh.erp.datasource.entities.*
+mybatis-plus:
+  mapper-locations: classpath:./mapper_xml/*.xml
+project: src/main/java
+resource: src/main/resources
+server:
+  servlet:
+    session:
+      timeout: 36000
+  ssl:
+    enable: false
+spring:
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    password: Hrg_song123456
+    url: jdbc:mysql://47.104.98.19:3306/jsh_erp?useUnicode=true&characterEncoding=utf8&useCursorFetch=true&defaultFetchSize=500&allowMultiQueries=true&rewriteBatchedStatements=true&useSSL=false
+    username: hrg_song
+web:
+  front:
+    baseDir: src/main/resources/erp_web
+product:
+  name: 虎匠ERP
