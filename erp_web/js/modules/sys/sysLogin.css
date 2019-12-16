@@ -1,0 +1,158 @@
+/*!
+ * Copyright (c) 2013-Now 港信erp All rights reserved.
+ * @author jishenghua
+ * @version 2019-09-14
+ */
+body {
+    height: 100%;
+}
+.login-page {
+    background: url("/images/login_bj.png") no-repeat center;
+    position: relative;
+    z-index: 5;
+}
+
+.login-sec {
+    position: absolute;
+    z-index: 8;
+    left: 50%;
+    top: 50%;
+    margin-left: -200px;
+    margin-top: -150px;
+    width: 400px;
+
+}
+
+.login-page .login-box {
+    height: 100%;
+    width: auto;
+    margin: 0
+}
+
+.login-page .login-logo {
+    height: 24px;
+    line-height: 24px;
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+.login-page .login-logo a {
+    color: #fff;
+    font-size: 16px;
+    font-weight:600;
+    font-family:PingFangSC-Semibold,PingFang SC;
+}
+
+.login-page .login-logo small {
+    font-size: 16px
+}
+
+.login-page .login-box-body {
+    width: 400px;
+    margin: auto;
+    height: 220px;
+    background: #fff;
+    box-shadow: 0 2px 6px #999;
+    border-radius: 5px;
+    padding: 0;
+    padding-top: 50px;
+    background: url("/images/login_body.png") no-repeat center;
+}
+
+.login-page .login-box-body .form-control-feedback {
+    cursor: pointer;
+    pointer-events: auto
+}
+
+.login-page .form-group {
+    width: 236px;
+    overflow: hidden;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px
+}
+
+.login-page .from-label {
+    float: left;
+    width:45px;
+    height: 24px;
+    line-height: 24px;
+    font-size:12px;
+    color: #333;
+}
+
+.login-page .from-ipt {
+    position: relative;
+    z-index: 5;
+    float: left;
+    width: 190px;
+}
+
+.login-page .from-ipt i {
+    position: absolute;
+    z-index: 8;
+    left: 8px;
+    top: 6px;
+    width: 8px;
+    height: 9px;
+}
+
+.login-page .from-ipt .from-icon-user {
+    background: url("/images/form_user.png") no-repeat;
+}
+
+.login-page .from-ipt .from-icon-pass {
+    background: url("/images/form_pass.png") no-repeat;
+}
+
+.login-page .has-feedback .form-control {
+    height: 24px;
+    padding: 4px 40px;
+    border-radius:6px;
+}
+
+.login-page .input-group-btn .btn {
+    height: 50px;
+}
+
+.login-page .btn {
+    margin-left: 44px;
+    width:145px;
+    height:25px;
+    padding: 0;
+    color: #fff;
+    background: #18C2FF;
+}
+
+.login-page .select2-container .select2-selection--single {
+    padding: 6px 12px;
+    height: 34px
+}
+
+.login-page .select2-container--default.select2-container--focus .select2-selection--single {
+    border-color: #3c8dbc
+}
+
+.login-page .select2-container .select2-selection--single .select2-selection__rendered {
+    margin-top: -4px
+}
+
+.login-page .select2-container .select2-selection--single .select2-selection__arrow {
+    top: 1px
+}
+
+.login-page .select2-search--dropdown .select2-search__field {
+    padding: 4px
+}
+
+.login-page .select2-results__option {
+    padding: 6px 12px
+}
+
+.login-page .login-copyright {
+    text-align: center;
+    margin-top: 20px
+}
+
+.login-page .login-copyright, .login-page .login-copyright a {
+    color: #666
+}

@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8">
+    <meta content="webkit" name="renderer"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+    <meta content="no-cache" http-equiv="Pragma"/>
+    <meta http-equiv="Expires" content="0"/>
+    <meta content="width=device-width, initial-scale=1, user-scalable=1" name="viewport"/>
+    <title>首页-ERP</title>
+    <!-- <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon"/> -->
+    <script src="js/global.min.js?ctx=/js/a"></script>
+    <script src="js/jquery/jquery-1.12.4.min.js"></script>
+    <!-- <script src="/js/static/jquery/jquery-migrate-1.4.1.min.js"></script> -->
+    <!--[if lt IE 9]><script src="js/common/h5fix.min.js"></script><![endif]-->
+    <link rel="stylesheet" href="css/fonts/font-icons.min.css">
+    <link rel="stylesheet" href="js/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="js/select2/4.0/select2.css">
+    <link rel="stylesheet" href="js/icheck/1.0/minimal/grey.css">
+    <link rel="stylesheet" href="js/adminlte/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="js/morris/morris.css">
+    <link rel="stylesheet" href="css/jsherp.css">
+    <link rel="stylesheet" href="js/adminlte/css/skins/skin-blue-light2.css">
+    <script>var _hmt = _hmt || [];(function() {var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?104e825088869ff9c5855f24ab8204c2";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);})();</script>
+</head><body class="hold-transition ">
+<div class="wrapper"><!-- <link rel="stylesheet" href="/js/static/modules/sys/sysDesktop.css"> -->
+    <div class="content pb0">
+        <div class="row">
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box">
+                    <span class="info-box-icon bg-aqua"><i class="fa fa-shopping-bag"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">今日累计销售</span>
+                        <span id="todaySale" class="info-box-number">0元</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box">
+                    <span class="info-box-icon bg-red"><i class="fa fa-shopping-cart"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">本月累计销售</span>
+                        <span id="thisMonthSale" class="info-box-number">0元</span>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix visible-sm-block"></div>
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box">
+                    <span class="info-box-icon bg-green"><i class="fa fa-shopping-basket"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">本月累计进货</span>
+                        <span id="thisMonthBuy" class="info-box-number">0元</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box">
+                    <span class="info-box-icon bg-yellow"><i class="fa fa-users"></i></span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">用户数量</span>
+                        <span id="thisUserSum" class="info-box-number">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <section class="col-md-7 ui-sortable">
+                <!-- Chat box -->
+                <div class="nav-tabs-custom">
+                    <!-- Tabs within a box -->
+                    <ul class="nav nav-tabs pull-right ui-sortable-handle">
+                        <!--<li class=""><a href="#revenue-chart" data-toggle="tab" aria-expanded="false">面积图</a></li>-->
+                        <li class="active"><a href="#sales-chart" data-toggle="tab" aria-expanded="true">饼图</a></li>
+                        <li class="pull-left header"><i class="fa fa-inbox"></i> 销售</li>
+                    </ul>
+                    <div class="tab-content no-padding">
+                        <!-- Morris chart - Sales -->
+                        <div class="chart tab-pane" id="revenue-chart" style="position: relative; height: 350px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+</div>
+                        <div class="chart tab-pane active" id="sales-chart" style="position: relative; height: 350px;">
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="col-md-5 ui-sortable ui-sortable">
+                <!-- solid sales graph -->
+                <div class="box box-solid bg-teal-gradient">
+                    <div class="box-header ui-sortable-handle">
+                        <i class="fa fa-th"></i>
+
+                        <h3 class="box-title">销售图表</h3>
+
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn bg-teal btn-sm" data-widget="collapse"><i class="fa fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn bg-teal btn-sm" data-widget="remove"><i class="fa fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class=" border-radius-none">
+                        <div class="chart" id="line-chart" style="height: 250px; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer no-border">
+                        <div class="row">
+                            <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
+                                <div style="display:inline;width:60px;height:60px;"><canvas width="77" height="77" style="width: 60px; height: 60px;"></canvas>
+                                    <input type="text" class="knob" id="news" data-readonly="true" value="0" data-width="60" data-height="60" data-fgcolor="#39CCCC" readonly="readonly" style="width: 34px; height: 20px; position: absolute; vertical-align: middle; margin-top: 20px; margin-left: -47px; border: 0px; background: none; font: bold 12px Arial; text-align: center; color: rgb(57, 204, 204); padding: 0px; -webkit-appearance: none;"></div>
+                                <div class="knob-label">新订购</div>
+                            </div>
+                            <!-- ./col -->
+                            <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
+                                <div style="display:inline;width:60px;height:60px;"><canvas width="77"  height="77" style="width: 60px; height: 60px;"></canvas><input type="text"  id="ings"  class="knob" data-readonly="true" value="0" data-width="60" data-height="60" data-fgcolor="#39CCCC" readonly="readonly" style="width: 34px; height: 20px; position: absolute; vertical-align: middle; margin-top: 20px; margin-left: -47px; border: 0px; background: none; font: bold 12px Arial; text-align: center; color: rgb(57, 204, 204); padding: 0px; -webkit-appearance: none;"></div>
+                                <div class="knob-label">进行中</div>
+                            </div>
+                            <!-- ./col -->
+                            <div class="col-xs-4 text-center">
+                                <div style="display:inline;width:60px;height:60px;"><canvas width="77" height="77" style="width: 60px; height: 60px;"></canvas><input type="text" class="knob" id="ends"  data-readonly="true" value="0" data-width="60" data-height="60" data-fgcolor="#39CCCC" readonly="readonly" style="width: 34px; height: 20px; position: absolute; vertical-align: middle; margin-top: 20px; margin-left: -47px; border: 0px; background: none; font: bold 12px Arial; text-align: center; color: rgb(57, 204, 204); padding: 0px; -webkit-appearance: none;"></div>
+                                <div class="knob-label">已成交</div>
+                            </div>
+                            <!-- ./col -->
+                        </div>
+                        <!-- /.row -->
+                    </div>
+                    <!-- /.box-footer -->
+                </div>
+                <!-- /.box -->
+            </section>
+        </div>
+    </div>
+    <footer class="main-footer m0">
+        <div id="vsion" class="pull-right hidden-xs">当前版本： V1.0</div>
+        &copy; 2015-2020 <span id="fname">ERP</span>
+    </footer>
+<script>
+    $("#fname").text(proName);
+</script>
+</div>
+
+<a id="scroll-up" href="#" class="btn btn-sm"><i class="fa fa-angle-double-up"></i></a>
+<script src="js/bootstrap/js/bootstrap.min.js"></script>
+<script src="js/select2/4.0/select2.js"></script>
+<script src="js/select2/4.0/i18n/zh_CN.js"></script>
+<script src="js/layer/3.1/layer.js"></script>
+<script src="js/morris/morris.min.js"></script>
+<script src="js/morris/raphael-min.js"></script>
+<script src="js/my97/WdatePicker.js"></script>
+<script src="js/common/jsherp.js"></script>
+<script src="js/common/i18n/jsherp_zh_CN.js"></script>
+<script>
+    if ($('#switchSkin').length > 0){
+        $('#switchSkin i').addClass('jump5');
+        setTimeout(function(){
+            $('.main-sidebar [title="角色管理"]').append('<span class="pull-right-container">'
+                +'<small class="label pull-right bg-red jump">hot</small></span>');
+        },2000);
+    }
+</script><script src="js/jquery/jquery-ui-sortable-1.12.1.min.js"></script>
+<script>
+    document.getElementsByTagName("title")[0].innerText = "首页-"+proName;
+    $(window).resize(function(){
+        var footerHeight  = $('.main-footer').outerHeight() || 0;
+        var windowHeight  = $(window).height();
+        $('.content').css('min-height', windowHeight - footerHeight)
+    }).resize();
+    $('.ui-sortable').sortable({
+        placeholder         : 'sort-highlight',
+        connectWith         : '.ui-sortable',
+        handle              : '.box-header, .nav-tabs',
+        forcePlaceholderSize: true,  zIndex : 999999
+    }).find('.box-header, .nav-tabs').css('cursor', 'move');
+
+    $(function () {
+        $.ajax({
+            type: "get",
+            url: "/depotHead/getBuyAndSaleStatistics",
+            dataType: "json",
+            success: function (res) {
+                if(res && res.code === 200) {
+                    if(res.data) {
+                        $("#todaySale").text(res.data.todaySale);
+                        $("#thisMonthSale").text(res.data.thisMonthSale);
+                        $("#thisMonthBuy").text(res.data.thisMonthBuy);
+                    }
+                }
+            },
+            error:function(res){
+
+            }
+        });
+    });
+
+    $(function () {
+        $.ajax({
+            type: "get",
+            url: "/depotHead/getSaleByYear",
+            dataType: "json",
+            success: function (res) {
+                if(res && res.code === 200) {
+                    if(res.data) {
+                        var donut = new Morris.Donut({
+                            element: 'sales-chart',
+                            resize: true,
+                            colors: ["#00a65a", "#f56954"],
+                            data: [
+                                {label: "零售", value: res.data.retailSale},
+                                {label: "销售", value: res.data.sale}
+                            ],
+                            hideHover: 'auto'
+                        });
+
+                    }
+                }
+            },
+            error:function(res){
+
+            }
+        });
+    });
+    $(function () {
+        $.ajax({
+            type: "get",
+            url: "/depotHead/getSaleByQuarter",
+            dataType: "json",
+            success: function (res) {
+                if(res && res.code === 200) {
+                    if(res.data) {
+                        var line = new Morris.Line({
+                            element: 'line-chart',
+                            resize: true,
+                            data: res.data,
+                            xkey: 'quarter',
+                            ykeys: ['num'],
+                            labels: ['销售额'],
+                            lineColors: ['#fff'],
+                            hideHover: 'auto'
+                        });
+                    }
+                }
+            },
+            error:function(res){
+
+            }
+        });
+    });
+    $(function () {
+        $.ajax({
+            type: "get",
+            url: "/depotHead/getOrderByYear",
+            dataType: "json",
+            success: function (res) {
+                if(res && res.code === 200) {
+                    if(res.data) {
+                        if(res.data.news)  $("#news").val(res.data.news)
+                        if(res.data.ings)  $("#ings").val(res.data.ings)
+                        if(res.data.ends)  $("#ends").val(res.data.ends)
+                    }
+                }
+            },
+            error:function(res){
+
+            }
+        });
+    });
+    $(function () {
+        $.ajax({
+            type: "get",
+            url: "/user/list",
+            dataType: "json",
+            data: ({
+                search: JSON.stringify({
+                    userName: "",
+                    loginName: ""
+                }),
+                currentPage: 1,
+                pageSize: 10
+            }),
+            success: function (res) {
+                if(res && res.code === 200) {
+                    if(res.data && res.data.page) {
+                        $("#thisUserSum").text(res.data.page.total);
+                    }
+                }
+            },
+            error:function(res){
+
+            }
+        });
+    });
+</script>
+<script>
+    $(function () {
+        "use strict";
+        // AREA CHART
+        var area = new Morris.Area({
+            element: 'revenue-chart',
+            resize: true,
+            data: [
+                {y: '2011 Q1', item1: 2666, item2: 2666},
+                {y: '2011 Q2', item1: 2778, item2: 2294},
+                {y: '2011 Q3', item1: 4912, item2: 1969},
+                {y: '2011 Q4', item1: 3767, item2: 3597},
+                {y: '2012 Q1', item1: 6810, item2: 1914},
+                {y: '2012 Q2', item1: 5670, item2: 4293},
+                {y: '2012 Q3', item1: 4820, item2: 3795},
+                {y: '2012 Q4', item1: 15073, item2: 5967},
+                {y: '2013 Q1', item1: 10687, item2: 4460},
+                {y: '2013 Q2', item1: 8432, item2: 5713}
+            ],
+            xkey: 'y',
+            ykeys: ['item1', 'item2'],
+            labels: ['Item 1', 'Item 2'],
+            lineColors: ['#a0d0e0', '#3c8dbc'],
+            hideHover: 'auto'
+        });
+
+        // LINE CHART
+//        var line = new Morris.Line({
+//            element: 'line-chart',
+//            resize: true,
+//            data: [
+//                {y: '2017 Q4', item1: 2666},
+//                {y: '2018 Q1', item1: 2666},
+//                {y: '2018 Q2', item1: 2778},
+//                {y: '2018 Q3', item1: 4912},
+//                {y: '2018 Q4', item1: 3767},
+//                {y: '2019 Q1', item1: 6810},
+//                {y: '2019 Q2', item1: 5670},
+//                {y: '2019 Q3', item1: 4820},
+//                {y: '2019 Q4', item1: 15073}
+//            ],
+//            xkey: 'y',
+//            ykeys: ['item1'],
+//            labels: ['销售额'],
+//            lineColors: ['#fff'],
+//            hideHover: 'auto'
+//        });
+
+        //DONUT CHART
+//        var donut = new Morris.Donut({
+//            element: 'sales-chart',
+//            resize: true,
+//            colors: ["#00a65a", "#f56954"],
+//            data: [
+//                {label: "零售", value: 12},
+//                {label: "销售", value: 30}
+//            ],
+//            hideHover: 'auto'
+//        });
+        //BAR CHART
+//        var bar = new Morris.Bar({
+//            element: 'bar-chart',
+//            resize: true,
+//            data: [
+//                {y: '2006', a: 100, b: 90},
+//                {y: '2007', a: 75, b: 65},
+//                {y: '2008', a: 50, b: 40},
+//                {y: '2009', a: 75, b: 65},
+//                {y: '2010', a: 50, b: 40},
+//                {y: '2011', a: 75, b: 65},
+//                {y: '2012', a: 100, b: 90}
+//            ],
+//            barColors: ['#00a65a', '#f56954'],
+//            xkey: 'y',
+//            ykeys: ['a', 'b'],
+//            labels: ['CPU', 'DISK'],
+//            hideHover: 'auto'
+//        });
+    });
+</script>
