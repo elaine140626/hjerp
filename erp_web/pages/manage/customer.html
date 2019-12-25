@@ -13,7 +13,7 @@
     <script type="text/javascript" src="/js/easyui-1.3.5/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="/js/easyui-1.3.5/locale/easyui-lang-zh_CN.js"></script>
     <script type="text/javascript" src="/js/common/common.js"></script>
-    <script src="/js/pages/manage/supplier.js"></script>
+    <script src="/js/pages/manage/customer.js"></script>
 </head>
 <body>
 <!-- 数据显示table -->
@@ -53,6 +53,22 @@
     <form id="supplierFM">
         <table>
             <tr>
+                <td style="width: 80px;height: 20px">所属集团13701287071
+                <td style="width:180px;padding:1px;">
+                    <input name="" id="" class="easyui-validatebox" style="width: 160px;height: 20px"/>
+                </td>
+                <td style="width: 80px;height: 20px">所属公司</td>
+                <td style="width:180px;padding:1px;">
+                    <input name="" id="" class="easyui-validatebox" style="width: 160px;height: 20px"/>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 80px;height: 20px">所属项目</td>
+                <td style="width:180px;padding:1px;">
+                    <input name="" id="" class="easyui-validatebox" style="width: 160px;height: 20px"/>
+                </td>
+            </tr>
+            <tr>
                 <td style="width: 80px;height: 20px">名称</td>
                 <td style="width: 180px;padding:1px">
                     <input name="supplier" id="supplier" class="easyui-validatebox"
@@ -80,35 +96,35 @@
                 <td style="padding:1px;">
                     <input name="phonenum" id="phonenum" class="easyui-validatebox" style="width: 160px;height: 20px"/>
                 </td>
-                <td>传真</td>
+                <td>客户类别</td>
                 <td style="padding:1px">
                     <input name="fax" id="fax" class="easyui-validatebox" style="width: 160px;height: 20px"/>
                 </td>
             </tr>
-            <tr>
-                <td>期初应收</td>
-                <td style="padding:1px">
-                    <input name="BeginNeedGet" id="BeginNeedGet" type="text" class="easyui-numberbox"
-                           data-options="min:0,precision:2" style="width: 160px;height: 20px"/>
-                </td>
-                <td>期初应付</td>
-                <td style="padding:1px">
-                    <input name="BeginNeedPay" id="BeginNeedPay" type="text" class="easyui-numberbox"
-                           data-options="min:0,precision:2" style="width: 160px;height: 20px"/>
-                </td>
-            </tr>
-            <tr>
-                <td>累计应收</td>
-                <td style="padding:1px">
-                    <input name="AllNeedGet" id="AllNeedGet" type="text" style="width: 160px;height: 20px"
-                           readonly="readonly"/>
-                </td>
-                <td>累计应付</td>
-                <td style="padding:1px">
-                    <input name="AllNeedPay" id="AllNeedPay" type="text" style="width: 160px;height: 20px"
-                           readonly="readonly"/>
-                </td>
-            </tr>
+            <!--<tr>-->
+                <!--<td>期初应收</td>-->
+                <!--<td style="padding:1px">-->
+                    <!--<input name="BeginNeedGet" id="BeginNeedGet" type="text" class="easyui-numberbox"-->
+                           <!--data-options="min:0,precision:2" style="width: 160px;height: 20px"/>-->
+                <!--</td>-->
+                <!--<td>期初应付</td>-->
+                <!--<td style="padding:1px">-->
+                    <!--<input name="BeginNeedPay" id="BeginNeedPay" type="text" class="easyui-numberbox"-->
+                           <!--data-options="min:0,precision:2" style="width: 160px;height: 20px"/>-->
+                <!--</td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+                <!--<td>累计应收</td>-->
+                <!--<td style="padding:1px">-->
+                    <!--<input name="AllNeedGet" id="AllNeedGet" type="text" style="width: 160px;height: 20px"-->
+                           <!--readonly="readonly"/>-->
+                <!--</td>-->
+                <!--<td>累计应付</td>-->
+                <!--<td style="padding:1px">-->
+                    <!--<input name="AllNeedPay" id="AllNeedPay" type="text" style="width: 160px;height: 20px"-->
+                           <!--readonly="readonly"/>-->
+                <!--</td>-->
+            <!--</tr>-->
             <tr>
                 <td>纳税人识别号</td>
                 <td style="padding:1px">

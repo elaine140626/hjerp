@@ -2435,12 +2435,12 @@
                 }
                 var reg = /^([0-9])+$/;
                 var phonenum = $.trim($("#phonenum").val());
-                if(phonenum.length>0 && !reg.test(phonenum))
-                {
-                    $.messager.alert('提示','电话号码只能是数字','info');
-                    $("#phonenum").val("").focus();
-                    return;
-                }
+                // if(phonenum.length>0 && !reg.test(phonenum))
+                // {
+                //     $.messager.alert('提示','电话号码只能是数字','info');
+                //     $("#phonenum").val("").focus();
+                //     return;
+                // }
                 var beginNeedGet = $.trim($("#BeginNeedGet").val());
                 var beginNeedPay = $.trim($("#BeginNeedPay").val());
                 if(beginNeedGet && beginNeedPay) {

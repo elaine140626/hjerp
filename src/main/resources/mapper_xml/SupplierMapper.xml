@@ -29,6 +29,8 @@
     <result column="taxRate" jdbcType="DECIMAL" property="taxrate" />
     <result column="tenant_id" jdbcType="BIGINT" property="tenantId" />
     <result column="delete_Flag" jdbcType="VARCHAR" property="deleteFlag" />
+    <result column="supply" jdbcType="VARCHAR" property="supply" />
+    <result column="method" jdbcType="VARCHAR" property="method" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <!--
@@ -163,15 +165,15 @@
       AllNeedGet, AllNeedPay, fax, 
       telephone, address, taxNum, 
       bankName, accountNumber, taxRate, 
-      tenant_id, delete_Flag)
-    values (#{id,jdbcType=BIGINT}, #{supplier,jdbcType=VARCHAR}, #{contacts,jdbcType=VARCHAR}, 
+      tenant_id, delete_Flag,supply,method)
+    values (#{id,jdbcType=BIGINT}, #{supplier,jdbcType=VARCHAR}, #{contacts,jdbcType=VARCHAR},
       #{phonenum,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
       #{isystem,jdbcType=TINYINT}, #{type,jdbcType=VARCHAR}, #{enabled,jdbcType=BIT}, 
       #{advancein,jdbcType=DECIMAL}, #{beginneedget,jdbcType=DECIMAL}, #{beginneedpay,jdbcType=DECIMAL}, 
       #{allneedget,jdbcType=DECIMAL}, #{allneedpay,jdbcType=DECIMAL}, #{fax,jdbcType=VARCHAR}, 
       #{telephone,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{taxnum,jdbcType=VARCHAR}, 
       #{bankname,jdbcType=VARCHAR}, #{accountnumber,jdbcType=VARCHAR}, #{taxrate,jdbcType=DECIMAL}, 
-      #{tenantId,jdbcType=BIGINT}, #{deleteFlag,jdbcType=VARCHAR})
+      #{tenantId,jdbcType=BIGINT}, #{deleteFlag,jdbcType=VARCHAR}, #{supply,jdbcType=VARCHAR},#{method,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.jsh.erp.datasource.entities.Supplier">
     <!--
@@ -249,6 +251,12 @@
       <if test="deleteFlag != null">
         delete_Flag,
       </if>
+      <if test="supply != null">
+        supply,
+      </if>
+      <if test="method != null">
+        method,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -319,6 +327,12 @@
       </if>
       <if test="deleteFlag != null">
         #{deleteFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="supply != null">
+        #{supply,jdbcType=VARCHAR},
+      </if>
+      <if test="method != null">
+        #{method,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
