@@ -1031,24 +1031,24 @@
 						reject(); //撤销
 					}
 				}
-				// ,
-                // {
-                //     id:'appendDepot',
-                //     text:'新增仓库',
-                //     iconCls:'icon-add',
-                //     handler:function() {
-                //         appendDepot(); //新增仓库
-                //     }
-                // }
-                // ,
-                // {
-                //     id:'appendMaterial',
-                //     text:'新增商品',
-                //     iconCls:'icon-add',
-                //     handler:function() {
-                //         appendMaterial(); //新增商品
-                //     }
-                // }
+				,
+                {
+                    id:'appendDepot',
+                    text:'新增仓库',
+                    iconCls:'icon-add',
+                    handler:function() {
+                        appendDepot(); //新增仓库
+                    }
+                }
+                ,
+                {
+                    id:'appendMaterial',
+                    text:'新增商品',
+                    iconCls:'icon-add',
+                    handler:function() {
+                        appendMaterial(); //新增商品
+                    }
+                }
 			],
 			onLoadError:function()
 			{
@@ -2519,6 +2519,8 @@
 	    	var footer =$("#depotHeadFM .datagrid-footer");
 	    	var input = ".datagrid-editable-input";
 	    	//点击商品下拉框，自动加载数量、单价、金额
+
+
 			body.find("[field='Stock']").find(input).prop("readonly","readonly");
             body.find("[field='Unit']").find(input).prop("readonly","readonly");
 			//修改数量，自动计算金额和合计，另外计算含税单价、税额、价税合计

@@ -137,6 +137,4 @@ public class ResourceController {
         }
         return returnJson(objectMap, ErpInfo.OK.name, ErpInfo.OK.code);
     }
-
-
 }
