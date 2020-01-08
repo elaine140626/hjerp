@@ -111,6 +111,12 @@
       order by ${orderByClause}
     </if>
   </select>
+  <select id="selectByExamples" parameterType="com.jsh.erp.datasource.entities.DepotExample" resultMap="BaseResultMap">
+    select distinct id, `name`, address, warehousing, truckage, type, sort, remark, principal, tenant_id,
+    delete_Flag, is_default from jsh_depot
+    where `type` = 2
+  </select>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     <!--
       WARNING - @mbggenerated

@@ -119,8 +119,14 @@ public class DepotController {
                                        HttpServletRequest request) throws Exception{
         JSONArray arr = new JSONArray();
         try {
-            List<Depot> dataList = depotService.findUserDepot();
+            List<Depot> dataList;
+            if (type.equals("1")){
+                dataList = depotService.findUserDepots();
+            }else {
+                dataList = depotService.findUserDepot();
+            }
             //开始拼接json数据
+
             if (null != dataList) {
                 boolean depotFlag = systemConfigService.getDepotFlag();
                 for (Depot depot : dataList) {
@@ -137,6 +143,38 @@ public class DepotController {
                         item.put("depotName", depot.getName());
                         arr.add(item);
                     }
+                    if (type.equals("1")){
+                        item.put("id", depot.getName());
+                        item.put("depotName", depot.getName());
+                        arr.add(item);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return arr;
+    }
+
+    /**
+     *
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/findDepot")
+    public JSONArray findDepot() throws Exception{
+        JSONArray arr = new JSONArray();
+        try {
+            for (int i = 1 ;i<=2;i++){
+                JSONObject item = new JSONObject();
+                if (i == 1) {
+                    item.put("id", "是");
+                    item.put("depotName", "是");
+                    arr.add(item);
+                }else{
+                    item.put("id", "否");
+                    item.put("depotName", "否");
+                    arr.add(item);
                 }
             }
         } catch (Exception e) {

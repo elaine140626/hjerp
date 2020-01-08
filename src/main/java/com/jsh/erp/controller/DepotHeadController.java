@@ -48,6 +48,12 @@ public class DepotHeadController {
                                  @RequestParam("depotHeadIDs") String depotHeadIDs,
                                  HttpServletRequest request) throws Exception{
         Map<String, Object> objectMap = new HashMap<String, Object>();
+//        if (status.equals("3")){
+//            return returnJson(objectMap, ErpInfo.ERROR.name, 300);
+//        }
+        if (depotHeadIDs.equals("")){
+            depotHeadIDs = status;
+        }
         int res = depotHeadService.batchSetStatus(status, depotHeadIDs);
         if(res > 0) {
             return returnJson(objectMap, ErpInfo.OK.name, ErpInfo.OK.code);

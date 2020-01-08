@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.jsh.erp.constants.BusinessConstants;
 import com.jsh.erp.constants.ExceptionConstants;
 import com.jsh.erp.datasource.entities.*;
+import com.jsh.erp.datasource.mappers.OrgaUserRelMapper;
 import com.jsh.erp.datasource.mappers.UserBusinessMapper;
 import com.jsh.erp.datasource.mappers.UserBusinessMapperEx;
 import com.jsh.erp.exception.BusinessRunTimeException;
@@ -31,6 +32,9 @@ public class UserBusinessService {
 
     @Resource
     private UserBusinessMapper userBusinessMapper;
+    @Resource
+    private OrgaUserRelMapper orgaUserRelMapper;
+
     @Resource
     private UserBusinessMapperEx userBusinessMapperEx;
     @Resource

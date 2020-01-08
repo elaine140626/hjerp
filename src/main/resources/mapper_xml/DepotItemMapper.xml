@@ -31,6 +31,29 @@
     <result column="MType" jdbcType="VARCHAR" property="mtype" />
     <result column="tenant_id" jdbcType="BIGINT" property="tenantId" />
     <result column="delete_Flag" jdbcType="VARCHAR" property="deleteFlag" />
+    <result column="contacts_name" jdbcType="VARCHAR" property="contacts_name" />
+    <result column="contacts_phone" jdbcType="VARCHAR" property="contacts_phone" />
+    <result column="company" jdbcType="VARCHAR" property="company" />
+    <result column="we_chat" jdbcType="VARCHAR" property="we_chat" />
+    <result column="project_address" jdbcType="VARCHAR" property="project_address" />
+    <result column="project_name" jdbcType="VARCHAR" property="project_name" />
+    <result column="card_ognizer" jdbcType="VARCHAR" property="card_ognizer" />
+    <result column="ognizer_number" jdbcType="VARCHAR" property="ognizer_number" />
+    <result column="contract" jdbcType="VARCHAR" property="contract" />
+    <result column="conyract_number" jdbcType="VARCHAR" property="conyract_number" />
+    <result column="conyract_money" jdbcType="VARCHAR" property="conyract_money" />
+    <result column="payment" jdbcType="VARCHAR" property="payment" />
+    <result column="invoice" jdbcType="VARCHAR" property="invoice" />
+    <result column="install" jdbcType="VARCHAR" property="install" />
+    <result column="installer" jdbcType="VARCHAR" property="installer" />
+    <result column="installer_time" jdbcType="VARCHAR" property="installer_time" />
+    <result column="machine" jdbcType="VARCHAR" property="machine" />
+    <result column="machine_type" jdbcType="VARCHAR" property="machine_type" />
+    <result column="machine_number" jdbcType="VARCHAR" property="machine_number" />
+    <result column="gate" jdbcType="VARCHAR" property="gate" />
+    <result column="gate_type" jdbcType="VARCHAR" property="gate_type" />
+    <result column="gate_number" jdbcType="VARCHAR" property="gate_number" />
+    <result column="order_type" jdbcType="VARCHAR" property="order_type" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <!--
@@ -106,7 +129,7 @@
     Id, HeaderId, MaterialId, MUnit, OperNumber, BasicNumber, UnitPrice, TaxUnitPrice, 
     AllPrice, Remark, Img, Incidentals, DepotId, AnotherDepotId, TaxRate, TaxMoney, TaxLastMoney, 
     OtherField1, OtherField2, OtherField3, OtherField4, OtherField5, MType, tenant_id, 
-    delete_Flag
+    delete_Flag,we_chat
   </sql>
   <select id="selectByExample" parameterType="com.jsh.erp.datasource.entities.DepotItemExample" resultMap="BaseResultMap">
     <!--
@@ -167,7 +190,9 @@
       TaxMoney, TaxLastMoney, OtherField1, 
       OtherField2, OtherField3, OtherField4, 
       OtherField5, MType, tenant_id, 
-      delete_Flag)
+      delete_Flag,contacts_name,contacts_phone,company,we_chat,project_address,project_name,card_ognizer,
+      ognizer_number,contract,conyract_number,conyract_money,payment,invoice,install,installer,installer_time,
+      machine,machine_type,machine_number,gate,gate_type,gate_number,order_type)
     values (#{id,jdbcType=BIGINT}, #{headerid,jdbcType=BIGINT}, #{materialid,jdbcType=BIGINT}, 
       #{munit,jdbcType=VARCHAR}, #{opernumber,jdbcType=DECIMAL}, #{basicnumber,jdbcType=DECIMAL}, 
       #{unitprice,jdbcType=DECIMAL}, #{taxunitprice,jdbcType=DECIMAL}, #{allprice,jdbcType=DECIMAL}, 
@@ -176,7 +201,14 @@
       #{taxmoney,jdbcType=DECIMAL}, #{taxlastmoney,jdbcType=DECIMAL}, #{otherfield1,jdbcType=VARCHAR}, 
       #{otherfield2,jdbcType=VARCHAR}, #{otherfield3,jdbcType=VARCHAR}, #{otherfield4,jdbcType=VARCHAR}, 
       #{otherfield5,jdbcType=VARCHAR}, #{mtype,jdbcType=VARCHAR}, #{tenantId,jdbcType=BIGINT}, 
-      #{deleteFlag,jdbcType=VARCHAR})
+      #{deleteFlag,jdbcType=VARCHAR},#{contacts_name,jdbcType=VARCHAR},#{contacts_phone,jdbcType=VARCHAR},
+      #{company,jdbcType=VARCHAR},#{we_chat,jdbcType=VARCHAR},#{project_address,jdbcType=VARCHAR},
+      #{project_name,jdbcType=VARCHAR},#{card_ognizer,jdbcType=VARCHAR},#{ognizer_number,jdbcType=VARCHAR},
+      #{contract,jdbcType=VARCHAR},#{conyract_number,jdbcType=VARCHAR},#{conyract_money,jdbcType=VARCHAR},
+      #{payment,jdbcType=VARCHAR},#{invoice,jdbcType=VARCHAR},#{install,jdbcType=VARCHAR},
+      #{installer,jdbcType=VARCHAR},#{installer_time,jdbcType=VARCHAR},#{machine,jdbcType=VARCHAR},
+      #{machine_type,jdbcType=VARCHAR},#{machine_number,jdbcType=VARCHAR},#{gate,jdbcType=VARCHAR},#{gate_type,jdbcType=VARCHAR},#{gate_type,jdbcType=VARCHAR},
+      #{order_type,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.jsh.erp.datasource.entities.DepotItem">
     <!--
@@ -260,6 +292,75 @@
       <if test="deleteFlag != null">
         delete_Flag,
       </if>
+      <if test="contacts_name != null">
+        contacts_name,
+      </if>
+      <if test="contacts_phone != null">
+        contacts_phone,
+      </if>
+      <if test="company != null">
+        company,
+      </if>
+      <if test="we_chat != null">
+        we_chat,
+      </if>
+      <if test="project_address != null">
+        project_address,
+      </if>
+      <if test="project_name != null">
+        project_name,
+      </if>
+      <if test="card_ognizer != null">
+        card_ognizer,
+      </if>
+      <if test="ognizer_number != null">
+        ognizer_number,
+      </if>
+      <if test="contract != null">
+        contract,
+      </if>
+      <if test="conyract_number != null">
+        conyract_number,
+      </if>
+      <if test="conyract_money != null">
+        conyract_money,
+      </if>
+      <if test="payment != null">
+        payment,
+      </if>
+      <if test="invoice != null">
+        invoice,
+      </if>
+      <if test="install != null">
+        install,
+      </if>
+      <if test="installer != null">
+        installer,
+      </if>
+      <if test="installer_time != null">
+        installer_time,
+      </if>
+      <if test="machine != null">
+        machine,
+      </if>
+      <if test="machine_type != null">
+        machine_type,
+      </if>
+      <if test="machine_number != null">
+        machine_number,
+      </if>
+      <if test="gate != null">
+        gate,
+      </if>
+      <if test="gate_type != null">
+        gate_type,
+      </if>
+      <if test="gate_number != null">
+        gate_number,
+      </if>
+      <if test="order_type != null">
+        order_type,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -336,6 +437,75 @@
       </if>
       <if test="deleteFlag != null">
         #{deleteFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="contacts_name != null">
+        #{contacts_name,jdbcType=VARCHAR},
+      </if>
+      <if test="contacts_phone != null">
+        #{contacts_phone,jdbcType=VARCHAR},
+      </if>
+      <if test="company != null">
+        #{company,jdbcType=VARCHAR},
+      </if>
+      <if test="we_chat != null">
+        #{we_chat,jdbcType=VARCHAR},
+      </if>
+      <if test="project_address != null">
+        #{project_address,jdbcType=VARCHAR},
+      </if>
+      <if test="project_name != null">
+        #{project_name,jdbcType=VARCHAR},
+      </if>
+      <if test="card_ognizer != null">
+        #{card_ognizer,jdbcType=VARCHAR},
+      </if>
+      <if test="ognizer_number != null">
+        #{ognizer_number,jdbcType=VARCHAR},
+      </if>
+      <if test="contract != null">
+        #{contract,jdbcType=VARCHAR},
+      </if>
+      <if test="conyract_number != null">
+        #{conyract_number,jdbcType=VARCHAR},
+      </if>
+      <if test="conyract_money != null">
+        #{conyract_money,jdbcType=VARCHAR},
+      </if>
+      <if test="payment != null">
+        #{payment,jdbcType=VARCHAR},
+      </if>
+      <if test="invoice != null">
+        #{invoice,jdbcType=VARCHAR},
+      </if>
+      <if test="install != null">
+        #{install,jdbcType=VARCHAR},
+      </if>
+      <if test="installer != null">
+        #{installer,jdbcType=VARCHAR},
+      </if>
+      <if test="installer_time != null">
+        #{installer_time,jdbcType=VARCHAR},
+      </if>
+      <if test="machine != null">
+        #{machine,jdbcType=VARCHAR},
+      </if>
+      <if test="machine_type != null">
+        #{machine_type,jdbcType=VARCHAR},
+      </if>
+      <if test="machine_number != null">
+        #{machine_number,jdbcType=VARCHAR},
+      </if>
+      <if test="gate != null">
+        #{gate,jdbcType=VARCHAR},
+      </if>
+      <if test="gate_type != null">
+        #{gate_type,jdbcType=VARCHAR},
+      </if>
+      <if test="gate_number != null">
+        #{gate_number,jdbcType=VARCHAR},
+      </if>
+      <if test="order_type != null">
+        #{order_type,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -431,6 +601,10 @@
       <if test="record.deleteFlag != null">
         delete_Flag = #{record.deleteFlag,jdbcType=VARCHAR},
       </if>
+      <if test="recorf.we_chat != null">
+        we_chat = #{recoed.we_chat.jdbcType=VARCHAR},
+      </if>
+
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />

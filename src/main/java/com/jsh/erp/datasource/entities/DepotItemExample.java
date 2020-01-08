@@ -1832,6 +1832,73 @@ public class DepotItemExample {
 
         private String typeHandler;
 
+        private String we_chat;
+
+        private String contacts_name;
+
+        private String contacts_phone;
+
+        private String company;
+
+        private String project_address;
+
+        private String project_name;
+        private String card_ognizer;
+        private String ognizer_number;
+        private String contract;
+        private String conyract_number;
+        private String conyract_money;
+        private String payment;
+        private String invoice;
+        private String install;
+        private String installer;
+        private String installer_time;
+        private String machine;
+        private String machine_type;
+        private String machine_number;
+        private String gate;
+        private String gate_type;
+        private String gate_number;
+        private String order_type;
+
+        private String geTcard_ognizer(){ return card_ognizer; }
+        private String getOgnizer_number(){ return ognizer_number; }
+        private String getContract(){ return contract; }
+        private String getConyract_number(){ return conyract_number; }
+        private String getConyract_money(){ return conyract_money; }
+        private String getPayment(){ return payment; }
+        private String getInvoice(){ return invoice; }
+        private String getInstall(){ return install; }
+        private String getInstaller(){ return installer; }
+        private String getInstaller_time(){ return installer_time; }
+        private String getMachine(){ return machine; }
+        private String getMachine_type(){ return machine_type; }
+        private String getMachine_number(){ return machine_number; }
+        private String getGate(){ return gate; }
+        private String getGate_type(){ return gate_type; }
+        private String getGate_number(){ return gate_number; }
+        private String getOrder_type(){ return order_type; }
+
+        private String getProject_address(){
+            return project_address;
+        }
+
+        private String getCompany(){
+            return company;
+        }
+
+        private String getContacts_phone(){
+            return contacts_phone;
+        }
+
+        private String getContacts_name(){
+            return contacts_name;
+        }
+
+        public String getWe_chat(){
+            return we_chat;
+        }
+
         public String getCondition() {
             return condition;
         }

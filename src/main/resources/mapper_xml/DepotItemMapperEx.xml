@@ -135,7 +135,7 @@
     <select id="getDetailList" parameterType="com.jsh.erp.datasource.entities.DepotItemExample" resultMap="ResultWithInfoExMap">
         select di.*,m.Name MName,m.Model MModel,m.Unit MaterialUnit,m.Color MColor,m.Standard MStandard,m.Mfrs MMfrs,
         m.OtherField1 MOtherField1,m.OtherField2 MOtherField2,m.OtherField3 MOtherField3,
-        dp1.name DepotName,dp2.name AnotherDepotName, u.id UnitId, u.UName
+        dp1.name DepotName,dp2.name AnotherDepotName, u.id UnitId, u.UName,di.we_chat
         from jsh_depotitem di
         left join jsh_material m on di.MaterialId=m.id  and ifnull(m.delete_Flag,'0') !='1'
         left join jsh_unit u on m.UnitId = u.id and ifnull(u.delete_Flag,'0') !='1'
@@ -148,7 +148,7 @@
 
     <select id="findByAll" parameterType="com.jsh.erp.datasource.entities.DepotItemExample" resultMap="ResultByMaterial">
         select m.id MId, m.Name MName, m.Model MModel, m.Unit MaterialUnit, m.Color MColor,
-        m.PresetPriceOne, m.PriceStrategy, u.UName UName
+        m.PresetPriceOne, m.PriceStrategy, u.UName UName,di.we_chat
         from jsh_depotitem di
         inner join jsh_material m on di.MaterialId=m.id  and ifnull(m.delete_Flag,'0') !='1'
         left join jsh_unit u on m.UnitId=u.id and ifnull(u.delete_Flag,'0') !='1'
@@ -242,7 +242,7 @@
         dep.basicnumber,dep.unitprice,dep.taxunitprice,dep.allprice,dep.remark,
         dep.img,dep.incidentals,dep.depotid,dep.anotherdepotid,dep.taxrate,
         dep.taxmoney,dep.taxlastmoney,dep.otherfield1,dep.otherfield2,dep.otherfield3,
-        dep.otherfield4,dep.otherfield5,dep.mtype
+        dep.otherfield4,dep.otherfield5,dep.mtype,dep.we_chat
         from jsh_depotitem dep,jsh_material mat
         where 1=1
         <if test="depotheadId != null">

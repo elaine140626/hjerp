@@ -39,6 +39,9 @@ public class UserBusinessController {
                                          HttpServletRequest request)throws Exception {
         BaseResponseInfo res = new BaseResponseInfo();
         try {
+            if (type.equals("UserDepot")){
+                type="UserRole";
+            }
             List<UserBusiness> list = userBusinessService.getBasicData(keyId, type);
             Map<String, List> mapData = new HashMap<String, List>();
             mapData.put("userBusinessList", list);

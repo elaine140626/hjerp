@@ -15,10 +15,10 @@ server:
 #数据库连接
 spring:
   datasource:
-    url: jdbc:mysql://47.106.69.253:3306/hujiangerp?useUnicode=true&characterEncoding=utf8&useCursorFetch=true&defaultFetchSize=500&allowMultiQueries=true&rewriteBatchedStatements=true&useSSL=false
+    url: jdbc:mysql://rm-wz9b0hz7c6y891f98no.mysql.rds.aliyuncs.com:3306/hujiang_erp?serverTimezone=GMT&useUnicode=true&characterEncoding=utf8&useCursorFetch=true&defaultFetchSize=500&allowMultiQueries=true&rewriteBatchedStatements=true&useSSL=false
     driverClassName: com.mysql.jdbc.Driver
-    username: root
-    password: Hujiang666
+    username: hujiang_erp
+    password: Hujiang_Erp
 
 project: src/main/java
 resource: src/main/resources
@@ -37,4 +37,4 @@ manage:
   roleId: 10
 
 product:
-  name: 测试ERP1
+  name: 虎匠erp

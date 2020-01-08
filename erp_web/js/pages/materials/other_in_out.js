@@ -32,7 +32,6 @@
 	var oldNumber = ""; //编辑前的单据编号
 	var oldId = 0; //编辑前的单据Id
 	var otherColumns = true; //明细中的‘别名’列是否显示
-	var otherColumn = true; //明细中的‘别名’列是否显示
 	var btnEnableList = getBtnStr(); //获取按钮的权限
 	var mPropertyList = ""; //商品属性列表
 	var defaultAccountId = 0; //默认账户id
@@ -392,135 +391,47 @@
 		if(payTypeTitle === "隐藏"){
 			hideType = true; //隐藏当前列
 		}
-		var tableToolBar = []
-
-		$.ajax({
-			type:"get",
-			url: "/userBusiness/getBasicData",
-			data: ({
-				KeyId:kid,
-				Type:"UserDepot"
-			}),
-			//设置为同步
-			async:false,
-			dataType: "json",
-
-			success: function (res) {
-				if (res && res.code === 200) {
-					if (res.data.userBusinessList[0].value == "[10]"){
-						tableToolBar.push(
-							{
-								id:'addDepotHead',
-								text:'增加',
-								iconCls:'icon-add',
-								handler:function() {
-									addDepotHead();
-								}
-							},
-							{
-								id:'deleteDepotHead',
-								text:'删除',
-								iconCls:'icon-remove',
-								handler:function() {
-									batDeleteDepotHead();
-								}
-							},
-							{
-								id: 'okDepotHead',
-								text: '审核',
-								iconCls: 'icon-ok',
-								handler: function () {
-									setStatusFun("1");
-								}
-							},{
-								id: 'okDepotHead',
-								text: '反审核',
-								iconCls: 'icon-ok',
-								handler: function () {
-									setStatusFun("0");
-								}
-							}
-						)
-					} else if (res.data.userBusinessList[0].value == "[18]") {
-						tableToolBar.push(
-							{
-								id:'addDepotHead',
-								text:'增加',
-								iconCls:'icon-add',
-								handler:function() {
-									addDepotHead();
-								}
-							}
-						)
-					} else if (res.data.userBusinessList[0].value == "[17]") {
-						tableToolBar.push({
-								id:'okDepotHead',
-								text:'审核',
-								iconCls:'icon-ok',
-								handler:function() {
-									setStatusFun("1");
-								}
-							});
-					} else if (res.data.userBusinessList[0].value == "[25]") {
-						tableToolBar.push({
-							id:'installs',
-							text:'安装已完成',
-							iconCls:'icon-ok',
-							handler:function() {
-								setStatusFun("4");
-							}
-						});
-					}
+		var tableToolBar = [
+			{
+				id:'addDepotHead',
+				text:'增加',
+				iconCls:'icon-add',
+				handler:function() {
+					addDepotHead();
+				}
+			},
+			{
+				id:'deleteDepotHead',
+				text:'删除',
+				iconCls:'icon-remove',
+				handler:function() {
+					batDeleteDepotHead();
 				}
 			}
-		});
-
-		//仓管出库
-		// if (){
-		// 	isHiddenStatus = false;  //显示
-
-
-		// tableToolBar.push({
-		// 	id:'stock',
-		// 	text:'出库',
-		// 	iconCls:'icon-ok',
-		//
-		// 	formatter:function(value,rec,index) {
-		// 		var orgId = rec.organid? rec.organid:0;
-		// 		// str += '<img title="查看" src="/js/easyui-1.3.5/themes/icons/list.png" style="cursor: pointer;" onclick="showDepotHead(\'' + index + '\');"/>&nbsp;&nbsp;&nbsp;';
-		// 		// str += '<img title="编辑" src="/js/easyui-1.3.5/themes/icons/pencil.png" style="cursor: pointer;" onclick="editDepotHead(\'' + index + '\');"/>&nbsp;&nbsp;&nbsp;';
-		// 		// str += '<img title="删除" src="/js/easyui-1.3.5/themes/icons/edit_remove.png" style="cursor: pointer;" onclick="deleteDepotHead('+ rec.id +',' + orgId +',' + rec.totalprice+',' + rec.status + ');"/>';
-		// 		var str = '&nbsp;&nbsp;&nbsp;<img title="' + opTitle + '" src="/js/easyui-1.3.5/themes/icons/redo.png" style="cursor: pointer;" onclick="skipDepotHead(\'' + index + '\');"/>';
-		//
-		// 		return str;
-		// 	}
-		// });
-
-
-		// }
+		];
 		//如果允许的按钮列表中存在就显示，3-代表审核|反审核的权限
-		// if(btnEnableList && btnEnableList.indexOf(3)>-1 && listTitle.indexOf("订单")>-1){
-		// 	isHiddenStatus = false;  //显示
-		// 	tableToolBar.push({
-		// 		id:'okDepotHead',
-		// 		text:'审核',
-		// 		iconCls:'icon-ok',
-		// 		handler:function() {
-		// 			setStatusFun("1");
-		// 		}
-		// 	},
-		// 	{
-		// 		id:'undoDepotHead',
-		// 		text:'反审核',
-		// 		iconCls:'icon-undo',
-		// 		handler:function() {
-        //             setStatusFun("0");
-		// 		}
-		// 	});
-		// }
-		// else {
-		// 	isHiddenStatus = true; //隐藏
-		// }
+		if(btnEnableList && btnEnableList.indexOf(3)>-1 && listTitle.indexOf("订单")>-1){
+			isHiddenStatus = false;  //显示
+			tableToolBar.push({
+				id:'okDepotHead',
+				text:'审核',
+				iconCls:'icon-ok',
+				handler:function() {
+					setStatusFun("1");
+				}
+			},
+			{
+				id:'undoDepotHead',
+				text:'反审核',
+				iconCls:'icon-undo',
+				handler:function() {
+                    setStatusFun("0");
+				}
+			});
+		}
+		else {
+			isHiddenStatus = true; //隐藏
+		}
 		var isShowLastMoneyColumn = false; //是否显示优惠后金额和价税合计,true为隐藏,false为显示
 		if(listSubType == "调拨" || listSubType == "其它" || listSubType == "零售" || listSubType == "零售退货" || listSubType == "采购订单" || listSubType == "销售订单" || listSubType == "组装单" || listSubType == "拆卸单"){
 			isShowLastMoneyColumn = true; //隐藏
@@ -541,7 +452,7 @@
 				organNameTitle = "会员卡号";
 			}
 		}
-		var opWidth = 45; //操作宽度
+		var opWidth = 90; //操作宽度
 		var isShowSkip = false; //是否显示跳转按钮
 		var opTitle = ""; //跳转按钮的标题
         if(listTitle == "采购订单列表") {
@@ -575,25 +486,11 @@
 						var orgId = rec.organid? rec.organid:0;
 						str += '<img title="查看" src="/js/easyui-1.3.5/themes/icons/list.png" style="cursor: pointer;" onclick="showDepotHead(\'' + index + '\');"/>&nbsp;&nbsp;&nbsp;';
 						str += '<img title="编辑" src="/js/easyui-1.3.5/themes/icons/pencil.png" style="cursor: pointer;" onclick="editDepotHead(\'' + index + '\');"/>&nbsp;&nbsp;&nbsp;';
-						// str += '<img title="删除" src="/js/easyui-1.3.5/themes/icons/edit_remove.png" style="cursor: pointer;" onclick="deleteDepotHead('+ rec.id +',' + orgId +',' + rec.totalprice+',' + rec.status + ');"/>';
+						str += '<img title="删除" src="/js/easyui-1.3.5/themes/icons/edit_remove.png" style="cursor: pointer;" onclick="deleteDepotHead('+ rec.id +',' + orgId +',' + rec.totalprice+',' + rec.status + ');"/>';
                         if(isShowSkip) {
                             str += '&nbsp;&nbsp;&nbsp;<img title="' + opTitle + '" src="/js/easyui-1.3.5/themes/icons/redo.png" style="cursor: pointer;" onclick="skipDepotHead(\'' + index + '\');"/>';
 						}
 						return str;
-					}
-				},
-				{ title: '状态',field: 'status', width:70,align:"center",formatter:function(value){
-						if(value === "0") {
-							return "<span style='color:red;'>意向单</span>";
-						} else if(value === "1") {
-							return "<span style='color:green;'>正式订单</span>";
-						} else if (value === "3"){
-							return "<span style='color:blue;'>已出库</span>";
-						} else if (value === "4"){
-							return "<span style='color:blue;'>售后订单</span>";
-						} else {
-							return "<span style='color:blue;'>已出库</span>";
-						}
 					}
 				},
 				{ title: organNameTitle, field: 'organName',width:120, hidden:isShowOrganNameColumn},
@@ -605,39 +502,13 @@
 						}
 					}
 				},
-				{ title: '订单类型',field: 'order_type',width:130 },
-
 				{ title: '商品信息',field: 'materialsList',width:180,formatter:function(value){
 						if(value) {
                             return value.replace(",","，");
 						}
 					}
 				},
-				{ title: '数量',field:'operNumber',width:130},
 				{ title: '单据日期',field: 'opertimeStr',width:130},
-				{ title: '安装人',field: 'installer',width:130},
-				{ title: '最晚安装日期',field: 'installer_time',width:130},
-				{ title: '联系人姓名',field: 'contacts_name',width:130},
-				{ title: '联系人电话',field: 'contacts_phone',width:130},
-				{ title: '联系人微信',field: 'we_chat',width:130},
-				{ title: '公司/施工单位名称',field: 'company',width:130},
-				{ title: '工程地址',field: 'project_address',width:130},
-				{ title: '工程名称',field: 'project_name',width:130},
-				{ title: '身份证识别器',field: 'card_ognizer',width:130},
-				{ title: '身份证识别器编号',field: 'ognizer_number',width:130},
-				{ title: '合同是否签定',field: 'contract',width:130},
-				{ title: '合同编号',field: 'conyract_number',width:130},
-				{ title: '合同金额',field: 'conyract_money',width:130},
-				{ title: '是否付款',field: 'payment',width:130},
-				{ title: '发票是否已开',field: 'invoice',width:130},
-				{ title: '是否需要安装',field: 'install',width:130},
-				{ title: '是否需要人脸机',field: 'machine',width:130},
-				{ title: '人脸机类型',field: 'machine_type',width:130},
-				{ title: '人脸机数量',field: 'machine_number',width:130},
-				{ title: '闸机是否需要',field: 'gate',width:130},
-				{ title: '闸机类型',field: 'gate_type',width:130},
-				{ title: '闸机数量',field: 'gate_number',width:130},
-
 				{ title: '操作员',field: 'operpersonname',width:60},
 				{ title: '金额合计',field: 'totalprice',width:60},
 				{ title: '含税合计',field: 'totaltaxlastmoney',hidden:isShowLastMoneyColumn,width:60,formatter:function(value,rec){
@@ -645,7 +516,21 @@
 					}
 				},
 				{ title: '优惠后金额',field: 'discountlastmoney',hidden:isShowLastMoneyColumn,width:80},
-				{ title: payTypeTitle,field: 'changeamount',width:50,hidden:hideType}
+				{ title: payTypeTitle,field: 'changeamount',width:50,hidden:hideType},
+				{ title: '状态',field: 'status',hidden:isHiddenStatus, width:70,align:"center",formatter:function(value){
+						if(value === "0") {
+                            return "<span style='color:red;'>未审核</span>";
+						} else if(value === "1") {
+                            return "<span style='color:green;'>已审核</span>";
+                        } else if(value === "2") {
+                            if(listTitle == "采购订单列表") {
+                                return "<span style='color:blue;'>已转采购</span>";
+                            } else if(listTitle == "销售订单列表") {
+                                return "<span style='color:blue;'>已转销售</span>";
+                            }
+                        }
+					}
+				}
 			]],
 			toolbar:tableToolBar,
 			onLoadError:function() {
@@ -855,31 +740,6 @@
 						}
 					}
 				},
-				{ title: '订单类型',field: 'order_type',editor:'validatebox',width:75,
-					formatter: function (value, row, index) {
-						return row.DepotName;
-					},
-					editor: {
-						type: 'combobox',
-						options: {
-							valueField: 'id',
-							textField: depotTextField,
-							method: 'get',
-							url: '/depot/findDepotByUserId?UBType=1&UBKeyId='+kid,
-							onSelect:function(rec){
-								var depotId = rec.id;
-								body =$("#depotHeadFM .datagrid-body");
-								footer =$("#depotHeadFM .datagrid-footer");
-								input = ".datagrid-editable-input";
-								var mId = body.find("[field='MaterialId']").find(".combo-value").val();
-								if(mId){
-									var type = "select"; //type 类型：点击 click，选择 select
-									findStockNumById(depotId, mId, monthTime, body, input, ratioDepot, type);
-								}
-							}
-						}
-					}
-				},
 	          	{ title: '品名(型号)(扩展信息)(单位)',field: 'MaterialId',width:230,
 				  	formatter:function(value,row,index){
 						return row.MaterialName;
@@ -900,11 +760,6 @@
 							onBeforeLoad: function(param){
 								param.mpList = mPropertyList; //商品属性
 							},
-							change:function(){
-								var machine_type = [field='OperNumber'];
-
-
-							},
 							onSelect:function(rec){
 								if(rec) {
 									var mId = rec.Id;
@@ -916,7 +771,6 @@
                                             id: mId
 										},
 										success: function (res) {
-											debugger;
 											if(res && res.code === 200 && res.data && res.data[0]) {
 												var retailPrice = res.data[0].retailprice-0; //零售价格
 												var presetPriceOne = res.data[0].presetpriceone-0; //预计采购价
@@ -1103,14 +957,6 @@
 												body.find("[field='TaxUnitPrice']").find(input).val((detailPrice*(1+taxRate/100)).toFixed(2));  //含税单价
 												body.find("[field='TaxMoney']").find(input).val((detailPrice*(taxRate/100)).toFixed(2));  //税额
 												body.find("[field='TaxLastMoney']").find(input).val((detailPrice*(1+taxRate/100)).toFixed(2));  //价税合计
-												if (res.data[0].name == "套餐一") {
-													body.find("[field='machine']").find(input).val("是");
-													body.find("[field='machine_type']").find(input).val("平板");
-													body.find("[field='machine_number']").find(input).val("2");
-													body.find("[field='gate']").find(input).val("是");
-													body.find("[field='gate_type']").find(input).val("三辊闸");
-													body.find("[field='gate_number']").find(input).val("4");
-												}
 												statisticsFun(body,detailPrice,1,footer,taxRate);
 
 												//查询库存信息
@@ -1153,271 +999,7 @@
 				{ title: '税率(%)',field: 'TaxRate',editor:'validatebox',hidden:isShowTaxColumn,width:75},
 				{ title: '税额',field: 'TaxMoney',editor:'validatebox',hidden:isShowTaxColumn,width:75},
 				{ title: '价税合计',field: 'TaxLastMoney',editor:'validatebox',hidden:isShowTaxColumn,width:75},
-
-				{ title: '联系人姓名',field: 'contacts_name',editor:'validatebox',width:75},
-				{ title: '联系人电话',field: 'contacts_phone',editor:'validatebox',width:75},
-				{ title: '联系人微信',field: 'we_chat',editor:'validatebox',width:75},
-				{ title: '公司/施工单位名称',field: 'company',editor:'validatebox',width:75},
-				{ title: '工程地址',field: 'project_address',editor:'validatebox',width:75},
-				{ title: '工程名称',field: 'project_name',editor:'validatebox',width:75},
-				{ title: '身份证识别器',field: 'card_ognizer',editor:'validatebox',width:75,
-					formatter: function (value, row, index) {
-						return row.DepotName;
-					},
-					editor: {
-						type: 'combobox',
-						options: {
-							valueField: 'id',
-							textField: depotTextField,
-							method: 'get',
-							url: '/depot/findDepot',
-							onSelect:function(rec){
-								var depotId = rec.id;
-								body =$("#depotHeadFM .datagrid-body");
-								footer =$("#depotHeadFM .datagrid-footer");
-								input = ".datagrid-editable-input";
-								var mId = body.find("[field='MaterialId']").find(".combo-value").val();
-								if(mId){
-									var type = "select"; //type 类型：点击 click，选择 select
-									findStockNumById(depotId, mId, monthTime, body, input, ratioDepot, type);
-								}
-							}
-						}
-					}
-				},
-				{ title: '身份证识别器编号',field: 'ognizer_number',editor:'validatebox',width:75},
-				{ title: '合同是否签定',field: 'contract',editor:'validatebox',width:75,
-					formatter: function (value, row, index) {
-						return row.DepotName;
-					},
-					editor: {
-						type: 'combobox',
-						options: {
-							valueField: 'id',
-							textField: depotTextField,
-							method: 'get',
-							url: '/depot/findDepot',
-							onSelect:function(rec){
-								var depotId = rec.id;
-								body =$("#depotHeadFM .datagrid-body");
-								footer =$("#depotHeadFM .datagrid-footer");
-								input = ".datagrid-editable-input";
-								var mId = body.find("[field='MaterialId']").find(".combo-value").val();
-								if(mId){
-									var type = "select"; //type 类型：点击 click，选择 select
-									findStockNumById(depotId, mId, monthTime, body, input, ratioDepot, type);
-								}
-							}
-						}
-					}
-				},
-				{ title: '合同编号',field: 'conyract_number',editor:'validatebox',width:75},
-				{ title: '合同金额',field: 'conyract_money',editor:'validatebox',width:75},
-				{ title: '是否付款',field: 'payment',editor:'validatebox',width:75,
-					formatter: function (value, row, index) {
-						return row.DepotName;
-					},
-					editor: {
-						type: 'combobox',
-						options: {
-							valueField: 'id',
-							textField: depotTextField,
-							method: 'get',
-							url: '/depot/findDepot',
-							onSelect:function(rec){
-								var depotId = rec.id;
-								body =$("#depotHeadFM .datagrid-body");
-								footer =$("#depotHeadFM .datagrid-footer");
-								input = ".datagrid-editable-input";
-								var mId = body.find("[field='MaterialId']").find(".combo-value").val();
-								if(mId){
-									var type = "select"; //type 类型：点击 click，选择 select
-									findStockNumById(depotId, mId, monthTime, body, input, ratioDepot, type);
-								}
-							}
-						}
-					}
-				},
-				{ title: '发票是否已开',field: 'invoice',editor:'validatebox',width:75,
-					formatter: function (value, row, index) {
-						return row.DepotName;
-					},
-					editor: {
-						type: 'combobox',
-						options: {
-							valueField: 'id',
-							textField: depotTextField,
-							method: 'get',
-							url: '/depot/findDepot',
-							onSelect:function(rec){
-								var depotId = rec.id;
-								body =$("#depotHeadFM .datagrid-body");
-								footer =$("#depotHeadFM .datagrid-footer");
-								input = ".datagrid-editable-input";
-								var mId = body.find("[field='MaterialId']").find(".combo-value").val();
-								if(mId){
-									var type = "select"; //type 类型：点击 click，选择 select
-									findStockNumById(depotId, mId, monthTime, body, input, ratioDepot, type);
-								}
-							}
-						}
-					}
-				},
-				{ title: '是否需要安装',field: 'install',editor:'validatebox',width:75,
-					formatter: function (value, row, index) {
-						return row.DepotName;
-					},
-					editor: {
-						type: 'combobox',
-						options: {
-							valueField: 'id',
-							textField: depotTextField,
-							method: 'get',
-							url: '/depot/findDepot',
-							onSelect:function(rec){
-								var depotId = rec.id;
-								body =$("#depotHeadFM .datagrid-body");
-								footer =$("#depotHeadFM .datagrid-footer");
-								input = ".datagrid-editable-input";
-								var mId = body.find("[field='MaterialId']").find(".combo-value").val();
-								if(mId){
-									var type = "select"; //type 类型：点击 click，选择 select
-									findStockNumById(depotId, mId, monthTime, body, input, ratioDepot, type);
-								}
-							}
-						}
-					}
-				},
-				{ title: '安装人',field: 'installer',editor:'validatebox',width:75},
-				{ title: '最晚安装日期',field: 'installer_time',editor:'validatebox',width:75},
-				{ title: '是否需要人脸机',field: 'machine',editor:'validatebox',width:75,
-					formatter: function (value, row, index) {
-						return row.DepotName;
-					},
-					editor: {
-						type: 'combobox',
-						options: {
-							valueField: 'id',
-							textField: depotTextField,
-							method: 'get',
-							url: '/depot/findDepot',
-							onSelect:function(rec){
-								var depotId = rec.id;
-								body =$("#depotHeadFM .datagrid-body");
-								footer =$("#depotHeadFM .datagrid-footer");
-								input = ".datagrid-editable-input";
-								var mId = body.find("[field='MaterialId']").find(".combo-value").val();
-								if(mId){
-									var type = "select"; //type 类型：点击 click，选择 select
-									findStockNumById(depotId, mId, monthTime, body, input, ratioDepot, type);
-								}
-							}
-						}
-					}
-				},
-				{ title: '人脸机类型',field: 'machine_type',editor:'validatebox',width:75 ,
-					formatter:function(value,row,index){
-						debugger
-						return row.MaterialName;
-					},
-					editor:{
-						type:'combobox',
-						options:{
-							valueField:'MaterialName',
-							textField:'MaterialName',
-							method:'get',
-							url: "/material/findBySelect",
-							panelWidth: 300, //下拉框的宽度
-							//全面模糊匹配，过滤字段
-
-							filter: function(q, row){
-								var opts = $(this).combobox('options');
-								return row[opts.textField].indexOf(q) >-1;
-							},
-							onBeforeLoad: function(param){
-								param.mpList = mPropertyList; //商品属性
-							},
-							// onSelect:function(rec){
-							// 	if(rec) {
-							// 		var mId = rec.Id;
-							// 		$.ajax({
-							// 			url: "/material/findById",
-							// 			type: "get",
-							// 			dataType: "json",
-							// 			data: {
-							// 				id: mId
-							// 			}
-							// 		});
-							// 	}
-							// }
-						}
-					}
-				},
-				{ title: '人脸机数量',field: 'machine_number',editor:'validatebox',width:75},
-				{ title: '闸机是否需要',field: 'gate',editor:'validatebox',width:75,
-					formatter: function (value, row, index) {
-						return row.DepotName;
-					},
-					editor: {
-						type: 'combobox',
-						options: {
-							valueField: 'id',
-							textField: depotTextField,
-							method: 'get',
-							url: '/depot/findDepot',
-							onSelect:function(rec){
-								var depotId = rec.id;
-								body =$("#depotHeadFM .datagrid-body");
-								footer =$("#depotHeadFM .datagrid-footer");
-								input = ".datagrid-editable-input";
-								var mId = body.find("[field='MaterialId']").find(".combo-value").val();
-								if(mId){
-									var type = "select"; //type 类型：点击 click，选择 select
-									findStockNumById(depotId, mId, monthTime, body, input, ratioDepot, type);
-								}
-							}
-						}
-					}
-				},
-				{ title: '闸机类型',field: 'gate_type',editor:'validatebox' ,width:75,
-					formatter:function(value,row,index){
-						return row.MaterialName;
-					},
-					editor:{
-						type:'combobox',
-						options:{
-							valueField:'MaterialName',
-							textField:'MaterialName',
-							method:'get',
-							url: "/material/findBySelect",
-							panelWidth: 300, //下拉框的宽度
-							//全面模糊匹配，过滤字段
-
-							filter: function(q, row){
-								var opts = $(this).combobox('options');
-								return row[opts.textField].indexOf(q) >-1;
-							},
-							onBeforeLoad: function(param){
-								param.mpList = mPropertyList; //商品属性
-							},
-							// onSelect:function(rec){
-							// 	if(rec) {
-							// 		var mId = rec.Id;
-							// 		$.ajax({
-							// 			url: "/material/findById",
-							// 			type: "get",
-							// 			dataType: "json",
-							// 			data: {
-							// 				id: mId
-							// 			}
-							// 		});
-							// 	}
-							// }
-						}
-					}
-				},
-				{ title: '闸机数量',field: 'gate_number',editor:'validatebox',width:75},
-	            // { title: '备注',field: 'Remark',editor:'validatebox',width:120},
+	            { title: '备注',field: 'Remark',editor:'validatebox',width:120},
 				{ title: '品名-别',field: 'OtherField1',editor:'validatebox',hidden:otherColumns,width:60},
 				{ title: '型号-别',field: 'OtherField2',editor:'validatebox',hidden:otherColumns,width:60},
 				{ title: '颜色-别',field: 'OtherField3',editor:'validatebox',hidden:otherColumns,width:60},
@@ -1556,7 +1138,7 @@
 			onClickRow: onClickRow,
 			columns:[[
 				{ title: '商品类型',field: 'MType',width:80, hidden:isShowMaterialTypeColumn},
-				{ title: depotHeadName,field: 'DepotName',editor:'validatebox',width:90},
+				// { title: depotHeadName,field: 'DepotName',editor:'validatebox',width:90},
 				{ title: '品名(型号)(扩展信息)(单位)',field: 'MaterialName',width:230},
                 { title: '库存',field: 'Stock',width:70},
 				{ title: anotherDepotHeadName,field: 'AnotherDepotName',hidden:isShowAnotherDepot,width:90},
@@ -1569,30 +1151,6 @@
 				{ title: '税率',field: 'TaxRate',editor:'validatebox',hidden:isShowTaxColumn,width:75},
 				{ title: '税额',field: 'TaxMoney',editor:'validatebox',hidden:isShowTaxColumn,width:75},
 				{ title: '价税合计',field: 'TaxLastMoney',editor:'validatebox',hidden:isShowTaxColumn,width:75},
-
-				{ title: '联系人姓名',field: 'contacts_name',editor:'validatebox',width:75},
-				{ title: '联系人电话',field: 'contacts_phone',editor:'validatebox',width:75},
-				{ title: '联系人微信',field: 'we_chat',editor:'validatebox',width:75},
-				{ title: '公司/施工单位名称',field: 'company',editor:'validatebox',width:75},
-				{ title: '工程地址',field: 'project_address',editor:'validatebox',width:75},
-				{ title: '工程名称',field: 'project_name',editor:'validatebox',width:75},
-				{ title: '身份证识别器',field: 'card_ognizer',editor:'validatebox',width:75},
-				{ title: '身份证识别器编号',field: 'ognizer_number',editor:'validatebox',width:75},
-				{ title: '合同是否签定',field: 'contract',width:75},
-				{ title: '合同编号',field: 'conyract_number',width:75},
-				{ title: '合同金额',field: 'conyract_money',width:75},
-				{ title: '是否付款',field: 'payment',width:75},
-				{ title: '发票是否已开',field: 'invoice',width:75},
-				{ title: '是否需要安装',field: 'install',width:75},
-				{ title: '安装人',field: 'installer',width:75},
-				{ title: '最晚安装日期',field: 'installer_time',width:75},
-				{ title: '是否需要人脸机',field: 'machine',width:75},
-				{ title: '人脸机类型',field: 'machine_type',width:75},
-				{ title: '人脸机数量',field: 'machine_number',width:75},
-				{ title: '闸机是否需要',field: 'gate',width:75},
-				{ title: '闸机类型',field: 'gate_type',width:75},
-				{ title: '闸机数量',field: 'gate_number',width:75},
-				{ title: '订单类型',field: 'order_type',width:75},
 				{ title: '备注',field: 'Remark',editor:'validatebox',width:120},
 				{ title: '品名-别',field: 'OtherField1',editor:'validatebox',hidden:otherColumns,width:60},
 				{ title: '型号-别',field: 'OtherField2',editor:'validatebox',hidden:otherColumns,width:60},
@@ -1808,7 +1366,7 @@
 					var ids = "";
 					for(var i = 0;i < row.length; i ++) {
 						if(i == row.length-1) {
-							if(row[i].status != "4") {
+							if(row[i].status != "2") {
                                 ids += row[i].id;
 							}
 							break;
@@ -1826,12 +1384,10 @@
                                 depotHeadIDs : ids
                             }),
                             success: function (res) {
-                                if(res && res.code == 200) {
+                                if(res && res.code === 200) {
                                     $("#searchBtn").click();
                                     $(":checkbox").attr("checked", false);
-                                } else if (res && res.code == 300) {
-									$.messager.alert('提示', '操作信息失败，请稍后再试！', 'error');
-								} else {
+                                } else {
                                     $.messager.alert('提示', '操作信息失败，请稍后再试！', 'error');
                                 }
                             },
@@ -2454,6 +2010,7 @@
 				/**
 				 * 零售出库，单独操作
 				 * */
+				debugger
 				if(url.indexOf("/depotHead/addDepotHeadAndDetail")>=0){
 					addDepotHeadAndDetail(url,infoStr);
 				} else if(url.indexOf("/depotHead/updateDepotHeadAndDetail")>=0){
