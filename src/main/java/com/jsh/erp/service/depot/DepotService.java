@@ -171,6 +171,18 @@ public class DepotService {
         }
         return list;
     }
+    public List<Depot> findUserDepots()throws Exception{
+        DepotExample example = new DepotExample();
+        example.createCriteria().andTypeEqualTo(0).andDeleteFlagNotEqualTo(BusinessConstants.DELETE_FLAG_DELETED);
+        example.setOrderByClause("Sort");
+        List<Depot> list=null;
+        try{
+            list= depotMapper.selectByExamples(example);
+        }catch(Exception e){
+            JshException.readFail(logger, e);
+        }
+        return list;
+    }
 
     public List<Depot> findGiftByType(Integer type)throws Exception{
         DepotExample example = new DepotExample();

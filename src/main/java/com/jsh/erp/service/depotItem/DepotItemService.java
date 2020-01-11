@@ -403,6 +403,75 @@ public class DepotItemService {
                     if (tempInsertedJson.get("MType") != null) {
                         depotItem.setMtype(tempInsertedJson.getString("MType"));
                     }
+                    if (tempInsertedJson.get("contacts_name") != null) {
+                        depotItem.setContacts_name(tempInsertedJson.getString("contacts_name"));
+                    }
+                    if (tempInsertedJson.get("contacts_phone") != null) {
+                        depotItem.setContacts_phone(tempInsertedJson.getString("contacts_phone"));
+                    }
+                    if (tempInsertedJson.get("company") != null) {
+                        depotItem.setCompany(tempInsertedJson.getString("company"));
+                    }
+                    if (tempInsertedJson.get("we_chat") != null) {
+                        depotItem.setWe_chat(tempInsertedJson.getString("we_chat"));
+                    }
+                    if (tempInsertedJson.get("project_address") != null) {
+                        depotItem.setProject_address(tempInsertedJson.getString("project_address"));
+                    }
+                    if (tempInsertedJson.get("project_name") != null) {
+                        depotItem.setProject_name(tempInsertedJson.getString("project_name"));
+                    }
+                    if (tempInsertedJson.get("card_ognizer") != null) {
+                        depotItem.setCard_ognizer(tempInsertedJson.getString("card_ognizer"));
+                    }
+                    if (tempInsertedJson.get("ognizer_number") != null) {
+                        depotItem.setOgnizer_number(tempInsertedJson.getString("ognizer_number"));
+                    }
+                    if (tempInsertedJson.get("contract") != null) {
+                        depotItem.setContract(tempInsertedJson.getString("contract"));
+                    }
+                    if (tempInsertedJson.get("conyract_number") != null) {
+                        depotItem.setConyract_number(tempInsertedJson.getString("conyract_number"));
+                    }
+                    if (tempInsertedJson.get("conyract_money") != null) {
+                        depotItem.setConyract_money(tempInsertedJson.getString("conyract_money"));
+                    }
+                    if (tempInsertedJson.get("payment") != null) {
+                        depotItem.setPayment(tempInsertedJson.getString("payment"));
+                    }
+                    if (tempInsertedJson.get("invoice") != null) {
+                        depotItem.setInvoice(tempInsertedJson.getString("invoice"));
+                    }
+                    if (tempInsertedJson.get("install") != null) {
+                        depotItem.setInstall(tempInsertedJson.getString("install"));
+                    }
+                    if (tempInsertedJson.get("installer") != null) {
+                        depotItem.setInstaller(tempInsertedJson.getString("installer"));
+                    }
+                    if (tempInsertedJson.get("installer_time") != null) {
+                        depotItem.setInstaller_time(tempInsertedJson.getString("installer_time"));
+                    }
+                    if (tempInsertedJson.get("machine") != null) {
+                        depotItem.setMachine(tempInsertedJson.getString("machine"));
+                    }
+                    if (tempInsertedJson.get("machine_type") != null) {
+                        depotItem.setMachine_type(tempInsertedJson.getString("machine_type"));
+                    }
+                    if (tempInsertedJson.get("machine_number") != null) {
+                        depotItem.setMachine_number(tempInsertedJson.getString("machine_number"));
+                    }
+                    if (tempInsertedJson.get("gate") != null) {
+                        depotItem.setGate(tempInsertedJson.getString("gate"));
+                    }
+                    if (tempInsertedJson.get("gate_type") != null) {
+                        depotItem.setGate_type(tempInsertedJson.getString("gate_type"));
+                    }
+                    if (tempInsertedJson.get("gate_number") != null) {
+                        depotItem.setGate_number(tempInsertedJson.getString("gate_number"));
+                    }
+                    if (tempInsertedJson.get("order_type") != null) {
+                        depotItem.setOrder_type(tempInsertedJson.getString("order_type"));
+                    }
                     /**
                      * 出库时判断库存是否充足
                      * */

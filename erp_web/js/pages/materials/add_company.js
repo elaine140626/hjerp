@@ -1,25 +1,23 @@
-$.get("../../pages/template/base.html?789", function(tem) {
+$.get("../../pages/template/company.html?789", function(tem) {
     if(tem) {
         var template = Handlebars.compile(tem);
         /**
          * 加载供应商、客户模块
          */
         $("#supplier").html(template({
-            supplierSelect: true,
-            supplierSelectCompany: true,
-            supplierSelectGroup: true
+            supplierSelectCompany: true
         }));
-        $('#supplierDlg').dialog({
+        $('#supplierDlgCompany').dialog({
             closed: true,
             modal: true,
             collapsible: false,
             closable: true
         });
-        $("#supplierDlg #supplier").validatebox({
+        $("#supplierDlgCompany #supplier").validatebox({
             required: true,
             validType: 'length[2,30]'
         });
-        $("#supplierDlg #email").validatebox({
+        $("#supplierDlgCompany #email").validatebox({
             validType: 'email'
         });
         $("#BeginNeedGet,#BeginNeedPay,#AllNeedGet,#AllNeedPay").numberbox({

@@ -37,6 +37,30 @@
     <result column="LinkNumber" jdbcType="VARCHAR" property="linknumber" />
     <result column="tenant_id" jdbcType="BIGINT" property="tenantId" />
     <result column="delete_Flag" jdbcType="VARCHAR" property="deleteFlag" />
+    <result column="contacts_name" jdbcType="VARCHAR" property="contacts_name" />
+    <result column="contacts_phone" jdbcType="VARCHAR" property="contacts_phone" />
+    <result column="company" jdbcType="VARCHAR" property="company" />
+    <result column="we_chat" jdbcType="VARCHAR" property="we_chat" />
+    <result column="project_address" jdbcType="VARCHAR" property="project_address" />
+    <result column="project_name" jdbcType="VARCHAR" property="project_name" />
+    <result column="card_ognizer" jdbcType="VARCHAR" property="card_ognizer" />
+    <result column="ognizer_number" jdbcType="VARCHAR" property="ognizer_number" />
+    <result column="contract" jdbcType="VARCHAR" property="contract" />
+    <result column="conyract_number" jdbcType="VARCHAR" property="conyract_number" />
+    <result column="conyract_money" jdbcType="VARCHAR" property="conyract_money" />
+    <result column="payment" jdbcType="VARCHAR" property="payment" />
+    <result column="invoice" jdbcType="VARCHAR" property="invoice" />
+    <result column="install" jdbcType="VARCHAR" property="install" />
+    <result column="installer" jdbcType="VARCHAR" property="installer" />
+    <result column="installer_time" jdbcType="VARCHAR" property="installer_time" />
+    <result column="machine" jdbcType="VARCHAR" property="machine" />
+    <result column="machine_type" jdbcType="VARCHAR" property="machine_type" />
+    <result column="machine_number" jdbcType="VARCHAR" property="machine_number" />
+    <result column="gate" jdbcType="VARCHAR" property="gate" />
+    <result column="gate_type" jdbcType="VARCHAR" property="gate_type" />
+    <result column="gate_number" jdbcType="VARCHAR" property="gate_number" />
+    <result column="order_type" jdbcType="VARCHAR" property="order_type" />
+    <result column="OperNumber" jdbcType="VARCHAR" property="operNumber" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <!--

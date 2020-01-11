@@ -53,6 +53,16 @@ public class ResourceController {
                         @RequestParam(value = Constants.SEARCH, required = false) String search,
                         HttpServletRequest request)throws Exception {
         Map<String, String> parameterMap = ParamUtils.requestToMap(request);
+        System.out.println(search);
+        if (search!=null) {
+            if (search.equals("{\"type\":\"其它\",\"subType\":\"销售订单\",\"state\":\"\",\"number\":\"\",\"beginTime\":\"\",\"endTime\":\"\",\"materialParam\":\"\",\"depotIds\":\"|\"}") ||
+                    search.equals("{\"type\":\"出库\",\"subType\":\"销售\",\"state\":\"\",\"number\":\"\",\"beginTime\":\"\",\"endTime\":\"\",\"materialParam\":\"\",\"depotIds\":\"20,21,22\"}") ||
+                    search.equals("{\"type\":\"其它\",\"subType\":\"销售订单\",\"state\":\"\",\"number\":\"\",\"beginTime\":\"\",\"endTime\":\"\",\"materialParam\":\"\",\"depotIds\":\"24\"}") ||
+                    search.equals("{\"type\":\"其它\",\"subType\":\"销售订单\",\"state\":\"\",\"number\":\"\",\"beginTime\":\"\",\"endTime\":\"\",\"materialParam\":\"\",\"depotIds\":\"25\"}")
+            ) {
+                search = "{\"type\":\"其它\",\"subType\":\"销售订单\",\"state\":\"\",\"number\":\"\",\"beginTime\":\"\",\"endTime\":\"\",\"materialParam\":\"\",\"depotIds\":\"20,21,22\"}";
+            }
+        }
         parameterMap.put(Constants.SEARCH, search);
         PageQueryInfo queryInfo = new PageQueryInfo();
         Map<String, Object> objectMap = new HashMap<String, Object>();
@@ -137,6 +147,4 @@ public class ResourceController {
         }
         return returnJson(objectMap, ErpInfo.OK.name, ErpInfo.OK.code);
     }
-
-
 }

@@ -196,6 +196,29 @@ public class DepotItemController {
                     item.put("OtherField5", diEx.getOtherfield5());
                     item.put("MType", diEx.getMtype());
                     item.put("op", 1);
+                    item.put("contacts_name",diEx.getContacts_name());
+                    item.put("contacts_phone",diEx.getContacts_phone());
+                    item.put("company",diEx.getCompany());
+                    item.put("we_chat",diEx.getWe_chat());
+                    item.put("project_address",diEx.getProject_address());
+                    item.put("project_name",diEx.getProject_name());
+                    item.put("card_ognizer",diEx.getCard_ognizer());
+                    item.put("ognizer_number",diEx.getOgnizer_number());
+                    item.put("contract",diEx.getContract());
+                    item.put("conyract_number",diEx.getConyract_number());
+                    item.put("conyract_money",diEx.getConyract_money());
+                    item.put("payment",diEx.getPayment());
+                    item.put("invoice",diEx.getInvoice());
+                    item.put("install",diEx.getInstall());
+                    item.put("installer",diEx.getInstaller());
+                    item.put("installer_time",diEx.getInstaller_time());
+                    item.put("machine",diEx.getMachine());
+                    item.put("machine_type",diEx.getMachine_type());
+                    item.put("machine_number",diEx.getMachine_number());
+                    item.put("gate",diEx.getGate());
+                    item.put("gate_type",diEx.getGate_type());
+                    item.put("gate_number",diEx.getGate_number());
+                    item.put("order_type",diEx.getOrder_type());
                     dataArray.add(item);
                 }
             }
@@ -245,7 +268,6 @@ public class DepotItemController {
      * 查找所有的明细
      * @param currentPage
      * @param pageSize
-     * @param projectId
      * @param monthTime
      * @param headIds
      * @param materialIds
@@ -311,7 +333,6 @@ public class DepotItemController {
      * 导出excel表格
      * @param currentPage
      * @param pageSize
-     * @param projectId
      * @param monthTime
      * @param headIds
      * @param materialIds
@@ -362,7 +383,6 @@ public class DepotItemController {
 
     /**
      * 统计总计金额
-     * @param pid
      * @param monthTime
      * @param headIds
      * @param materialIds
@@ -620,7 +640,6 @@ public class DepotItemController {
      * @param currentPage
      * @param pageSize
      * @param projectId
-     * @param monthTime
      * @param request
      * @param response
      * @return

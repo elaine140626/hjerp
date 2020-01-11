@@ -191,7 +191,7 @@ public class FunctionsController {
                             //勾选判断2
                             //Boolean flag = false;
                             try {
-                                flag = userBusinessService.checkIsUserBusinessExist(type, keyId, "[" + functions1.getId().toString() + "]");
+                                flag = userBusinessService.checkIsUserBusinessExist(type, keyId,"[" + functions1.getId().toString() + "]");
                             } catch (Exception e) {
                                 logger.error(">>>>>>>>>>>>>>>>>设置角色对应的功能：类型" + type + " KeyId为： " + keyId + " 存在异常！");
                             }
