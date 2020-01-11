@@ -87,7 +87,7 @@ public class DepotController {
                     //勾选判断1
                     Boolean flag = false;
                     try {
-                        flag = userBusinessService.checkIsUserBusinessExist(type, keyId, "[" + depot.getId().toString() + "]");
+                        flag = userBusinessService.checkIsUserBusinessExist(type, keyId,"[" + depot.getId().toString() + "]");
                     } catch (Exception e) {
                         logger.error(">>>>>>>>>>>>>>>>>设置用户对应的仓库：类型" + type + " KeyId为： " + keyId + " 存在异常！");
                     }
@@ -134,7 +134,7 @@ public class DepotController {
                     //勾选判断1
                     Boolean flag = false;
                     try {
-                        flag = userBusinessService.checkIsUserBusinessExist(type, keyId, "[" + depot.getId().toString() + "]");
+                        flag = userBusinessService.checkIsUserBusinessExist(type, keyId,"[" + depot.getId().toString() + "]");
                     } catch (DataAccessException e) {
                         logger.error(">>>>>>>>>>>>>>>>>查询用户对应的仓库：类型" + type + " KeyId为： " + keyId + " 存在异常！");
                     }

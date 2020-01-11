@@ -85,6 +85,7 @@
                 <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
+
                 <when test="criterion.listValue">
                   and ${criterion.condition}
                   <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
@@ -107,6 +108,16 @@
     BeginNeedGet, BeginNeedPay, AllNeedGet, AllNeedPay, fax, telephone, address, taxNum, 
     bankName, accountNumber, taxRate, tenant_id, delete_Flag
   </sql>
+  <select id="selectExample" parameterType="com.jsh.erp.datasource.entities.SupplierExample" resultMap="BaseResultMap">
+    SELECT id, supplier, contacts, phonenum, email, description, isystem, type,
+    enabled, AdvanceIn, BeginNeedGet, BeginNeedPay, AllNeedGet, AllNeedPay, fax,
+    telephone, address, taxNum, bankName, accountNumber, taxRate, tenant_id, delete_Flag
+    FROM jsh_supplier
+    WHERE jsh_supplier.tenant_id = #{ubKeyId} and supplier_id = #{supplier_id}
+    AND (type LIKE '客户' AND enabled = 1 AND delete_Flag != '1') ORDER BY id DESC
+
+  </select>
+
   <select id="selectByExample" parameterType="com.jsh.erp.datasource.entities.SupplierExample" resultMap="BaseResultMap">
     <!--
       WARNING - @mbggenerated
@@ -257,6 +268,9 @@
       <if test="method != null">
         method,
       </if>
+      <!--<if test="supplier_id != 0">-->
+        <!--supplier_id,-->
+      <!--</if>-->
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -334,6 +348,9 @@
       <if test="method != null">
         #{method,jdbcType=VARCHAR},
       </if>
+      <!--<if test="supplier_id != 0">-->
+        <!--#{supplier_id.jdbcType=Int},-->
+      <!--</if>-->
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.jsh.erp.datasource.entities.SupplierExample" resultType="java.lang.Integer">

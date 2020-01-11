@@ -49,7 +49,7 @@ public class RoleController {
                     //勾选判断1
                     Boolean flag = false;
                     try {
-                        flag = userBusinessService.checkIsUserBusinessExist(type, keyId, "[" + role.getId().toString() + "]");
+                        flag = userBusinessService.checkIsUserBusinessExist(type, keyId,"[" + role.getId().toString() + "]");
                     } catch (Exception e) {
                         logger.error(">>>>>>>>>>>>>>>>>设置用户对应的角色：类型" + type + " KeyId为： " + keyId + " 存在异常！");
                     }

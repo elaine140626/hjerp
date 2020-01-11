@@ -268,7 +268,6 @@ public class DepotItemController {
      * 查找所有的明细
      * @param currentPage
      * @param pageSize
-     * @param projectId
      * @param monthTime
      * @param headIds
      * @param materialIds
@@ -334,7 +333,6 @@ public class DepotItemController {
      * 导出excel表格
      * @param currentPage
      * @param pageSize
-     * @param projectId
      * @param monthTime
      * @param headIds
      * @param materialIds
@@ -385,7 +383,6 @@ public class DepotItemController {
 
     /**
      * 统计总计金额
-     * @param pid
      * @param monthTime
      * @param headIds
      * @param materialIds
@@ -643,7 +640,6 @@ public class DepotItemController {
      * @param currentPage
      * @param pageSize
      * @param projectId
-     * @param monthTime
      * @param request
      * @param response
      * @return
