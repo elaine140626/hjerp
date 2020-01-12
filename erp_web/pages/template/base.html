@@ -1,40 +1,39 @@
-<script src="/js/pages/materials/in_out.js"></script>
+<!--<script src="/js/pages/materials/in_out.js"></script>-->
 {{#if supplierSelect}}
-<div id="supplierDlg" style="width:580px;padding:10px 20px" buttons="#supplierDlgBtn">
+<div id="supplierDlg" style="width:580px;padding:10px 20px" buttons="#supplierDlgBtn3">
 	<form id="supplierFM">
 		<table>
-			<tr>
-
-				<td style="width:70px;">集团：</td>
-				<td style="padding:5px">
-					<div class="org-list">
-						<input id="group" name="group" style="width:130px;"/>
-					</div>
-					<div class="add-org-btn">
-						<img id="addGroup" src="/js/easyui-1.3.5/themes/icons/edit_add.png"
-							 style="cursor: pointer;" alt="增加客戶" title="增加客戶"/>
-					</div>
-				</td>
-				<td style="width:70px;">公司：</td>
-				<td style="padding:5px">
-					<div class="org-list">
-						<input id="company" name="company" style="width:130px;"/>
-					</div>
-					<div class="add-org-btn">
-						<img id="addCompany" src="/js/easyui-1.3.5/themes/icons/edit_add.png"
-							 style="cursor: pointer;" alt="增加客戶" title="增加客戶"/>
-					</div>
-				</td>
+			<!--<tr>-->
+				<!--<td style="width:70px;">集团：</td>-->
+				<!--<td style="padding:5px">-->
+					<!--<div class="org-list">-->
+						<!--<input id="group" name="group" style="width:130px;"/>-->
+					<!--</div>-->
+					<!--<div class="add-org-btn">-->
+						<!--<img id="addGroup" src="/js/easyui-1.3.5/themes/icons/edit_add.png"-->
+							 <!--style="cursor: pointer;" alt="增加客戶" title="增加客戶"/>-->
+					<!--</div>-->
+				<!--</td>-->
+				<!--<td style="width:70px;">公司：</td>-->
+				<!--<td style="padding:5px">-->
+					<!--<div class="org-list">-->
+						<!--<input id="company" name="company" style="width:130px;"/>-->
+					<!--</div>-->
+					<!--<div class="add-org-btn">-->
+						<!--<img id="addCompany" src="/js/easyui-1.3.5/themes/icons/edit_add.png"-->
+							 <!--style="cursor: pointer;" alt="增加客戶" title="增加客戶"/>-->
+					<!--</div>-->
+				<!--</td>-->
 				<!--<td>公司名称</td>-->
 				<!--<td style="padding:1px">-->
 					<!---->
 				<!--&lt;!&ndash;<input name="company" id="company" type="text" style="width: 160px;height: 20px"/>&ndash;&gt;-->
 				<!--</td>-->
-			</tr>
+			<!--</tr>-->
 			<tr>
-				<td>项目名称</td>
-				<td style="padding:1px">
-					<input name="supplier" id="supplier" type="text" style="width: 160px;height: 20px"/>
+				<td style="width: 60px;height: 20px">公司名称(全称)</td>
+				<td style="width:180px;padding:1px;">
+					<input name="supplier" id="supplier" style="width: 160px;height: 20px"/>
 				</td>
 				<td style="width: 60px;height: 20px">联系人</td>
 				<td style="width:180px;padding:1px;">
@@ -66,8 +65,8 @@
 		</table>
 	</form>
 </div>
-<div id="supplierDlgBtn">
-	<a href="javascript:void(0)" id="saveSupplier">保存</a>
+<div id="supplierDlgBtn3">
+	<a href="javascript:void(0)" id="saveSupplier" onclick="javascript:$('#supplierDlg').dialog('close')">保存</a>
 	<a href="javascript:void(0)" id="cancelSupplier" onclick="javascript:$('#supplierDlg').dialog('close')">取消</a>
 </div>
 {{/if}}

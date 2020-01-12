@@ -79,7 +79,7 @@ public class SupplierController {
     @PostMapping(value = "/findSelect")
     public JSONArray BySelectCus(@RequestParam(value = "UBType", required = false)  String ubType,
                                      @RequestParam(value = "UBKeyId", required = false)  String ubKeyId,
-                                     @RequestParam(value = "supplier_id",required = false) Integer supplier_id,
+                                     @RequestParam(value = "supplier_id",required = false) String supplier_id,
                                      HttpServletRequest request) {
         JSONArray arr = new JSONArray();
         try {
@@ -541,5 +541,14 @@ public class SupplierController {
         }
         return result;
     }
+
+//    @RequestMapping(value = "/addSupplier")
+//    public int addSupplier(@PathVariable("apiName") String apiName
+//                        ,@RequestParam("info") String beanJson){
+//        Supplier supplier = new Supplier();
+//        supplier.setSupplier(apiName);
+//        int i = supplierService.addSupplier(supplier);
+//        return i;
+//    }
 
 }

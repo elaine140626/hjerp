@@ -231,13 +231,11 @@ function initSystemData_depot(){
 }
 //初始化供应商、客户、散户信息
 function initSupplier(){
-	debugger
 	$('#group').combobox({
 		url: "/supplier/findSelect?UBType=UserCustomer&UBKeyId=" + kid +"&supplier_id=" + supplier_id,
 		valueField:'id',
 		textField:'supplier',
 		filter: function(q, row){
-			debugger
 			var opts = $(this).combobox('options');
 			return row[opts.textField].indexOf(q) >-1;
 		},
@@ -1688,10 +1686,45 @@ function initTableData_material(type,TotalPrice){
 											body.find("[field='TaxLastMoney']").find(input).val((detailPrice*(1+taxRate/100)).toFixed(2));  //价税合计
 											body.find("[field='conyract_money']").find(input).val((detailPrice*(1+taxRate/100)).toFixed(2));  //合同价格
 											if (res.data[0].name == "套餐一") {
-												body.find("[field='machine_type']").find(input).val("平板");
+												body.find("[field='machine_type']").find(input).val("人脸识别考勤机");
 												body.find("[field='machine_number']").find(input).val("2");
 												body.find("[field='gate_type']").find(input).val("三辊闸");
 												body.find("[field='gate_number']").find(input).val("1");
+											} else if (res.data[0].name == "套餐二") {
+												body.find("[field='machine_type']").find(input).val("人脸识别考勤机");
+												body.find("[field='machine_number']").find(input).val("2");
+												body.find("[field='gate_type']").find(input).val("三辊闸");
+												body.find("[field='gate_number']").find(input).val("12");
+											} else if (res.data[0].name == "套餐三") {
+												body.find("[field='machine_type']").find(input).val("人脸识别考勤机");
+												body.find("[field='machine_number']").find(input).val("4");
+												body.find("[field='gate_type']").find(input).val("三辊闸");
+												body.find("[field='gate_number']").find(input).val("2");
+											} else if (res.data[0].name == "套餐四") {
+												body.find("[field='machine_type']").find(input).val("人脸识别考勤机");
+												body.find("[field='machine_number']").find(input).val("3");
+												body.find("[field='gate_type']").find(input).val("三辊闸");
+												body.find("[field='gate_number']").find(input).val("3");
+											} else if (res.data[0].name == "套餐五") {
+												body.find("[field='machine_type']").find(input).val("人脸识别考勤机");
+												body.find("[field='machine_number']").find(input).val("6");
+												body.find("[field='gate_type']").find(input).val("三辊闸");
+												body.find("[field='gate_number']").find(input).val("3");
+											} else if (res.data[0].name == "产品一") {
+												body.find("[field='machine_type']").find(input).val("移动式人脸识别考勤平板");
+												body.find("[field='machine_number']").find(input).val("1");
+												body.find("[field='gate_type']").find(input).val("三辊闸");
+												body.find("[field='gate_number']").find(input).val("0");
+											} else if (res.data[0].name == "产品二") {
+												body.find("[field='machine_type']").find(input).val("人脸识别考勤机（固定式）");
+												body.find("[field='machine_number']").find(input).val("1");
+												body.find("[field='gate_type']").find(input).val("三辊闸");
+												body.find("[field='gate_number']").find(input).val("0");
+											} else if (res.data[0].name == "产品三") {
+												body.find("[field='machine_type']").find(input).val("人证信息采集设备");
+												body.find("[field='machine_number']").find(input).val("1");
+												body.find("[field='gate_type']").find(input).val("三辊闸");
+												body.find("[field='gate_number']").find(input).val("0");
 											}
 											statisticsFun(body,detailPrice,1,footer,taxRate);
 
@@ -1712,7 +1745,7 @@ function initTableData_material(type,TotalPrice){
 					}
 				}
 			},
-			{ title: '库存',field: 'Stock',editor:'validatebox',width:70},
+			// { title: '库存',field: 'Stock',editor:'validatebox',width:70},
 			{ title: anotherDepotHeadName, field: 'AnotherDepotId',editor:'validatebox',hidden:isShowAnotherDepot,width:90,
 				formatter: function (value, row, index) {
 					return row.AnotherDepotName;
@@ -2440,7 +2473,6 @@ function addDepotHead(){
 			$("#OrganId").combobox("setValue", "");
 		});
 		//当会员卡号长度超过10位后，自动点击下拉框，用于兼容刷卡器
-		debugger
 		$("#OrganId").next().find("input").off("keyup").on("keyup",function(){
 			var self = this;
 			if($(this).val().length === 10){
@@ -2594,12 +2626,32 @@ function editDepotHead(index, res){
 //查看信息
 function showDepotHead(index){
 	var res = $("#tableData").datagrid("getRows")[index];
+	debugger;
 	var manyAccountMoney = 0; //多账户合计-零售
 	$("#ProjectIdShow").text(res.projectName);
 	$("#NumberShow").text(res.number);
 	$("#OperTimeShow").text(res.opertimeStr);
 	$('#OrganIdShow').text(res.organName);
 	$("#HandsPersonIdShow").text(res.handsPersonName);
+	$("#projectName").text(res.project_name);
+	// $("#HandsPersonIdShow").text(res.handsPersonName);
+	// $("#HandsPersonIdShow").text(res.handsPersonName);
+	// $("#HandsPersonIdShow").text(res.handsPersonName);
+	// $("#HandsPersonIdShow").text(res.handsPersonName);
+	// $("#HandsPersonIdShow").text(res.handsPersonName);
+	// $("#HandsPersonIdShow").text(res.handsPersonName);
+	// $("#HandsPersonIdShow").text(res.handsPersonName);
+	// $("#HandsPersonIdShow").text(res.handsPersonName);
+	// $("#HandsPersonIdShow").text(res.handsPersonName);
+	// $("#HandsPersonIdShow").text(res.handsPersonName);
+	// $("#HandsPersonIdShow").text(res.handsPersonName);
+	// $("#HandsPersonIdShow").text(res.handsPersonName);
+	// $("#HandsPersonIdShow").text(res.handsPersonName);
+	// $("#HandsPersonIdShow").text(res.handsPersonName);
+	// $("#HandsPersonIdShow").text(res.handsPersonName);
+	// $("#HandsPersonIdShow").text(res.handsPersonName);
+	// $("#HandsPersonIdShow").text(res.handsPersonName);
+	// $("#HandsPersonIdShow").text(res.handsPersonName);
 	if(res.accountName){
 		$("#AccountIdShow").text(res.accountName); //结算账户
 	} else {
@@ -3396,10 +3448,10 @@ function bindSupplierGroup() {
 		}
 
 		//保存供应商信息
-		$("#saveSupplier").off("click").on("click",function() {
-			if(validateForm("supplierFM")) {
-				return;
-			}
+		$("#saveGroup").off("click").on("click",function() {
+			// if(validateForm("supplierFM")) {
+			// 	return;
+			// }
 			if(checkSupplierName()){
 				return;
 			}
@@ -3418,7 +3470,7 @@ function bindSupplierGroup() {
 				return;
 			}
 			var url = '/supplier/add';
-			var supObj = $("#supplierFM").serializeObject();
+			var supObj = $("#supplierFMGroup").serializeObject();
 			supObj.type = supplierType;
 			supObj.enabled = 1;
 			$.ajax({
@@ -3487,21 +3539,21 @@ function bindSupplierCompany() {
 		}
 
 		//保存供应商信息
-		$("#saveSupplier").off("click").on("click",function() {
-			if(validateForm("supplierFM")) {
-				return;
-			}
+		$("#saveCompany").off("click").on("click",function() {
+			// if(validateForm("supplierFM")) {
+			// 	return;
+			// }
 			if(checkSupplierName()){
 				return;
 			}
 			var reg = /^([0-9])+$/;
 			var phonenum = $.trim($("#phonenum").val());
-			// if(phonenum.length>0 && !reg.test(phonenum))
-			// {
-			//     $.messager.alert('提示','电话号码只能是数字','info');
-			//     $("#phonenum").val("").focus();
-			//     return;
-			// }
+			if(phonenum.length>0 && !reg.test(phonenum))
+			{
+			    $.messager.alert('提示','电话号码只能是数字','info');
+			    $("#phonenum").val("").focus();
+			    return;
+			}
 			var beginNeedGet = $.trim($("#BeginNeedGet").val());
 			var beginNeedPay = $.trim($("#BeginNeedPay").val());
 			if(beginNeedGet && beginNeedPay) {
@@ -3509,7 +3561,7 @@ function bindSupplierCompany() {
 				return;
 			}
 			var url = '/supplier/add';
-			var supObj = $("#supplierFM").serializeObject();
+			var supObj = $("#supplierFMCompany").serializeObject();
 			supObj.type = supplierType;
 			supObj.enabled = 1;
 			$.ajax({
@@ -3579,9 +3631,9 @@ function bindSupplierEvent() {
 
 		//保存供应商信息
 		$("#saveSupplier").off("click").on("click",function() {
-			if(validateForm("supplierFM")) {
-				return;
-			}
+			// if(validateForm("supplierFM")) {
+			// 	return;
+			// }
 			if(checkSupplierName()){
 				return;
 			}
