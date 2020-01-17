@@ -742,4 +742,16 @@ public class DepotItemService {
         DepotItemVo4Stock stockObj = depotItemMapperEx.getStockByParam(depotId, mId, beginTime, endTime, tenantId);
         return stockObj.getOutNum();
     }
+
+
+    public List<DepotItem> selectDepotitem() throws Exception { ;
+        List<DepotItem> list=null;
+        try{
+            list=depotItemMapper.selectDepotitem();
+        }catch(Exception e){
+            JshException.readFail(logger, e);
+        }
+        return list;
+    }
+
 }
