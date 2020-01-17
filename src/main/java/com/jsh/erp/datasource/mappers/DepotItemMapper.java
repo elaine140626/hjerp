@@ -93,4 +93,11 @@ public interface DepotItemMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(DepotItem record);
+
+
+    /**
+     * 查询所有订单信息
+     * @return
+     */
+    List<DepotItem> selectDepotitem();
 }

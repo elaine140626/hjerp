@@ -1,5 +1,6 @@
 package com.jsh.erp.service.depotItem;
 
+import com.jsh.erp.datasource.entities.DepotItem;
 import com.jsh.erp.service.ICommonQuery;
 import com.jsh.erp.utils.Constants;
 import com.jsh.erp.utils.QueryUtils;
@@ -35,6 +36,11 @@ public class DepotItemComponent implements ICommonQuery {
         String remark = StringUtil.getInfo(search, "remark");
         String order = QueryUtils.order(map);
         return depotItemService.select(name, type, remark, QueryUtils.offset(map), QueryUtils.rows(map));
+    }
+
+
+    private List<DepotItem> selectDepotItemList()throws Exception {
+        return depotItemService.selectDepotitem();
     }
 
     @Override

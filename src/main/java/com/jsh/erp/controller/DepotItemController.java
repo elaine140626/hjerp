@@ -10,6 +10,7 @@ import com.jsh.erp.exception.BusinessRunTimeException;
 import com.jsh.erp.service.depotItem.DepotItemService;
 import com.jsh.erp.service.material.MaterialService;
 import com.jsh.erp.utils.*;
+import org.apache.tomcat.util.http.parser.MediaType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
@@ -138,8 +139,8 @@ public class DepotItemController {
 
     @GetMapping(value = "/getDetailList")
     public BaseResponseInfo getDetailList(@RequestParam("headerId") Long headerId,
-                              @RequestParam("mpList") String mpList,
-                              HttpServletRequest request)throws Exception {
+                                          @RequestParam("mpList") String mpList,
+                                          HttpServletRequest request)throws Exception {
         BaseResponseInfo res = new BaseResponseInfo();
         Map<String, Object> map = new HashMap<String, Object>();
         Long tenantId = Long.parseLong(request.getSession().getAttribute("tenantId").toString());
@@ -391,10 +392,10 @@ public class DepotItemController {
      */
     @PostMapping(value = "/totalCountMoney")
     public BaseResponseInfo totalCountMoney(@RequestParam("depotId") Long depotId,
-                                                        @RequestParam("monthTime") String monthTime,
-                                                        @RequestParam("headIds") String headIds,
-                                                        @RequestParam("materialIds") String materialIds,
-                                                        HttpServletRequest request) throws Exception{
+                                            @RequestParam("monthTime") String monthTime,
+                                            @RequestParam("headIds") String headIds,
+                                            @RequestParam("materialIds") String materialIds,
+                                            HttpServletRequest request) throws Exception{
         BaseResponseInfo res = new BaseResponseInfo();
         Map<String, Object> map = new HashMap<String, Object>();
         Long tenantId = Long.parseLong(request.getSession().getAttribute("tenantId").toString());
@@ -433,12 +434,12 @@ public class DepotItemController {
      */
     @PostMapping(value = "/buyIn")
     public BaseResponseInfo buyIn(@RequestParam("currentPage") Integer currentPage,
-                                      @RequestParam("pageSize") Integer pageSize,
-                                      @RequestParam("monthTime") String monthTime,
-                                      @RequestParam("headIds") String headIds,
-                                      @RequestParam("materialIds") String materialIds,
-                                      @RequestParam("mpList") String mpList,
-                                      HttpServletRequest request)throws Exception {
+                                  @RequestParam("pageSize") Integer pageSize,
+                                  @RequestParam("monthTime") String monthTime,
+                                  @RequestParam("headIds") String headIds,
+                                  @RequestParam("materialIds") String materialIds,
+                                  @RequestParam("mpList") String mpList,
+                                  HttpServletRequest request)throws Exception {
         BaseResponseInfo res = new BaseResponseInfo();
         Map<String, Object> map = new HashMap<String, Object>();
         try {
@@ -494,12 +495,12 @@ public class DepotItemController {
      */
     @PostMapping(value = "/saleOut")
     public BaseResponseInfo saleOut(@RequestParam("currentPage") Integer currentPage,
-                                  @RequestParam("pageSize") Integer pageSize,
-                                  @RequestParam("monthTime") String monthTime,
-                                  @RequestParam("headIds") String headIds,
-                                  @RequestParam("materialIds") String materialIds,
-                                  @RequestParam("mpList") String mpList,
-                                  HttpServletRequest request)throws Exception {
+                                    @RequestParam("pageSize") Integer pageSize,
+                                    @RequestParam("monthTime") String monthTime,
+                                    @RequestParam("headIds") String headIds,
+                                    @RequestParam("materialIds") String materialIds,
+                                    @RequestParam("mpList") String mpList,
+                                    HttpServletRequest request)throws Exception {
         BaseResponseInfo res = new BaseResponseInfo();
         Map<String, Object> map = new HashMap<String, Object>();
         try {
@@ -646,9 +647,9 @@ public class DepotItemController {
      */
     @GetMapping(value = "/exportWarningExcel")
     public BaseResponseInfo exportWarningExcel(@RequestParam("currentPage") Integer currentPage,
-                                        @RequestParam("pageSize") Integer pageSize,
-                                        @RequestParam("projectId") Integer projectId,
-                                        HttpServletRequest request, HttpServletResponse response)throws Exception {
+                                               @RequestParam("pageSize") Integer pageSize,
+                                               @RequestParam("projectId") Integer projectId,
+                                               HttpServletRequest request, HttpServletResponse response)throws Exception {
         BaseResponseInfo res = new BaseResponseInfo();
         Map<String, Object> map = new HashMap<String, Object>();
         String message = "成功";
@@ -684,4 +685,84 @@ public class DepotItemController {
         }
         return res;
     }
+
+    /**
+     * 查看所有订单信息
+     */
+    @GetMapping(value = "/exportDepotItemExcel")
+    public int selectDepotItem(HttpServletRequest request, HttpServletResponse response)throws Exception {
+        int res = 0;
+        try {
+            List<DepotItem> dataList = depotItemService.selectDepotitem();
+            //存放数据json数组
+            String[] names = {"表头id", "材料id", "商品计量单位","数量", "基础数量", "单价","含税单价", "金额", "描述",
+                    "图片", "仓库ID", "调拨时，对方仓库Id","税率", "税额", "价税合计","品名", "型号", "制造商",
+                    "自定义字段4", "自定义字段5", "商品类型","租户id", "删除标记", "联系人姓名","联系人电话", "公司/施工单位", "微信",
+                    "项目地址", "项目名称", "身份证识别器（是否需要）","读卡器编号", "合同是否签到（是/否）","合同编号", "合同金额", "是否付款（是/否）", "是否有发票（是/否）",
+                    "是否需要安装（是/否）", "安装人","最晚安装日期", "是否需要人脸机", "人脸机类型","人脸机数量", "闸机是否需要（是/否）", "闸机安装类型", "闸机数量", "订单状态"};
+            String title = "订单信息报表";
+            List<String[]> objects = new ArrayList<String[]>();
+            if (null != dataList) {
+                for (DepotItem diEx : dataList) {
+                    String[] objs = new String[47];
+                    objs[0] = diEx.getHeaderid()== null ? " ":diEx.getHeaderid().toString();
+                    objs[1] = diEx.getMaterialid()== null ? " ":diEx.getMaterialid().toString();
+                    objs[2] = diEx.getMunit()== null ? " ":diEx.getMunit().toString();
+                    objs[3] = diEx.getOpernumber()== null ? "0":diEx.getOpernumber().setScale(0,BigDecimal.ROUND_DOWN).toString();
+                    objs[4] = diEx.getBasicnumber()== null ? " ":diEx.getBasicnumber().setScale(0,BigDecimal.ROUND_DOWN).toString();
+                    objs[5] = diEx.getUnitprice()== null ? " ":diEx.getUnitprice().setScale(0,BigDecimal.ROUND_DOWN).toString();
+                    objs[6] = diEx.getTaxunitprice()== null ? " ":diEx.getTaxunitprice().setScale(0,BigDecimal.ROUND_DOWN).toString();
+                    objs[7] = diEx.getAllprice()== null ? " ":diEx.getAllprice().setScale(0,BigDecimal.ROUND_DOWN).toString();
+                    objs[8] = diEx.getRemark() == null ? " ":diEx.getRemark().toString();
+                    objs[9] = diEx.getImg() == null ? " ":diEx.getImg().toString();
+                    objs[10] = diEx.getIncidentals() == null ? " ":diEx.getIncidentals().setScale(0,BigDecimal.ROUND_DOWN).toString();
+                    objs[11] = diEx.getAnotherdepotid()== null ? "0":diEx.getAnotherdepotid().toString();
+                    objs[12] = diEx.getDepotid()== null ? "0":diEx.getDepotid().toString();
+                    objs[13] = diEx.getTaxrate()== null ? " ":diEx.getTaxrate().setScale(0,BigDecimal.ROUND_DOWN).toString();
+                    objs[14] = diEx.getTaxmoney()== null ? " ":diEx.getTaxmoney().setScale(0,BigDecimal.ROUND_DOWN).toString();
+                    objs[15] = diEx.getTaxlastmoney()== null ? " ":diEx.getTaxlastmoney().setScale(0,BigDecimal.ROUND_DOWN).toString();
+                    objs[16] = diEx.getOtherfield1()== null ? " ":diEx.getOtherfield1().toString();
+                    objs[17] = diEx.getOtherfield2()== null ? " ":diEx.getOtherfield2().toString();
+                    objs[18] = diEx.getOtherfield3()== null ? " ":diEx.getOtherfield3().toString();
+                    objs[19] = diEx.getOtherfield4()== null ? " ":diEx.getOtherfield4().toString();
+                    objs[20] = diEx.getOtherfield5()== null ? " ":diEx.getOtherfield5().toString();
+                    objs[21] = diEx.getMtype()== null ? " ":diEx.getMtype().toString();
+                    objs[22] = diEx.getTenantId()== null ? "0":diEx.getTenantId().toString();
+                    objs[23] = diEx.getDeleteFlag()== null ? " ":diEx.getDeleteFlag().toString();
+                    objs[24] = diEx.getWe_chat()== null ? " ":diEx.getWe_chat().toString();
+                    objs[25] = diEx.getContacts_name()== null ? " ":diEx.getContacts_name().toString();
+                    objs[26] = diEx.getContacts_phone()== null ? " ":diEx.getContacts_phone().toString();
+                    objs[27] = diEx.getCompany()== null ? " ":diEx.getCompany().toString();
+                    objs[28] = diEx.getProject_address()== null ? " ":diEx.getProject_address().toString();
+                    objs[29] = diEx.getProject_name()== null ? " ":diEx.getProject_name().toString();
+                    objs[30] = diEx.getCard_ognizer()== null ? " ":diEx.getCard_ognizer().toString();
+                    objs[31] = diEx.getOgnizer_number()== null ? " ":diEx.getOgnizer_number().toString();
+                    objs[32] = diEx.getContract()== null ? " ":diEx.getContract().toString();
+                    objs[33] = diEx.getConyract_number()== null ? "0":diEx.getConyract_number().toString();
+                    objs[34] = diEx.getConyract_money()== null ? " ":diEx.getConyract_money().toString();
+                    objs[35] = diEx.getPayment()== null ? " ":diEx.getPayment().toString();
+                    objs[36] = diEx.getInvoice()== null ? " ":diEx.getInvoice().toString();
+                    objs[37] = diEx.getInstall()== null ? " ":diEx.getInstall().toString();
+                    objs[38] = diEx.getInstaller()== null ? " ":diEx.getInstaller().toString();
+                    objs[39] = diEx.getInstaller_time()== null ? " ":diEx.getInstaller_time().toString();
+                    objs[40] = diEx.getMachine()== null ? " ":diEx.getMachine().toString();
+                    objs[41] = diEx.getMachine_type()== null ? " ":diEx.getMachine_type().toString();
+                    objs[42] = diEx.getMachine_number()== null ? "0":diEx.getMachine_number().toString();
+                    objs[43] = diEx.getGate()== null ? " ":diEx.getGate().toString();
+                    objs[44] = diEx.getGate_type()== null ? " ":diEx.getGate_type().toString();
+                    objs[45] = diEx.getGate_number()== null ? "0":diEx.getGate_number().toString();
+                    objs[46] = diEx.getOrder_type()== null ? " ":diEx.getOrder_type().toString();
+                    objects.add(objs);
+                }
+                res = 1;
+
+            }
+            File file = ExcelUtils.exportObjectsWithoutTitle(title, names, title, objects);
+            ExportExecUtil.showExec(file, file.getName(), response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res = 0;
+        }
+        return res;
     }
+}
