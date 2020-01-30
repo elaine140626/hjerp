@@ -759,4 +759,8 @@
       delete_Flag = #{deleteFlag,jdbcType=VARCHAR}
     where Id = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="selectDepotitem" parameterType="com.jsh.erp.datasource.entities.DepotItem" resultMap="BaseResultMap">
+    select * from jsh_depotitem
+  </select>
 </mapper>
