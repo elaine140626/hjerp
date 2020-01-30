@@ -219,7 +219,7 @@ public class Supplier {
      *
      * @mbggenerated
      */
-    public String geSupplier_id() {
+    public String getSupplier_id() {
         return supplier_id;
     }
 
