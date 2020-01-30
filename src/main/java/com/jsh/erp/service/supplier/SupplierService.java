@@ -231,6 +231,16 @@ public class SupplierService {
         return list;
     }
 
+    public List<Supplier> BySelectCus(String ubType,String ubKeyId , String supplier_id)throws Exception {
+        List<Supplier> list=null;
+        try{
+            list = supplierMapper.selectExample(ubType,ubKeyId,supplier_id);
+        }catch(Exception e){
+            JshException.readFail(logger, e);
+        }
+        return list;
+    }
+
     public List<Supplier> findBySelectSup()throws Exception {
         SupplierExample example = new SupplierExample();
         example.createCriteria().andTypeLike("供应商").andEnabledEqualTo(true)
@@ -410,5 +420,10 @@ public class SupplierService {
         deleteTotal= batchDeleteSupplierByIds(ids);
         return deleteTotal;
 
+    }
+
+    public int addSupplier(Supplier supplier){
+
+        return supplierMapper.addSupplier(supplier);
     }
 }

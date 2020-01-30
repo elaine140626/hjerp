@@ -72,6 +72,45 @@ public class SupplierController {
     }
 
     /**
+     * 查找集团，公司，项目信息-下拉框
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/findSelect")
+    public JSONArray BySelectCus(@RequestParam(value = "UBType", required = false)  String ubType,
+                                     @RequestParam(value = "UBKeyId", required = false)  String ubKeyId,
+                                     @RequestParam(value = "supplier_id",required = false) String supplier_id,
+                                     HttpServletRequest request) {
+        JSONArray arr = new JSONArray();
+        try {
+            List<Supplier> supplierList = supplierService.BySelectCus(ubType,ubKeyId,supplier_id);
+            JSONArray dataArray = new JSONArray();
+            if (null != supplierList) {
+                boolean customerFlag = systemConfigService.getCustomerFlag();
+                for (Supplier supplier : supplierList) {
+                    JSONObject item = new JSONObject();
+                    //勾选判断1
+                    Boolean flag = false;
+                    try {
+                        flag = userBusinessService.checkIsUserBusinessExist(ubType, ubKeyId,"");
+                    } catch (DataAccessException e) {
+                        logger.error(">>>>>>>>>>>>>>>>>查询用户对应的客户：存在异常！");
+                    }
+                    if (!customerFlag || flag) {
+                        item.put("id", supplier.getId());
+                        item.put("supplier", supplier.getSupplier()); //客户名称
+                        dataArray.add(item);
+                    }
+                }
+            }
+            arr = dataArray;
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+        return arr;
+    }
+
+    /**
      * 查找客户信息-下拉框
      * @param request
      * @return
@@ -91,7 +130,7 @@ public class SupplierController {
                     //勾选判断1
                     Boolean flag = false;
                     try {
-                        flag = userBusinessService.checkIsUserBusinessExist(ubType, ubKeyId, "[" + supplier.getId().toString() + "]");
+                        flag = userBusinessService.checkIsUserBusinessExist(ubType, ubKeyId,"[" + supplier.getId().toString() + "]");
                     } catch (DataAccessException e) {
                         logger.error(">>>>>>>>>>>>>>>>>查询用户对应的客户：存在异常！");
                     }
@@ -305,7 +344,7 @@ public class SupplierController {
                                         HttpServletRequest request, HttpServletResponse response) {
         try {
             List<Supplier> dataList = supplierService.findByAll(supplier, type, phonenum, telephone, description);
-            String[] names = {"名称", "类型", "联系人", "电话", "电子邮箱", "预收款", "期初应收", "期初应付", "备注", "传真", "手机", "地址", "纳税人识别号", "开户行", "账号", "税率", "状态"};
+            String[] names = {"名称", "类型", "联系人", "电话", "电子邮箱", "预收款", "备注", "手机", "地址", "纳税人识别号", "开户行", "账号", "税率", "状态"};
             String title = type+"信息报表";
             List<String[]> objects = new ArrayList<String[]>();
             if (null != dataList) {
@@ -341,7 +380,7 @@ public class SupplierController {
     @GetMapping(value = "/exportExample")
     public void exportExcel(@RequestParam("type") String type,HttpServletRequest request, HttpServletResponse response) {
         try {
-            String[] names = {"名称", "类型", "联系人", "电话", "电子邮箱", "预收款", "期初应收", "期初应付", "备注", "传真", "手机", "地址", "纳税人识别号", "开户行", "账号", "税率", "状态"};
+            String[] names = {"名称", "类型", "联系人", "电话", "电子邮箱", "预收款",  "备注","集团",  "手机", "地址", "纳税人识别号", "开户行", "账号", "税率", "状态"};
             String title = type+"导入模板";
             List<String[]> objects = new ArrayList<String[]>();
             String[] objs = new String[17];
@@ -438,10 +477,10 @@ public class SupplierController {
                 s.setEmail(ExcelUtils.getContent(src, i, 4));
                 s.setAdvancein(parseBigDecimalEx(ExcelUtils.getContent(src, i, 5)));
                 s.setBeginneedget(parseBigDecimalEx(ExcelUtils.getContent(src, i, 6)));
-                s.setBeginneedpay(parseBigDecimalEx(ExcelUtils.getContent(src, i, 7)));
-                s.setDescription(ExcelUtils.getContent(src, i, 8));
+//                s.setBeginneedpay(parseBigDecimalEx(ExcelUtils.getContent(src, i, 7)));
+//                s.setDescription(ExcelUtils.getContent(src, i, 8));
                 s.setFax(ExcelUtils.getContent(src, i, 9));
-                s.setTelephone(ExcelUtils.getContent(src, i, 10));
+//                s.setTelephone(ExcelUtils.getContent(src, i, 10));
                 s.setAddress(ExcelUtils.getContent(src, i, 11));
                 s.setTaxnum(ExcelUtils.getContent(src, i, 12));
                 s.setBankname(ExcelUtils.getContent(src, i, 13));
@@ -502,5 +541,14 @@ public class SupplierController {
         }
         return result;
     }
+
+//    @RequestMapping(value = "/addSupplier")
+//    public int addSupplier(@PathVariable("apiName") String apiName
+//                        ,@RequestParam("info") String beanJson){
+//        Supplier supplier = new Supplier();
+//        supplier.setSupplier(apiName);
+//        int i = supplierService.addSupplier(supplier);
+//        return i;
+//    }
 
 }
