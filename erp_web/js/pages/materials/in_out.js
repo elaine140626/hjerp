@@ -725,7 +725,7 @@ function initTableData(){
 			organNameTitle = "供应商名称";
 		}
 		else if(listTitle == "销售订单列表" || listTitle == "销售退货列表" || listTitle == "销售出库列表" || listTitle == "其它出库列表"){
-			organNameTitle = "客户名称";
+			organNameTitle = "项目名称";
 		}
 		else if(listTitle == "零售出库列表" || listTitle == "零售退货列表"){
 			organNameTitle = "会员卡号";
@@ -1777,7 +1777,8 @@ function initTableData_material(type,TotalPrice){
 					}
 				}
 			},
-			{ title: '身份证识别器编号',field: 'ognizer_number',editor:'validatebox',width:110},
+
+			//{ title: '身份证识别器编号',field: 'ognizer_number',editor:'validatebox',width:110},
 			// { title: '合同是否签定',field: 'contract',editor:'validatebox',width:75,
 			// 	formatter: function (value, row, index) {
 			// 		return row.DepotName;
