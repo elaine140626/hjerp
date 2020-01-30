@@ -83,6 +83,7 @@ public class SupplierController {
                                      HttpServletRequest request) {
         JSONArray arr = new JSONArray();
         try {
+            ubKeyId = "63";
             List<Supplier> supplierList = supplierService.BySelectCus(ubType,ubKeyId,supplier_id);
             JSONArray dataArray = new JSONArray();
             if (null != supplierList) {
