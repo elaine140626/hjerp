@@ -1,6 +1,6 @@
 {{#if supplierSelectGroup}}
 <div id="supplierDlgGroup" style="width:580px;padding:10px 20px" buttons="#supplierDlgBtn">
-	<form id="supplierFM">
+	<form id="supplierFMGroup">
 		<table>
 			<tr>
 				<td style="width: 80px;height: 20px">集团名称</td>
@@ -34,7 +34,7 @@
 	</form>
 </div>
 <div id="supplierDlgBtn">
-	<a href="javascript:void(0)" id="saveSupplier" onclick="javascript:$('#supplierDlgGroup').dialog('close')">保存</a>
+	<a href="javascript:void(0)" id="saveSupplierGroup" onclick="javascript:$('#supplierDlgGroup').dialog('close')">保存</a>
 	<a href="javascript:void(0)" id="cancelSupplier" onclick="javascript:$('#supplierDlgGroup').dialog('close')">取消</a>
 </div>
 {{/if}}

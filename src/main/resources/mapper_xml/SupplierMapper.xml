@@ -176,7 +176,7 @@
       AllNeedGet, AllNeedPay, fax, 
       telephone, address, taxNum, 
       bankName, accountNumber, taxRate, 
-      tenant_id, delete_Flag,supply,method)
+      tenant_id, delete_Flag,supply,method,supplier_id)
     values (#{id,jdbcType=BIGINT}, #{supplier,jdbcType=VARCHAR}, #{contacts,jdbcType=VARCHAR},
       #{phonenum,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
       #{isystem,jdbcType=TINYINT}, #{type,jdbcType=VARCHAR}, #{enabled,jdbcType=BIT}, 
@@ -184,7 +184,7 @@
       #{allneedget,jdbcType=DECIMAL}, #{allneedpay,jdbcType=DECIMAL}, #{fax,jdbcType=VARCHAR}, 
       #{telephone,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{taxnum,jdbcType=VARCHAR}, 
       #{bankname,jdbcType=VARCHAR}, #{accountnumber,jdbcType=VARCHAR}, #{taxrate,jdbcType=DECIMAL}, 
-      #{tenantId,jdbcType=BIGINT}, #{deleteFlag,jdbcType=VARCHAR}, #{supply,jdbcType=VARCHAR},#{method,jdbcType=VARCHAR})
+      #{tenantId,jdbcType=BIGINT}, #{deleteFlag,jdbcType=VARCHAR}, #{supply,jdbcType=VARCHAR},#{method,jdbcType=VARCHAR},#{sipplier_id,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.jsh.erp.datasource.entities.Supplier">
     <!--
@@ -268,9 +268,9 @@
       <if test="method != null">
         method,
       </if>
-      <!--<if test="supplier_id != 0">-->
-        <!--supplier_id,-->
-      <!--</if>-->
+      <if test="supplier_id != null">
+        supplier_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -348,9 +348,9 @@
       <if test="method != null">
         #{method,jdbcType=VARCHAR},
       </if>
-      <!--<if test="supplier_id != 0">-->
-        <!--#{supplier_id.jdbcType=Int},-->
-      <!--</if>-->
+      <if test="supplier_id != null">
+        #{supplier_id,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.jsh.erp.datasource.entities.SupplierExample" resultType="java.lang.Integer">
@@ -583,4 +583,18 @@
       delete_Flag = #{deleteFlag,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+
+  <insert id="updateByPrimaryKey" parameterType="com.jsh.erp.datasource.entities.Supplier">
+    insert into jsh_supplier (supplier, contacts,
+      phonenum, `type`, enabled,
+      taxNum, bankName, accountNumber,
+      supplier_id, delete_Flag
+      )
+    values (#{supplier,jdbcType=BIGINT}, #{contacts,jdbcType=VARCHAR}, #{phonenum,jdbcType=BIGINT},
+      #{type,jdbcType=BIGINT}, #{enabled,jdbcType=DECIMAL}, #{taxNum,jdbcType=DECIMAL},
+      #{bankName,jdbcType=BIGINT}, #{accountNumber,jdbcType=VARCHAR}, #{supplier_id,jdbcType=VARCHAR},
+       #{deleteFlag,jdbcType=VARCHAR}
+      )
+  </insert>
 </mapper>

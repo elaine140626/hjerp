@@ -616,6 +616,9 @@
                                     body.find("[field='Stock']").find(input).val(0).attr("data-stock", 0); //加载库存数据
                                 }
                                 body.find("[field='Stock']").find(input).prop("readonly", "readonly"); //设置库存数据为只读
+                                // body.find("[field='UnitPrice']").find(input).prop("readonly", "readonly"); //设置单价数据为只读
+                                // body.find("[field='Stock']").find(input).prop("readonly", "readonly"); //设置库存数据为只读
+                                // body.find("[field='Stock']").find(input).prop("readonly", "readonly"); //设置库存数据为只读
                             }
 						},
 						error:function() {
@@ -2010,7 +2013,6 @@
 				/**
 				 * 零售出库，单独操作
 				 * */
-				debugger
 				if(url.indexOf("/depotHead/addDepotHeadAndDetail")>=0){
 					addDepotHeadAndDetail(url,infoStr);
 				} else if(url.indexOf("/depotHead/updateDepotHeadAndDetail")>=0){
