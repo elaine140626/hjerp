@@ -213,7 +213,7 @@ function initSystemData_depot(){
 						} else {
 							if(depot.isDefault){
 								defDepotId =  depot.id;
-							}
+							} 
 							depotString = depotString + depot.id + ",";
 						}
 						if(depot.type === 1){
