@@ -724,7 +724,7 @@ function initTableData(){
 			organNameTitle = "供应商名称";
 		}
 		else if(listTitle == "销售订单列表" || listTitle == "销售退货列表" || listTitle == "销售出库列表" || listTitle == "其它出库列表"){
-			organNameTitle = "客户名称";
+			organNameTitle = "项目名称";
 		}
 		else if(listTitle == "零售出库列表" || listTitle == "零售退货列表"){
 			organNameTitle = "会员卡号";
@@ -1697,45 +1697,10 @@ function initTableData_material(type,TotalPrice){
 											body.find("[field='TaxLastMoney']").find(input).val((detailPrice*(1+taxRate/100)).toFixed(2));  //价税合计
 											body.find("[field='conyract_money']").find(input).val((detailPrice*(1+taxRate/100)).toFixed(2));  //合同价格
 											if (res.data[0].name == "套餐一") {
-												body.find("[field='machine_type']").find(input).val("人脸识别考勤机");
+												body.find("[field='machine_type']").find(input).val("平板");
 												body.find("[field='machine_number']").find(input).val("2");
 												body.find("[field='gate_type']").find(input).val("三辊闸");
 												body.find("[field='gate_number']").find(input).val("1");
-											} else if (res.data[0].name == "套餐二") {
-												body.find("[field='machine_type']").find(input).val("人脸识别考勤机");
-												body.find("[field='machine_number']").find(input).val("2");
-												body.find("[field='gate_type']").find(input).val("三辊闸");
-												body.find("[field='gate_number']").find(input).val("12");
-											} else if (res.data[0].name == "套餐三") {
-												body.find("[field='machine_type']").find(input).val("人脸识别考勤机");
-												body.find("[field='machine_number']").find(input).val("4");
-												body.find("[field='gate_type']").find(input).val("三辊闸");
-												body.find("[field='gate_number']").find(input).val("2");
-											} else if (res.data[0].name == "套餐四") {
-												body.find("[field='machine_type']").find(input).val("人脸识别考勤机");
-												body.find("[field='machine_number']").find(input).val("3");
-												body.find("[field='gate_type']").find(input).val("三辊闸");
-												body.find("[field='gate_number']").find(input).val("3");
-											} else if (res.data[0].name == "套餐五") {
-												body.find("[field='machine_type']").find(input).val("人脸识别考勤机");
-												body.find("[field='machine_number']").find(input).val("6");
-												body.find("[field='gate_type']").find(input).val("三辊闸");
-												body.find("[field='gate_number']").find(input).val("3");
-											} else if (res.data[0].name == "产品一") {
-												body.find("[field='machine_type']").find(input).val("移动式人脸识别考勤平板");
-												body.find("[field='machine_number']").find(input).val("1");
-												body.find("[field='gate_type']").find(input).val("三辊闸");
-												body.find("[field='gate_number']").find(input).val("0");
-											} else if (res.data[0].name == "产品二") {
-												body.find("[field='machine_type']").find(input).val("人脸识别考勤机（固定式）");
-												body.find("[field='machine_number']").find(input).val("1");
-												body.find("[field='gate_type']").find(input).val("三辊闸");
-												body.find("[field='gate_number']").find(input).val("0");
-											} else if (res.data[0].name == "产品三") {
-												body.find("[field='machine_type']").find(input).val("人证信息采集设备");
-												body.find("[field='machine_number']").find(input).val("1");
-												body.find("[field='gate_type']").find(input).val("三辊闸");
-												body.find("[field='gate_number']").find(input).val("0");
 											}
 											statisticsFun(body,detailPrice,1,footer,taxRate);
 
@@ -1756,7 +1721,7 @@ function initTableData_material(type,TotalPrice){
 					}
 				}
 			},
-			// { title: '库存',field: 'Stock',editor:'validatebox',width:70},
+			{ title: '库存',field: 'Stock',editor:'validatebox',width:70},
 			{ title: anotherDepotHeadName, field: 'AnotherDepotId',editor:'validatebox',hidden:isShowAnotherDepot,width:90,
 				formatter: function (value, row, index) {
 					return row.AnotherDepotName;
@@ -1786,32 +1751,33 @@ function initTableData_material(type,TotalPrice){
 			// { title: '公司/施工单位名称',field: 'company',editor:'validatebox',width:75},
 			// { title: '工程地址',field: 'project_address',editor:'validatebox',width:75},
 			// { title: '工程名称',field: 'project_name',editor:'validatebox',width:75},
-			// { title: '身份证识别器',field: 'card_ognizer',editor:'validatebox',width:85,
-			// 	formatter: function (value, row, index) {
-			// 		return row.DepotName;
-			// 	},
-			// 	editor: {
-			// 		type: 'combobox',
-			// 		options: {
-			// 			valueField: 'id',
-			// 			textField: depotTextField,
-			// 			method: 'get',
-			// 			url: '/depot/findDepot',
-			// 			onSelect:function(rec){
-			// 				var depotId = rec.id;
-			// 				body =$("#depotHeadFM .datagrid-body");
-			// 				footer =$("#depotHeadFM .datagrid-footer");
-			// 				input = ".datagrid-editable-input";
-			// 				var mId = body.find("[field='MaterialId']").find(".combo-value").val();
-			// 				if(mId){
-			// 					var type = "select"; //type 类型：点击 click，选择 select
-			// 					findStockNumById(depotId, mId, monthTime, body, input, ratioDepot, type);
-			// 				}
-			// 			}
-			// 		}
-			// 	}
-			// },
-			// { title: '身份证识别器编号',field: 'ognizer_number',editor:'validatebox',width:110},
+			{ title: '身份证识别器',field: 'card_ognizer',editor:'validatebox',width:85,
+				formatter: function (value, row, index) {
+					return row.DepotName;
+				},
+				editor: {
+					type: 'combobox',
+					options: {
+						valueField: 'id',
+						textField: depotTextField,
+						method: 'get',
+						url: '/depot/findDepot',
+						onSelect:function(rec){
+							var depotId = rec.id;
+							body =$("#depotHeadFM .datagrid-body");
+							footer =$("#depotHeadFM .datagrid-footer");
+							input = ".datagrid-editable-input";
+							var mId = body.find("[field='MaterialId']").find(".combo-value").val();
+							if(mId){
+								var type = "select"; //type 类型：点击 click，选择 select
+								findStockNumById(depotId, mId, monthTime, body, input, ratioDepot, type);
+							}
+						}
+					}
+				}
+			},
+
+			//{ title: '身份证识别器编号',field: 'ognizer_number',editor:'validatebox',width:110},
 			// { title: '合同是否签定',field: 'contract',editor:'validatebox',width:75,
 			// 	formatter: function (value, row, index) {
 			// 		return row.DepotName;
@@ -2647,32 +2613,12 @@ function editDepotHead(index, res){
 //查看信息
 function showDepotHead(index){
 	var res = $("#tableData").datagrid("getRows")[index];
-	debugger;
 	var manyAccountMoney = 0; //多账户合计-零售
 	$("#ProjectIdShow").text(res.projectName);
 	$("#NumberShow").text(res.number);
 	$("#OperTimeShow").text(res.opertimeStr);
 	$('#OrganIdShow').text(res.organName);
 	$("#HandsPersonIdShow").text(res.handsPersonName);
-	$("#projectName").text(res.project_name);
-	// $("#HandsPersonIdShow").text(res.handsPersonName);
-	// $("#HandsPersonIdShow").text(res.handsPersonName);
-	// $("#HandsPersonIdShow").text(res.handsPersonName);
-	// $("#HandsPersonIdShow").text(res.handsPersonName);
-	// $("#HandsPersonIdShow").text(res.handsPersonName);
-	// $("#HandsPersonIdShow").text(res.handsPersonName);
-	// $("#HandsPersonIdShow").text(res.handsPersonName);
-	// $("#HandsPersonIdShow").text(res.handsPersonName);
-	// $("#HandsPersonIdShow").text(res.handsPersonName);
-	// $("#HandsPersonIdShow").text(res.handsPersonName);
-	// $("#HandsPersonIdShow").text(res.handsPersonName);
-	// $("#HandsPersonIdShow").text(res.handsPersonName);
-	// $("#HandsPersonIdShow").text(res.handsPersonName);
-	// $("#HandsPersonIdShow").text(res.handsPersonName);
-	// $("#HandsPersonIdShow").text(res.handsPersonName);
-	// $("#HandsPersonIdShow").text(res.handsPersonName);
-	// $("#HandsPersonIdShow").text(res.handsPersonName);
-	// $("#HandsPersonIdShow").text(res.handsPersonName);
 	if(res.accountName){
 		$("#AccountIdShow").text(res.accountName); //结算账户
 	} else {
@@ -3469,10 +3415,10 @@ function bindSupplierGroup() {
 		}
 
 		//保存供应商信息
-		$("#saveGroup").off("click").on("click",function() {
-			// if(validateForm("supplierFM")) {
-			// 	return;
-			// }
+		$("#saveSupplier").off("click").on("click",function() {
+			if(validateForm("supplierFM")) {
+				return;
+			}
 			if(checkSupplierName()){
 				return;
 			}
@@ -3491,7 +3437,7 @@ function bindSupplierGroup() {
 				return;
 			}
 			var url = '/supplier/add';
-			var supObj = $("#supplierFMGroup").serializeObject();
+			var supObj = $("#supplierFM").serializeObject();
 			supObj.type = supplierType;
 			supObj.enabled = 1;
 			$.ajax({
@@ -3560,21 +3506,21 @@ function bindSupplierCompany() {
 		}
 
 		//保存供应商信息
-		$("#saveCompany").off("click").on("click",function() {
-			// if(validateForm("supplierFM")) {
-			// 	return;
-			// }
+		$("#saveSupplier").off("click").on("click",function() {
+			if(validateForm("supplierFM")) {
+				return;
+			}
 			if(checkSupplierName()){
 				return;
 			}
 			var reg = /^([0-9])+$/;
 			var phonenum = $.trim($("#phonenum").val());
-			if(phonenum.length>0 && !reg.test(phonenum))
-			{
-				$.messager.alert('提示','电话号码只能是数字','info');
-				$("#phonenum").val("").focus();
-				return;
-			}
+			// if(phonenum.length>0 && !reg.test(phonenum))
+			// {
+			//     $.messager.alert('提示','电话号码只能是数字','info');
+			//     $("#phonenum").val("").focus();
+			//     return;
+			// }
 			var beginNeedGet = $.trim($("#BeginNeedGet").val());
 			var beginNeedPay = $.trim($("#BeginNeedPay").val());
 			if(beginNeedGet && beginNeedPay) {
@@ -3582,7 +3528,7 @@ function bindSupplierCompany() {
 				return;
 			}
 			var url = '/supplier/add';
-			var supObj = $("#supplierFMCompany").serializeObject();
+			var supObj = $("#supplierFM").serializeObject();
 			supObj.type = supplierType;
 			supObj.enabled = 1;
 			$.ajax({
@@ -3652,9 +3598,9 @@ function bindSupplierEvent() {
 
 		//保存供应商信息
 		$("#saveSupplier").off("click").on("click",function() {
-			// if(validateForm("supplierFM")) {
-			// 	return;
-			// }
+			if(validateForm("supplierFM")) {
+				return;
+			}
 			if(checkSupplierName()){
 				return;
 			}
