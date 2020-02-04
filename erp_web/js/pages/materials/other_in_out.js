@@ -1879,7 +1879,6 @@ function bindEvent(){
                 //         return;
                 //     }
                 // }
-
             }
             else if(listTitle === "采购入库列表"){
                 if(!$('#OrganId').combobox('getValue')){
