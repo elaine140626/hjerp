@@ -1,12 +1,15 @@
+var supplierID = null;
     //初始化界面
     $(function() {
         var listTitle = ""; //单据标题
         var listType = ""; //类型
         var listTypeEn = ""; //英文类型
+        var supplierID = null;
         getType();
         initTableData();
         ininPager();
         bindEvent();
+        initSupplier();//初始化供应商
     });
 
     //根据名称获取类型
@@ -88,6 +91,14 @@
                     iconCls:'icon-add',
                     handler:function() {
                         addSuppler();
+                    }
+                },'-',
+                {
+                    id:'addSupplierMaterial',
+                    text:'增加供应商产品',
+                    iconCls:'icon-add',
+                    handler:function() {
+                        addSupplerMaterial();
                     }
                 },'-',
                 {
@@ -433,6 +444,85 @@
         url = '/supplier/add';
     }
 
+
+    //新增材料框
+    function addSupplerMaterial() {
+        $('#supplierMaterialDlg').dialog('open').dialog('setTitle','<img src="/js/easyui-1.3.5/themes/icons/edit_add.png"/>&nbsp;增加'+listType+"信息");
+        $('#supplierMaterialFM').form('clear');
+    }
+
+
+    //保存材料信息
+    //  $("#saveSupplierMaterial").off("click").on("click", function () {
+     function  AddMaterial() {
+         debugger
+         if (validateForm("supplierMaterialFM")) {
+             return;
+         }
+         // if (checkSupplierName()) {
+         //     return;
+         // }
+         if ($('#organId').length) {
+             organId = $('#organId').combobox('getValue');
+         }
+         var kong = null;
+         var obj = $("#supplierMaterialFM").serializeObject();
+         $.ajax({
+             url: "/material/addSupplierMaterial",
+             type: "post",
+             dataType: "json",
+             data: {
+                 info: JSON.stringify(obj)
+             },
+             success: function (res) {
+                 if (res > 0) {
+                     $('#supplierMaterialDlg').dialog('close');
+                     alert("提示：", "新增供应商产品成功",res);
+                 } else {
+                     alert("提示：", "新增供应商产品失败",res);
+                 }
+             },
+             error:function(){}
+         });
+     }
+
+
+    //初始化供应商、客户、散户信息
+    function initSupplier(){
+        $('#organId').combobox({
+            url: "/supplier/findBySelect_sup",
+            valueField:'id',
+            textField:'supplier',
+            filter: function(q, row){
+                var opts = $(this).combobox('options');
+                return row[opts.textField].indexOf(q) >-1;
+            },
+            onSelect: function(rec){
+                    $.ajax({
+                        type:"get",
+                        url: "/supplier/findById",
+                        data: {
+                            supplierId: rec.id
+                        },
+                        dataType: "json",
+                        success: function (res){
+                            if(res && res.code === 200) {
+                                if(res.data && res.data[0]){
+                                    thisTaxRate = res.data[0].taxRate; //设置当前的税率
+                                }
+                            }
+                        },
+                        error:function(){
+
+                        }
+                    });
+                }
+        });
+    }
+
+
+
+
     function bindEvent(){
         //导入excel对话框
         $('#importExcelDlg').dialog({
@@ -468,6 +558,7 @@
         });
         //保存信息
         $("#saveSupplier").off("click").on("click", function () {
+            debugger
             if(validateForm("supplierFM")) {
                 return;
             }
@@ -511,6 +602,7 @@
 
         //初始化键盘enter事件
         $(document).keydown(function(event) {
+            debugger
             //兼容 IE和firefox 事件
             var e = window.event || event;
             var k = e.keyCode||e.which||e.charCode;
@@ -521,6 +613,7 @@
                 || obj.id=="email" || obj.id=="description" ))
             {
                 $("#saveSupplier").click();
+
             }
 
             //搜索按钮添加快捷键

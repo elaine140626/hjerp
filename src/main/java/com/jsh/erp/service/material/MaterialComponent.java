@@ -55,6 +55,12 @@ public class MaterialComponent implements ICommonQuery {
         return materialService.insertMaterial(beanJson, request);
     }
 
+
+    public int insert2(String beanJson, HttpServletRequest request) throws Exception{
+        return materialService.addSupplierMaterial(beanJson, request);
+    }
+
+
     @Override
     public int update(String beanJson, Long id)throws Exception {
         return materialService.updateMaterial(beanJson, id);
@@ -74,5 +80,8 @@ public class MaterialComponent implements ICommonQuery {
     public int checkIsNameExist(Long id, String name)throws Exception {
         return materialService.checkIsNameExist(id, name);
     }
+
+
+
 
 }

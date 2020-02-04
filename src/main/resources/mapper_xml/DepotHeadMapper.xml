@@ -704,4 +704,8 @@
       delete_Flag = #{deleteFlag,jdbcType=VARCHAR}
     where Id = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="findDefaultNumber" resultMap="BaseResultMap">
+      SELECT DefaultNumber FROM jsh_depothead
+  </select>
 </mapper>

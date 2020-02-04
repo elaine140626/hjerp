@@ -37,6 +37,8 @@ public interface MaterialMapperEx {
 
     List<MaterialVo4Unit> findBySelect();
 
+    List<MaterialVo4Unit> findMaterial(@Param("id") Long id);
+
     int updatePriceNullByPrimaryKey(Long id);
 
     int updateUnitIdNullByPrimaryKey(Long id);

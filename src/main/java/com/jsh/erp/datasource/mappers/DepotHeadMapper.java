@@ -96,4 +96,11 @@ public interface DepotHeadMapper {
     int updateByPrimaryKey(DepotHead record);
 
 
+    /**
+     * 查询订单表的单据编号
+     * @return
+     */
+    List<DepotHead> findDefaultNumber();
+
+
 }

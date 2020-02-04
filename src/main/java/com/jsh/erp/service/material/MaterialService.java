@@ -15,6 +15,7 @@ import com.jsh.erp.service.log.LogService;
 import com.jsh.erp.service.user.UserService;
 import com.jsh.erp.utils.BaseResponseInfo;
 import com.jsh.erp.utils.StringUtil;
+import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -262,6 +263,17 @@ public class MaterialService {
         return list;
     }
 
+
+    public List<MaterialVo4Unit> findMaterial(Long id)throws Exception{
+        List<MaterialVo4Unit> list =null;
+        try{
+            list=  materialMapperEx.findMaterial(id);
+        }catch(Exception e){
+            JshException.readFail(logger, e);
+        }
+        return list;
+    }
+
     public List<Material> findByOrder()throws Exception{
         MaterialExample example = new MaterialExample();
         example.createCriteria().andDeleteFlagNotEqualTo(BusinessConstants.DELETE_FLAG_DELETED);
@@ -380,5 +392,23 @@ public class MaterialService {
         deleteTotal= batchDeleteMaterialByIds(ids);
         return deleteTotal;
 
+    }
+
+
+    @Transactional(value = "transactionManager", rollbackFor = Exception.class)
+    public int addSupplierMaterial(String beanJson, HttpServletRequest request)throws Exception {
+        Material material = JSONObject.parseObject(beanJson, Material.class);
+        material.setDeleteFlag("1");
+        material.setEnabled(true);
+        material.setPresetpriceone(material.getRetailprice());
+        material.setPresetpricetwo(material.getRetailprice());
+        material.setLowprice(material.getRetailprice());
+        int result =0;
+        try{
+            result= materialMapper.insertSelective(material);
+        }catch(Exception e){
+            JshException.writeFail(logger, e);
+        }
+        return result;
     }
 }
