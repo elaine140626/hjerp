@@ -15,6 +15,7 @@ import com.jsh.erp.exception.BusinessRunTimeException;
 import com.jsh.erp.exception.JshException;
 import com.jsh.erp.service.log.LogService;
 import com.jsh.erp.service.material.MaterialService;
+import com.jsh.erp.service.msg.MsgService;
 import com.jsh.erp.service.serialNumber.SerialNumberService;
 import com.jsh.erp.service.user.UserService;
 import com.jsh.erp.utils.QueryUtils;
@@ -42,6 +43,8 @@ public class DepotItemService {
     private final static String IN = "in";
     private final static String OUT = "out";
 
+    @Resource
+    private MsgService msgService;
     @Resource
     private DepotItemMapper depotItemMapper;
     @Resource
@@ -508,6 +511,10 @@ public class DepotItemService {
                     }
                     this.insertDepotItemWithObj(depotItem);
                 }
+                Msg msg = new Msg();
+                msg.setMsgTitle(String.valueOf(headerId));
+                msg.setId(headerId);
+                msgService.updateMsgContract(msg);
             }
 
             if (null != updatedJson) {

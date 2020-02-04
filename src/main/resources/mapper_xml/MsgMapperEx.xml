@@ -36,7 +36,8 @@
     </update>
 
     <insert id="insertSelectiveByTask" parameterType="com.jsh.erp.datasource.entities.Msg">
-        insert into jsh_msg(msg_title,msg_content,create_time,type,status,tenant_id)
+        insert into jsh_msg(
+        msg_title,msg_content,create_time,type,status,tenant_id)
         values (
             #{msgTitle,jdbcType=VARCHAR},
             #{msgContent,jdbcType=VARCHAR},

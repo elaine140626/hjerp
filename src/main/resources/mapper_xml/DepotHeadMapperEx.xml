@@ -29,6 +29,10 @@
         <result column="OperTime" jdbcType="VARCHAR" property="OperTime" />
         <result column="NewType" jdbcType="VARCHAR" property="NewType" />
     </resultMap>
+    <resultMap id="Materidl" type="com.jsh.erp.datasource.entities.Material">
+        <result column="id" jdbcType="BIGINT" property="id"></result>
+        <result column="name" jdbcType="VARCHAR" property="name"></result>
+    </resultMap>
 
     <resultMap id="ResultInOutMaterialCount" type="com.jsh.erp.datasource.vo.DepotHeadVo4InOutMCount">
         <result column="MaterialId" jdbcType="BIGINT" property="MaterialId" />
@@ -121,8 +125,8 @@
         select max(Id) as Id from jsh_depothead
     </select>
 
-    <select id="findMaterialsListByHeaderId" resultType="java.lang.String">
-        select group_concat(concat(jsh_material.`Name`,' ',jsh_material.Model)) as mName
+    <select id="findMaterialsListByHeaderId" parameterType="com.jsh.erp.datasource.entities.Material" resultMap="Materidl">
+        select jsh_material.`Name` as name
         from jsh_depotitem
         inner join jsh_material on jsh_depotitem.MaterialId = jsh_material.Id and ifnull(jsh_material.delete_Flag,'0') !='1'
         where jsh_depotitem.HeaderId = ${id}

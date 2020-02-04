@@ -3,24 +3,33 @@ package com.jsh.erp.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.jsh.erp.constants.ExceptionConstants;
 import com.jsh.erp.datasource.entities.DepotHead;
+import com.jsh.erp.datasource.entities.Msg;
+import com.jsh.erp.datasource.mappers.MsgMapperEx;
 import com.jsh.erp.datasource.vo.*;
 import com.jsh.erp.exception.BusinessParamCheckingException;
 import com.jsh.erp.service.depotHead.DepotHeadService;
+import com.jsh.erp.service.msg.MsgService;
 import com.jsh.erp.utils.BaseResponseInfo;
 import com.jsh.erp.utils.ErpInfo;
 import com.jsh.erp.utils.Tools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.annotation.Resource;
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.jsh.erp.utils.ResponseJsonUtil.returnJson;
 import static com.jsh.erp.utils.Tools.getNow3;
@@ -35,6 +44,8 @@ public class DepotHeadController {
 
     @Resource
     private DepotHeadService depotHeadService;
+    @Resource
+    private MsgService msgService;
 
     /**
      * 批量设置状态-审核或者反审核
@@ -604,5 +615,50 @@ public class DepotHeadController {
             res.data = "获取数据失败";
         }
         return res;
+    }
+
+
+    /**
+     * 施工图上传图片
+     * @param file
+     * @param request
+     * @param response
+     * @throws IOException
+     */
+    @RequestMapping("/uploadContract")
+    public void uploadFile_project_img_infos(@RequestParam(value = "file", required = false) MultipartFile file,
+                                             HttpServletRequest request, HttpServletResponse response) throws IOException{
+        //文件上传路径
+        String path = request.getServletContext().getRealPath("/img/");
+        //上传文件名
+        String filename = file.getOriginalFilename();
+        File filepath = new File(path, filename);
+        Msg msg = new Msg();
+        msg.setMsgContent(path);
+
+        String names[]=filename.split("\\.");
+        if(names.length>=1){
+            String uuid = UUID.randomUUID().toString();
+            filename=uuid+"."+names[names.length-1];
+            msg.setMsgTitle(filename);
+        }
+        //判断路径是否存在
+        if(!filepath.getParentFile().exists()){
+            filepath.getParentFile().mkdirs();
+        }
+        try{
+            file.transferTo(new File(path+File.separator+filename));
+            //获取图片高度宽度
+            File picFile=new File(path+File.separator+filename);
+            BufferedImage bi= ImageIO.read(picFile);
+            int hg=bi.getHeight();
+            int wd=bi.getWidth();
+            JSONObject jo=new JSONObject();
+            //用&
+            response.getWriter().write(filename+"&"+wd+"&"+hg);
+            msgService.insertSelectiveMsg(msg);
+        }catch(IOException e){
+            response.getWriter().write("error");
+        }
     }
 }
