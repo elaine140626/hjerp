@@ -1,5 +1,6 @@
 package com.jsh.erp.service.depotHead;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jsh.erp.constants.BusinessConstants;
 import com.jsh.erp.constants.ExceptionConstants;
@@ -524,6 +525,8 @@ public class DepotHeadService {
         logService.insertLog(BusinessConstants.LOG_INTERFACE_NAME_DEPOT_HEAD,
                 new StringBuffer(BusinessConstants.LOG_OPERATION_TYPE_EDIT).append(id).toString(),
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+        JSONArray jsonArray = JSONArray.parseArray(updated);
+        JSONObject temp = jsonArray.getJSONObject(0);
         /**更新单据主表信息*/
         DepotHead depotHead = JSONObject.parseObject(beanJson, DepotHead.class);
         //判断用户是否已经登录过，登录过不再处理
@@ -531,8 +534,17 @@ public class DepotHeadService {
         User userInfo=userService.getCurrentUser();
         depotHead.setOperpersonname(userInfo==null?null:userInfo.getUsername());
         depotHead.setOpertime(new Timestamp(System.currentTimeMillis()));
+
+        DepotItem depotItem = new DepotItem();
+        depotItem.setId(id);
+        depotItem.setGate(temp.getString("gate"));
+        depotItem.setInstall(temp.getString("install"));
+        depotItem.setInvoice(temp.getString("invoice"));
+        depotItem.setPayment(temp.getString("payment"));
+        depotItem.setContract(temp.getString("contract"));
         try{
             depotHeadMapperEx.updatedepotHead(depotHead);
+            depotItemMapperEx.updatedepotItem(depotItem);
         }catch(Exception e){
             JshException.writeFail(logger, e);
         }

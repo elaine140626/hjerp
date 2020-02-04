@@ -182,6 +182,22 @@ public class DepotController {
         }
         return arr;
     }
+
+    @RequestMapping(value = "/findDepots")
+    public JSONArray findDepots() throws Exception{
+        JSONArray arr = new JSONArray();
+        try {
+            for (int i = 0 ;i<=99;i++){
+                JSONObject item = new JSONObject();
+                item.put("id", i);
+                item.put("depotName", i);
+                arr.add(item);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return arr;
+    }
     /**
      * create by: cjl
      * description:

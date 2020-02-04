@@ -629,9 +629,11 @@ function findStockNumById(depotId, mId, monthTime, body, input, ratio, type){
                                         loadRatio = ratio;
                                     }
                                 }
+
                                 thisStock = (thisStock / loadRatio).toFixed(0);
                                 body.find("[field='Stock']").find(input).val(thisStock).attr("data-stock", thisStock);
                                 // body.find("[field='Stock']").find(input).val(thisStock).attr("data-stock", res.data.page[0].thisSum); //加载库存数据
+
                             }
                             else {
                                 body.find("[field='Stock']").find(input).val(0).attr("data-stock", 0); //加载库存数据
@@ -2020,6 +2022,7 @@ function bindEvent(){
                         }
                     }
                 }
+
             }
             var getAccountID = $.trim($("#AccountId").val());
             if($("#AccountId").val() === "many"){ //多账户
@@ -2064,6 +2067,7 @@ function bindEvent(){
             }
         }
     });
+
 
     //打印单据
     $("#printDepotHeadShow").off("click").on("click",function(){

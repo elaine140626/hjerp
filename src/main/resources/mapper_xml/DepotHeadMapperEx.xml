@@ -351,9 +351,10 @@
         #{changeamount,jdbcType=DECIMAL}, #{allocationprojectid,jdbcType=BIGINT}, #{totalprice,jdbcType=DECIMAL},
         #{paytype,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{salesman,jdbcType=VARCHAR},
         #{accountidlist,jdbcType=VARCHAR}, #{accountmoneylist,jdbcType=VARCHAR}, #{discount,jdbcType=DECIMAL},
-        #{discountmoney,jdbcType=DECIMAL}, #{discountlastmoney,jdbcType=DECIMAL}, #{othermoney,jdbcType=DECIMAL},
+
         #{othermoneylist,jdbcType=VARCHAR}, #{othermoneyitem,jdbcType=VARCHAR}, #{accountday,jdbcType=INTEGER},
         #{status,jdbcType=VARCHAR}, #{linknumber,jdbcType=VARCHAR},#{gatenumber,jdbcType=VARCHAR})
+      
     </insert>
     <update id="updatedepotHead" parameterType="com.jsh.erp.datasource.entities.DepotHead">
         update jsh_depothead
@@ -438,6 +439,21 @@
             </if>
             <if test="linknumber != null">
                 LinkNumber = #{linknumber,jdbcType=VARCHAR},
+            </if>
+            <if test="gate != null">
+                gate = #{gate,jdbcType=VARCHAR},
+            </if>
+            <if test="install != null">
+                install = #{install,jdbcType=VARCHAR},
+            </if>
+            <if test="invoice != null">
+                invoice = #{invoice,jdbcType=VARCHAR},
+            </if>
+            <if test="payment != null">
+                payment = #{payment,jdbcType=VARCHAR},
+            </if>
+            <if test="contract != null">
+                contract = #{contract,jdbcType=VARCHAR},
             </if>
         </set>
         where Id = #{id,jdbcType=BIGINT}
