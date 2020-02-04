@@ -330,6 +330,11 @@ public class DepotItemService {
                     depotItem.setHeaderid(headerId);
                     depotItem.setMaterialid(tempInsertedJson.getLong("MaterialId"));
                     depotItem.setMunit(tempInsertedJson.getString("Unit"));
+                    depotItem.setGate("否");
+                    depotItem.setInstall("否");
+                    depotItem.setInvoice("否");
+                    depotItem.setPayment("否");
+                    depotItem.setContract("否");
                     if (!StringUtil.isEmpty(tempInsertedJson.get("OperNumber").toString())) {
                         depotItem.setOpernumber(tempInsertedJson.getBigDecimal("OperNumber"));
                         try {

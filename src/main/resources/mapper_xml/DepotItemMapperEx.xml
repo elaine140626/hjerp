@@ -279,6 +279,28 @@
         )
     </update>
 
+    <update id="updatedepotItem" parameterType="com.jsh.erp.datasource.entities.DepotItem">
+        update jsh_depotitem
+        <set>
+            <if test="gate != null">
+                gate = #{gate,jdbcType=VARCHAR},
+            </if>
+            <if test="install != null">
+                install = #{install,jdbcType=VARCHAR},
+            </if>
+            <if test="invoice != null">
+                invoice = #{invoice,jdbcType=VARCHAR},
+            </if>
+            <if test="payment != null">
+                payment = #{payment,jdbcType=VARCHAR},
+            </if>
+            <if test="contract != null">
+                contract = #{contract,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where HeaderId = #{id,jdbcType=BIGINT}
+    </update>
+
     <update id="batchDeleteDepotItemByIds">
         update jsh_depotitem
         set delete_Flag='1'

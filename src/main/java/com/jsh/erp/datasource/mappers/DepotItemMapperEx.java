@@ -101,4 +101,6 @@ public interface DepotItemMapperEx {
     int findStockWarningCountTotal( @Param("pid") Integer pid);
 
     BigDecimal getFinishNumber(@Param("mid") Long mid, @Param("linkNumber") String linkNumber);
+
+    void updatedepotItem(DepotItem depotItem);
 }
