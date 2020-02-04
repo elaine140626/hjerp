@@ -137,6 +137,60 @@
        onclick="javascript:$('#supplierDlg').dialog('close')">取消</a>
 </div>
 
+
+<div id="supplierMaterialDlg" class="easyui-dialog" style="width:580px;padding:10px 20px"
+     closed="true" buttons="#Material-buttons" modal="true" collapsible="false" closable="true">
+    <form id="supplierMaterialFM">
+        <table>
+            <tr>
+                <td style="width:70px;">供应商：</td>
+                <td style="padding:5px;width:170px;">
+                    <div class="org-list">
+                        <input id="organId" name="organId" style="width:160px;"/>
+                    </div>
+                </td>
+                <td>产品名称:</td>
+                <td style="padding:1px">
+                    <input name="name" id="name" class="easyui-validatebox" style="width: 160px;height: 20px"/>
+                </td>
+            </tr>
+            <tr>
+                <td >型号:</td>
+                <td style="padding:1px">
+                <input name="model" id="model" class="easyui-validatebox" style="width: 160px;height: 20px"/>
+                </td>
+                <td>规格:</td>
+                <td style="padding:1px">
+                <input name="unit" id="unit" class="easyui-validatebox" style="width: 160px;height: 20px"/>
+                </td>
+            </tr>
+            <tr>
+                <td >单价:</td>
+                <td style="padding:1px">
+                    <input name="retailprice" id="retailprice" class="easyui-validatebox" style="width: 160px;height: 20px"/>
+                </td>
+                <td>备注:</td>
+                <td style="padding:1px">
+                    <input name="remark" id="remark" class="easyui-validatebox" style="width: 160px;height: 20px"/>
+                </td>
+                <td style="display: none">
+                    <input name="categoryid" id="categoryid" ><input name="enabled" id="enabled" /><input name="packing" id="packing">
+                    <input name="safetystock" id="safetystock"> <input name="standard" id="standard"> <input name="lowprice" id="lowprice">
+                    <input name="color" id="color"><input name="presetpriceone" id="presetpriceone"> <input name="presetpricetwo" id="presetpricetwo">
+                    <input name="unitid" id="unitid"><input name="firstoutunit" id="firstoutunit"> <input name="firstinunit" id="firstinunit">
+                    <input name="pricestrategy" id="pricestrategy"><input name="otherfield1" id="otherfield1"><input name="otherfield2" id="otherfield2">
+                    <input name="otherfield3" id="otherfield3"><input name="deleteFlag" id="deleteFlag"><input name="barcode" id="barcode">
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div id="Material-buttons">
+    <a href="javascript:void(0)" id="saveSupplierMaterial" class="easyui-linkbutton" onclick="AddMaterial()">保存</a>
+    <a href="javascript:void(0)" id="cancelSupplierMaterial" class="easyui-linkbutton" iconCls="icon-cancel"
+       onclick="javascript:$('#supplierMaterialDlg').dialog('close')">取消</a>
+</div>
+
 <!-- 导入excel表格 -->
 <div id="importExcelDlg" style="padding:10px 20px">
     <form id="importExcelFM" method="post" enctype="multipart/form-data"

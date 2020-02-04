@@ -1,5 +1,6 @@
 package com.jsh.erp.service.depotHead;
 
+import com.jsh.erp.datasource.entities.DepotHead;
 import com.jsh.erp.service.ICommonQuery;
 import com.jsh.erp.utils.Constants;
 import com.jsh.erp.utils.QueryUtils;
@@ -76,6 +77,15 @@ public class DepotHeadComponent implements ICommonQuery {
     @Override
     public int checkIsNameExist(Long id, String name)throws Exception {
         return depotHeadService.checkIsNameExist(id, name);
+    }
+
+
+    /**
+     * 查询订单表的单据编号
+     * @return
+     */
+    public List<DepotHead> findDefaultNumber()throws Exception{
+        return depotHeadService.findDefaultNumber();
     }
 
 }

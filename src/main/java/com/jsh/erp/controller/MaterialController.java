@@ -7,10 +7,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.jsh.erp.constants.BusinessConstants;
 import com.jsh.erp.constants.ExceptionConstants;
-import com.jsh.erp.datasource.entities.Material;
-import com.jsh.erp.datasource.entities.MaterialCategory;
-import com.jsh.erp.datasource.entities.MaterialVo4Unit;
-import com.jsh.erp.datasource.entities.SystemConfig;
+import com.jsh.erp.datasource.entities.*;
 import com.jsh.erp.exception.BusinessRunTimeException;
 import com.jsh.erp.service.material.MaterialService;
 import com.jsh.erp.service.materialCategory.MaterialCategoryService;
@@ -119,10 +116,10 @@ public class MaterialController {
             String[] mpArr = mpList.split(",");
             //存放数据json数组
             if (null != dataList) {
-                for (MaterialVo4Unit material : dataList) {
-                    JSONObject item = new JSONObject();
-                    item.put("Id", material.getId());
-                    String ratio; //比例
+                    for (MaterialVo4Unit material : dataList) {
+                        JSONObject item = new JSONObject();
+                        item.put("Id", material.getId());
+                        String ratio; //比例
                     if (material.getUnitid() == null || material.getUnitid().equals("")) {
                         ratio = "";
                     } else {
@@ -446,4 +443,56 @@ public class MaterialController {
         }
         return result;
     }
+
+
+    /**
+     * 新增供应商下的产品信息
+     * @param beanJson
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/addSupplierMaterial")
+    public Object addSupplierMaterial(@RequestParam("info") String beanJson, HttpServletRequest request) throws  Exception{
+        int result = 0;
+        try{
+            result = materialService.addSupplierMaterial(beanJson,request);
+            if (result > 0){
+                return result;
+            }
+        }catch (Exception  e){
+            e.printStackTrace();
+            result = 0;
+        }
+        return result;
+    }
+
+
+    /**
+     * 查找供应商产品信息-下拉框
+     * @param mpList
+     * @param request
+     * @param id
+     * @return
+     */
+    @GetMapping(value = "/findMaterial")
+    public JSONArray findMaterial(@RequestParam("mpList") String mpList, @RequestParam(value = "Id", required = false) Long id,
+                                  HttpServletRequest request){
+        JSONArray dataArray = new JSONArray();
+        try{
+            List<MaterialVo4Unit> dataList = materialService.findMaterial(id);
+            if (null != dataList) {
+                for (MaterialVo4Unit materialVo4Unit : dataList) {
+                    JSONObject item = new JSONObject();
+                    item.put("Id", materialVo4Unit.getId());
+                    item.put("MaterialName", materialVo4Unit.getName());
+                    dataArray.add(item);
+                }}
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return dataArray;
+    }
+
+
 }

@@ -8,6 +8,8 @@ public class DepotHeadVo4InDetail {
 
     private String Number;
 
+    private String GateNumber;
+
     private String MName;
 
     private String Model;
@@ -34,6 +36,14 @@ public class DepotHeadVo4InDetail {
 
     public void setNumber(String number) {
         Number = number;
+    }
+
+    public String getGateNumber() {
+        return GateNumber;
+    }
+
+    public void setGateNumber(String gatenumber) {
+        GateNumber = gatenumber;
     }
 
     public String getMName() {

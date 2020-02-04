@@ -1,8 +1,10 @@
 package com.jsh.erp.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jsh.erp.constants.ExceptionConstants;
 import com.jsh.erp.datasource.entities.DepotHead;
+import com.jsh.erp.datasource.entities.Person;
 import com.jsh.erp.datasource.vo.*;
 import com.jsh.erp.exception.BusinessParamCheckingException;
 import com.jsh.erp.service.depotHead.DepotHeadService;
@@ -604,5 +606,30 @@ public class DepotHeadController {
             res.data = "获取数据失败";
         }
         return res;
+    }
+
+
+    /**
+     * 查找订单表的单据编号下拉框
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/findDefaultNumber")
+    public JSONArray getPersonByNumType(HttpServletRequest request)throws Exception {
+        JSONArray dataArray = new JSONArray();
+        try {
+            List<DepotHead> depotHeadsList = depotHeadService.findDefaultNumber();
+            if (null != depotHeadsList) {
+                for (DepotHead depotHead : depotHeadsList) {
+                    JSONObject item = new JSONObject();
+                    item.put("id", depotHead.getId());
+                    item.put("defaultnumber", depotHead.getDefaultnumber());
+                    dataArray.add(item);
+                }
+            }
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+        return dataArray;
     }
 }

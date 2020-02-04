@@ -4,10 +4,12 @@
     <resultMap extends="com.jsh.erp.datasource.mappers.MaterialMapper.BaseResultMap" id="ResultMapList" type="com.jsh.erp.datasource.entities.MaterialVo4Unit">
         <result column="unitName" jdbcType="VARCHAR" property="unitName" />
         <result column="categoryName" jdbcType="VARCHAR" property="categoryName" />
+        <result column="organId" jdbcType="VARCHAR" property="organId" />
     </resultMap>
 
     <resultMap extends="com.jsh.erp.datasource.mappers.MaterialMapper.BaseResultMap" id="ResultAndUnitMap" type="com.jsh.erp.datasource.entities.MaterialVo4Unit">
         <result column="UName" jdbcType="VARCHAR" property="unitName" />
+        <result column="organId" jdbcType="VARCHAR" property="organId" />
     </resultMap>
 
     <select id="selectByConditionMaterial" parameterType="com.jsh.erp.datasource.entities.MaterialExample" resultMap="ResultMapList">
@@ -69,9 +71,19 @@
         select m.*,u.UName from jsh_material m
         left join jsh_unit u on m.UnitId=u.id and ifnull(u.delete_Flag,'0') !='1'
         where m.enabled=1
-        and ifnull(m.delete_Flag,'0') !='1'
+        and ifnull(m.delete_Flag,'0') !='1' and organId IS  null
         ORDER BY Id desc
     </select>
+
+    <select id="findMaterial" parameterType="com.jsh.erp.datasource.entities.MaterialExample" resultMap="ResultAndUnitMap">
+        select m.*,u.UName from jsh_material m
+                                    left join jsh_unit u on m.UnitId=u.id and ifnull(u.delete_Flag,'0') !='1'
+        where m.enabled=1
+            and ifnull(m.delete_Flag,'0') !='1' and organId = #{id}
+        ORDER BY Id desc
+    </select>
+
+
 
     <update id="updatePriceNullByPrimaryKey" parameterType="java.lang.Long">
         update jsh_material

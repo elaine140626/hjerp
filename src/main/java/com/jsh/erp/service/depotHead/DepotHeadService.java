@@ -637,4 +637,17 @@ public class DepotHeadService {
     public List<DepotHeadQuarter> getSaleByYear(String type, String subType, Long tenantId, String year) {
         return depotHeadMapperEx.getSaleByYear(type, subType, tenantId,year);
     }
+
+
+    public List<DepotHead>  findDefaultNumber()throws Exception {
+        List<DepotHead> result=null;
+        try{
+            result=depotHeadMapper.findDefaultNumber();
+        }catch(Exception e){
+            JshException.readFail(logger, e);
+        }
+        return result;
+    }
+
+
 }
