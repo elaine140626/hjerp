@@ -288,7 +288,7 @@ function initSupplier(){
 //初始化订单号
 function initOderNumber() {
     debugger
-    $('#DefaultNumber').combobox({
+    $('#GateNumber').combobox({
         url: "/depotHead/findDefaultNumber",
         valueField: 'id',
         textField: 'defaultnumber',
@@ -795,6 +795,7 @@ function initTableData_material(type,TotalPrice){
                                 $(".OrderZi").show();
                                 $(".OrderKuan").show();
                             }else{
+                                $('#GateNumber').combobox("setValue","");
                                 $(".OrderZi").hide();
                                 $(".OrderKuan").hide();
                             }
@@ -1870,15 +1871,14 @@ function bindEvent(){
                     $.messager.alert('提示','请选择供应商！','warning');
                     return;
                 }
-                if($(".OrderKuan").is(":hidden")){
-
-                }else{
-                    if(!$('#DefaultNumber').combobox('getValue')){
-                        $.messager.alert('提示','请填写订单编号！','warning');
-                        return;
-                    }
-                }
-
+                // if($(".OrderKuan").is(":hidden")){
+                //
+                // }else{
+                //     if($('#GateNumber').combobox('getValue') != null || $('#GateNumber').combobox('getValue') != ""){
+                //         $.messager.alert('提示','请选择订单编号！','warning');
+                //         return;
+                //     }
+                // }
             }
             else if(listTitle === "采购入库列表"){
                 if(!$('#OrganId').combobox('getValue')){
@@ -2036,7 +2036,7 @@ function bindEvent(){
                 DefaultNumber: $.trim($("#Number").attr("data-defaultNumber")),//初始编号
                 Number: $.trim($("#Number").val()),
                 LinkNumber: $.trim($("#LinkNumber").val()),
-                GateNumber:$.trim($("#DefaultNumber").val()),
+                GateNumber:$.trim($("#GateNumber").val()),
                 OperTime: $("#OperTime").val(),
                 OrganId: OrganId,
                 HandsPersonId: $.trim($("#HandsPersonId").val()),
