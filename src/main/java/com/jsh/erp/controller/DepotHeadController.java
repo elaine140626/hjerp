@@ -1,10 +1,12 @@
 package com.jsh.erp.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jsh.erp.constants.ExceptionConstants;
 import com.jsh.erp.datasource.entities.DepotHead;
 import com.jsh.erp.datasource.entities.Msg;
 import com.jsh.erp.datasource.mappers.MsgMapperEx;
+import com.jsh.erp.datasource.entities.Person;
 import com.jsh.erp.datasource.vo.*;
 import com.jsh.erp.exception.BusinessParamCheckingException;
 import com.jsh.erp.service.depotHead.DepotHeadService;
@@ -619,7 +621,7 @@ public class DepotHeadController {
 
 
     /**
-     * 施工图上传图片
+     * 上传图片
      * @param file
      * @param request
      * @param response
@@ -627,7 +629,7 @@ public class DepotHeadController {
      */
     @RequestMapping("/uploadContract")
     public void uploadFile_project_img_infos(@RequestParam(value = "file", required = false) MultipartFile file,
-                                             HttpServletRequest request, HttpServletResponse response) throws IOException{
+                                             HttpServletRequest request, HttpServletResponse response) throws IOException {
         //文件上传路径
         String path = request.getServletContext().getRealPath("/img/");
         //上传文件名
@@ -636,29 +638,52 @@ public class DepotHeadController {
         Msg msg = new Msg();
         msg.setMsgContent(path);
 
-        String names[]=filename.split("\\.");
-        if(names.length>=1){
+        String names[] = filename.split("\\.");
+        if (names.length >= 1) {
             String uuid = UUID.randomUUID().toString();
-            filename=uuid+"."+names[names.length-1];
+            filename = uuid + "." + names[names.length - 1];
             msg.setMsgTitle(filename);
         }
         //判断路径是否存在
-        if(!filepath.getParentFile().exists()){
+        if (!filepath.getParentFile().exists()) {
             filepath.getParentFile().mkdirs();
         }
-        try{
-            file.transferTo(new File(path+File.separator+filename));
+        try {
+            file.transferTo(new File(path + File.separator + filename));
             //获取图片高度宽度
-            File picFile=new File(path+File.separator+filename);
-            BufferedImage bi= ImageIO.read(picFile);
-            int hg=bi.getHeight();
-            int wd=bi.getWidth();
-            JSONObject jo=new JSONObject();
+            File picFile = new File(path + File.separator + filename);
+            BufferedImage bi = ImageIO.read(picFile);
+            int hg = bi.getHeight();
+            int wd = bi.getWidth();
+            JSONObject jo = new JSONObject();
             //用&
-            response.getWriter().write(filename+"&"+wd+"&"+hg);
+            response.getWriter().write(filename + "&" + wd + "&" + hg);
             msgService.insertSelectiveMsg(msg);
-        }catch(IOException e){
+        } catch (IOException e) {
             response.getWriter().write("error");
         }
+    }
+     /*
+     * 查找订单表的单据编号下拉框
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/findDefaultNumber")
+    public JSONArray getPersonByNumType(HttpServletRequest request)throws Exception {
+        JSONArray dataArray = new JSONArray();
+        try {
+            List<DepotHead> depotHeadsList = depotHeadService.findDefaultNumber();
+            if (null != depotHeadsList) {
+                for (DepotHead depotHead : depotHeadsList) {
+                    JSONObject item = new JSONObject();
+                    item.put("id", depotHead.getId());
+                    item.put("defaultnumber", depotHead.getDefaultnumber());
+                    dataArray.add(item);
+                }
+            }
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+        return dataArray;
     }
 }
