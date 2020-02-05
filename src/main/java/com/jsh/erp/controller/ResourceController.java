@@ -54,7 +54,7 @@ public class ResourceController {
                         @RequestParam(value = Constants.SEARCH, required = false) String search,
                         HttpServletRequest request)throws Exception {
         Map<String, String> parameterMap = ParamUtils.requestToMap(request);
-        System.out.println(search);
+//        System.out.println(search);
         if (search!=null) {
             if (search.equals("{\"type\":\"其它\",\"subType\":\"销售订单\",\"state\":\"\",\"number\":\"\",\"beginTime\":\"\",\"endTime\":\"\",\"materialParam\":\"\",\"depotIds\":\"|\"}") ||
                     search.equals("{\"type\":\"出库\",\"subType\":\"销售\",\"state\":\"\",\"number\":\"\",\"beginTime\":\"\",\"endTime\":\"\",\"materialParam\":\"\",\"depotIds\":\"20,21,22\"}") ||

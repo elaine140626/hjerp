@@ -88,6 +88,12 @@
     -->
     id, msg_title, msg_content, create_time, type, status, tenant_id, delete_Flag
   </sql>
+  <select id="selectMsgContract" resultMap="BaseResultMap" parameterType="com.jsh.erp.datasource.entities.MsgExample" >
+    select * from jsh_msg where tenant_id = 63 and head_id != 0
+  </select>
+  <select id="selectMsgContractId" resultMap="BaseResultMap" parameterType="com.jsh.erp.datasource.entities.Msg" >
+    select * from jsh_msg where tenant_id = 63 and head_id = #{msgTitle,jdbcType=VARCHAR}
+  </select>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jsh.erp.datasource.entities.MsgExample" >
     <!--
       WARNING - @mbggenerated
@@ -269,6 +275,13 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
+  <update id="updateMsgContract" parameterType="com.jsh.erp.datasource.entities.Msg" >
+    update jsh_msg
+    <set >
+        head_id = #{msgTitle,jdbcType=VARCHAR},
+    </set>
+    where head_id = 0
+  </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.jsh.erp.datasource.entities.Msg" >
     <!--
       WARNING - @mbggenerated
@@ -315,4 +328,8 @@
       delete_Flag = #{deleteFlag,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
+  <insert id="insertSelectiveMsg" parameterType="com.jsh.erp.datasource.entities.Msg">
+    insert into jsh_msg(msg_title,msg_content)
+    values (#{msgTitle,jdbcType=VARCHAR},#{msgContent,jdbcType=VARCHAR})
+  </insert>
 </mapper>

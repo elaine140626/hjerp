@@ -30,6 +30,10 @@
         <result column="NewType" jdbcType="VARCHAR" property="NewType" />
         <result column="GateNumber" jdbcType="VARCHAR" property="GateNumber" />
     </resultMap>
+    <resultMap id="Materidl" type="com.jsh.erp.datasource.entities.Material">
+        <result column="id" jdbcType="BIGINT" property="id"></result>
+        <result column="name" jdbcType="VARCHAR" property="name"></result>
+    </resultMap>
 
     <resultMap id="ResultInOutMaterialCount" type="com.jsh.erp.datasource.vo.DepotHeadVo4InOutMCount">
         <result column="MaterialId" jdbcType="BIGINT" property="MaterialId" />
@@ -122,8 +126,8 @@
         select max(Id) as Id from jsh_depothead
     </select>
 
-    <select id="findMaterialsListByHeaderId" resultType="java.lang.String">
-        select group_concat(concat(jsh_material.`Name`,' ',jsh_material.Model)) as mName
+    <select id="findMaterialsListByHeaderId" parameterType="com.jsh.erp.datasource.entities.Material" resultMap="Materidl">
+        select jsh_material.`Name` as name
         from jsh_depotitem
         inner join jsh_material on jsh_depotitem.MaterialId = jsh_material.Id and ifnull(jsh_material.delete_Flag,'0') !='1'
         where jsh_depotitem.HeaderId = ${id}
@@ -343,7 +347,7 @@
         AccountIdList, AccountMoneyList, Discount,
         DiscountMoney, DiscountLastMoney, OtherMoney,
         OtherMoneyList, OtherMoneyItem, AccountDay,
-        Status, LinkNumber,GateNumber)
+        Status, LinkNumber,gatenumber)
         values (#{type,jdbcType=VARCHAR}, #{subtype,jdbcType=VARCHAR},
         #{projectid,jdbcType=BIGINT}, #{defaultnumber,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR},
         #{operpersonname,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, #{opertime,jdbcType=TIMESTAMP},
@@ -351,9 +355,9 @@
         #{changeamount,jdbcType=DECIMAL}, #{allocationprojectid,jdbcType=BIGINT}, #{totalprice,jdbcType=DECIMAL},
         #{paytype,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{salesman,jdbcType=VARCHAR},
         #{accountidlist,jdbcType=VARCHAR}, #{accountmoneylist,jdbcType=VARCHAR}, #{discount,jdbcType=DECIMAL},
-
-        #{othermoneylist,jdbcType=VARCHAR}, #{othermoneyitem,jdbcType=VARCHAR}, #{accountday,jdbcType=INTEGER},
-        #{status,jdbcType=VARCHAR}, #{linknumber,jdbcType=VARCHAR},#{gatenumber,jdbcType=VARCHAR})
+        #{discountmoney,jdbcType=DECIMAL}, #{discountlastmoney,jdbcType=DECIMAL}, #{othermoney,jdbcType=DECIMAL},
+        #{othermoneylist,jdbcType=VARCHAR}, #{othermoneyitem,jdbcType=VARCHAR}, #{accountday,jdbcType=VARCHAR},
+        #{status,jdbcType=VARCHAR}, #{linknumber,jdbcType=VARCHAR}, #{gatenumber,jdbcType=VARCHAR})
       
     </insert>
     <update id="updatedepotHead" parameterType="com.jsh.erp.datasource.entities.DepotHead">
