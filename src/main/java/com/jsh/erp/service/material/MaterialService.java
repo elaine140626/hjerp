@@ -398,7 +398,7 @@ public class MaterialService {
     @Transactional(value = "transactionManager", rollbackFor = Exception.class)
     public int addSupplierMaterial(String beanJson, HttpServletRequest request)throws Exception {
         Material material = JSONObject.parseObject(beanJson, Material.class);
-        material.setDeleteFlag("1");
+        material.setDeleteFlag("0");
         material.setEnabled(true);
         material.setPresetpriceone(material.getRetailprice());
         material.setPresetpricetwo(material.getRetailprice());
