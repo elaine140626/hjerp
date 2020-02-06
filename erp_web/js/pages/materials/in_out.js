@@ -572,10 +572,18 @@ function initTableData(){
 						},
 						{
 							id:'export',
-							text:'导出',
+							text:'导出详情',
 							iconCls:'icon-ok',
 							handler:function() {
 								exportDepotItem();
+							}
+						},
+						{
+							id:'export',
+							text:'导出所有合同附件',
+							iconCls:'icon-ok',
+							handler:function() {
+								exportMSG();
 							}
 						}
 					)
@@ -676,7 +684,7 @@ function initTableData(){
 						str += '<img title="编辑" src="/js/easyui-1.3.5/themes/icons/pencil.png" style="cursor: pointer;" onclick="editDepotHead(\'' + index + '\');"/>&nbsp;&nbsp;&nbsp;';
 						str += '<img title="删除" src="/js/easyui-1.3.5/themes/icons/edit_remove.png" style="cursor: pointer;" onclick="deleteDepotHead('+ rec.id +',' + orgId +',' + rec.totalprice+',' + rec.status + ');"/>';
 						if(isShowSkip) {
-							str += '&nbsp;&nbsp;&nbsp;<img title="' + opTitle + '" src="/js/easyui-1.3.5/themes/icons/redo.png" style="cursor: pointer;" onclick="skipDepotHead(\'' + index + '\');"/>';
+							str += '&nbsp;&nbsp;&nbsp;<img title="导出合同附件" src="/js/easyui-1.3.5/themes/icons/redo.png" style="cursor: pointer;" onclick="exportMSGDAN(\'' + index + '\');"/>';
 						}
 						return str;
 					}
@@ -950,9 +958,9 @@ function initTableData(){
 						str += '<img title="查看" src="/js/easyui-1.3.5/themes/icons/list.png" style="cursor: pointer;" onclick="showDepotHead(\'' + index + '\');"/>&nbsp;&nbsp;&nbsp;';
 						str += '<img title="编辑" src="/js/easyui-1.3.5/themes/icons/pencil.png" style="cursor: pointer;" onclick="editDepotHead(\'' + index + '\');"/>&nbsp;&nbsp;&nbsp;';
 						// str += '<img title="删除" src="/js/easyui-1.3.5/themes/icons/edit_remove.png" style="cursor: pointer;" onclick="deleteDepotHead('+ rec.id +',' + orgId +',' + rec.totalprice+',' + rec.status + ');"/>';
-						// if(isShowSkip) {
-						// 	str += '&nbsp;&nbsp;&nbsp;<img title="' + opTitle + '" src="/js/easyui-1.3.5/themes/icons/redo.png" style="cursor: pointer;" onclick="skipDepotHead(\'' + index + '\');"/>';
-						// }
+						if(isShowSkip) {
+							str += '&nbsp;&nbsp;&nbsp;<img title="导出合同附件" src="/js/easyui-1.3.5/themes/icons/redo.png" style="cursor: pointer;" onclick="exportMSGDAN(\'' + index + '\');"/>';
+						}
 						return str;
 					}
 				},
@@ -1084,10 +1092,6 @@ function initTableData(){
 						var orgId = rec.organid? rec.organid:0;
 						str += '<img title="查看" src="/js/easyui-1.3.5/themes/icons/list.png" style="cursor: pointer;" onclick="showDepotHead(\'' + index + '\');"/>&nbsp;&nbsp;&nbsp;';
 						str += '<img title="编辑" src="/js/easyui-1.3.5/themes/icons/pencil.png" style="cursor: pointer;" onclick="editDepotHead(\'' + index + '\');"/>&nbsp;&nbsp;&nbsp;';
-						// str += '<img title="删除" src="/js/easyui-1.3.5/themes/icons/edit_remove.png" style="cursor: pointer;" onclick="deleteDepotHead('+ rec.id +',' + orgId +',' + rec.totalprice+',' + rec.status + ');"/>';
-						if(isShowSkip) {
-							str += '&nbsp;&nbsp;&nbsp;<img title="' + opTitle + '" src="/js/easyui-1.3.5/themes/icons/redo.png" style="cursor: pointer;" onclick="skipDepotHead(\'' + index + '\');"/>';
-						}
 						return str;
 					}
 				},
@@ -4091,6 +4095,21 @@ function exportDepotItem() {
 	//要导出的json数据
 	window.location.href="/depotItem/exportDepotItemExcel";
 }
+//导出所有合同附件
+function exportMSG() {
+	//要导出的json数据
+	window.location.href = "/msg/download.do";
+}
+//导出单个订单合同附件
+function exportMSGDAN(index,res) {
+	//要导出的json数据
+	debugger
+	if(!res) {
+		res = $("#tableData").datagrid("getRows")[index];
+	}
+	var ids = res.id;
+	window.location.href = "/msg/downloadMsg?id="+ids;
+}
 
 
 //生成单据编号
@@ -4212,6 +4231,7 @@ function addDepotHead(){
 }
 //编辑信息
 function editDepotHead(index, res){
+	debugger
 	if(!res) {
 		res = $("#tableData").datagrid("getRows")[index];
 	}
@@ -5794,6 +5814,46 @@ function updateDepotHeadAndDetail(url,infoStr,preTotalPrice){
 		error:function() {
 			$.messager.alert('提示','保存信息异常，请稍后再试！','error');
 			return;
+		}
+	});
+}
+//点击选择文件
+function showFiles(){
+	$("#myuploadFile").click();
+}
+
+//上传文件
+function submitfile(e){
+	var value=$("#myuploadFile").val();
+	var types=value.split('.');
+	if(types[1]!='png'&&types[1]!='PNG'&&types[1]!='jpg'&&types[1]!='JPG'){
+		alert('请上传图片');
+		return ;
+	}
+	console.log(e)//e就是你获取的file对象
+	// var formData = $("#fileform").serializeObject();
+	var formData = new FormData();
+	formData.append('file', e.target.files[0])
+	$.ajax({
+		url: '/depotHead/uploadContract' ,
+		type: 'POST',
+		data: formData,
+		async: false,
+		cache: false,
+		contentType: false,
+		processData: false,
+		success: function (data) {
+			if(data=='error'){
+				alert("上传失败");
+			}else{
+				var values=data.split('&');
+				$("#showfile").attr('src','../images/'+values[0]);
+				$("#i_img_url").val(values[0]);
+				alert("宽度："+values[1]+"高度："+values[2]);
+			}
+		},
+		error: function (res) {
+			alert(res);
 		}
 	});
 }

@@ -226,4 +226,19 @@ public class MsgService {
                     ExceptionConstants.DATA_WRITE_FAIL_MSG);
         }
     }
+    public int insertSelectiveMsg(Msg msg){
+        return msgMapper.insertSelectiveMsg(msg);
+    }
+
+    public int updateMsgContract(Msg msg){
+        return msgMapper.updateMsgContract(msg);
+    }
+
+    public List<Msg> selectMsgContract(){
+        return msgMapper.selectMsgContract();
+    }
+
+    public List<Msg> selectMsgContractId(Msg msg){
+        return msgMapper.selectMsgContractId(msg);
+    }
 }

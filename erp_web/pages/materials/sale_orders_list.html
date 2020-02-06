@@ -90,12 +90,12 @@
                              style="cursor: pointer;" alt="添加项目" title="添加项目"/>
                     </div>
                 </td>
-<!--                <td>-->
-<!--                    <form id="uploadForm" enctype="multipart/form-data">-->
-<!--                        文件:<input type="file" name="file" multiple="multiple"/><br>-->
-<!--                    </form>-->
-<!--                    <button id="upload">上传文件</button>-->
-<!--                </td>-->
+                <td>
+                    <a class="col-md-2 btn btn-base " id="uploadfile" style="display:none;" onclick="showFiles()" ><span class="glyphicon glyphicon-upload btn-base-padding"></span>上传</a>
+                    <form enctype="multipart/form-data" style="display:none;" id="fileform" method="post" action="../uploadFile_project_img_infos.call">
+                        <input type="file" name="uploadify" value="" onchange="submitfile(event)" id="myuploadFile" accept="image/*">
+                    </form>
+                </td>
             </tr>
             <tr>
                 <td style="width:70px;">单据日期：</td>
@@ -229,24 +229,4 @@
     <a href="javascript:void(0)" id="cancelOtherMoneyDlg" class="easyui-linkbutton" iconCls="icon-cancel">取消</a>
 </div>
 <div id="supplier"></div>
-</body>
-<script type="text/javascript">
-    $(function () {
-        $("#upload").click(function () {
-            var formData = new FormData($('#uploadForm')[0]);
-            $.ajax({
-                type: 'post',
-                url: "http://192.168.1.101:8090/springbootdemo/file/uploadFiles",
-                data: formData,
-                cache: false,
-                processData: false,
-                contentType: false,
-            }).success(function (data) {
-                alert(data);
-            }).error(function () {
-                alert("上传失败");
-            });
-        });
-    });
-</script>
 </html>
