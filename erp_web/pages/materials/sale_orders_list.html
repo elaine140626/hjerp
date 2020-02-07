@@ -90,7 +90,7 @@
                              style="cursor: pointer;" alt="添加项目" title="添加项目"/>
                     </div>
                 </td>
-                <td>
+                <td id="fileformsMsg" style="display: none;">
                     <a class="col-md-2 btn btn-base " id="uploadfile" style="display:none;" onclick="showFiles()" ><span class="glyphicon glyphicon-upload btn-base-padding"></span>上传</a>
                     <form enctype="multipart/form-data" style="display:none;" id="fileform" method="post" action="../uploadFile_project_img_infos.call">
                         <input type="file" name="uploadify" value="" onchange="submitfile(event)" id="myuploadFile" accept="image/*">
@@ -130,6 +130,7 @@
         </table>
     </form>
 </div>
+
 <div id="dlg-buttons">
     <a href="javascript:void(0)" id="saveDepotHead" class="easyui-linkbutton" iconCls="icon-ok">保存</a>
     <a href="javascript:void(0)" id="cancelDepotHead" class="easyui-linkbutton" iconCls="icon-cancel"

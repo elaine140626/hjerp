@@ -4,9 +4,7 @@ import com.jsh.erp.datasource.entities.DepotHead;
 import com.jsh.erp.datasource.entities.Material;
 import com.jsh.erp.datasource.vo.*;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -40,8 +38,10 @@ public interface DepotHeadMapperEx {
 
     Long getMaxId();
 
-    List<Material> findMaterialsListByHeaderId(
+    String findMaterialsListByHeaderId(
             @Param("id") Long id);
+
+    List<Material> findMaterialsListByHeaderMsg(@Param("id") Long id);
 
     List<DepotHeadVo4InDetail> findByAll(
             @Param("beginTime") String beginTime,
@@ -145,7 +145,5 @@ public interface DepotHeadMapperEx {
             @Param("subType") String subType,
             @Param("tenantId") Long tenantId,
             @Param("year") String year);
-
-    void uploadContract(CommonsMultipartFile file) throws IOException;
 }
 

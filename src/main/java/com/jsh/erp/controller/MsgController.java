@@ -71,7 +71,7 @@ public class MsgController extends HttpServlet {
      * @return 成功下载文件，失败返回0
      * @throws java.io.IOException
      */
-    @RequestMapping("/download.do")
+    @RequestMapping("/downloadMsgkk")
     public void download(HttpServletRequest req,HttpServletResponse resp) {
         int res = 0;
         try {
@@ -86,7 +86,7 @@ public class MsgController extends HttpServlet {
                 //得到要下载的文件
                 File file = new File(path + "\\" + fileName);
                 if (!file.exists()) {
-                    req.setAttribute("message", "您要下载的资源不存在");
+                    req.setAttribute( "message", "您要下载的资源不存在");
                     req.getRequestDispatcher("/message.jsp").forward(req, resp);
                     return;
                 }

@@ -10,6 +10,11 @@
         <result column="AllocationProjectName" jdbcType="VARCHAR" property="allocationProjectName" />
     </resultMap>
 
+    <resultMap id="Materidl" type="com.jsh.erp.datasource.entities.Material">
+        <result column="id" jdbcType="BIGINT" property="id"></result>
+        <result column="name" jdbcType="VARCHAR" property="name"></result>
+    </resultMap>
+
     <resultMap  id="ResultWithOrderExMap" type="com.jsh.erp.datasource.vo.DepotHeadOrder">
         <result column="news" jdbcType="VARCHAR" property="news" />
         <result column="ings" jdbcType="VARCHAR" property="ings" />
@@ -29,10 +34,6 @@
         <result column="OperTime" jdbcType="VARCHAR" property="OperTime" />
         <result column="NewType" jdbcType="VARCHAR" property="NewType" />
         <result column="GateNumber" jdbcType="VARCHAR" property="GateNumber" />
-    </resultMap>
-    <resultMap id="Materidl" type="com.jsh.erp.datasource.entities.Material">
-        <result column="id" jdbcType="BIGINT" property="id"></result>
-        <result column="name" jdbcType="VARCHAR" property="name"></result>
     </resultMap>
 
     <resultMap id="ResultInOutMaterialCount" type="com.jsh.erp.datasource.vo.DepotHeadVo4InOutMCount">
@@ -83,7 +84,7 @@
             and (m.`Name` like '%${materialParam}%' or m.Model like '%${materialParam}%')
         </if>
         <!--<if test="depotIds != null">-->
-            <!--and di.DepotId in (${depotIds})-->
+        <!--and di.DepotId in (${depotIds})-->
         <!--</if>-->
         and ifnull(dh.delete_Flag,'0') !='1'
         order by dh.Id desc
@@ -117,7 +118,7 @@
             and (m.`Name` like '%${materialParam}%' or m.Model like '%${materialParam}%')
         </if>
         <!--<if test="depotIds != null">-->
-            <!--and di.DepotId in (${depotIds})-->
+        <!--and di.DepotId in (${depotIds})-->
         <!--</if>-->
         and ifnull(jsh_depothead.delete_Flag,'0') !='1') tb
     </select>
@@ -126,7 +127,7 @@
         select max(Id) as Id from jsh_depothead
     </select>
 
-    <select id="findMaterialsListByHeaderId" parameterType="com.jsh.erp.datasource.entities.Material" resultMap="Materidl">
+    <select id="findMaterialsListByHeaderMsg" parameterType="com.jsh.erp.datasource.entities.Material" resultMap="Materidl">
         select jsh_material.`Name` as name
         from jsh_depotitem
         inner join jsh_material on jsh_depotitem.MaterialId = jsh_material.Id and ifnull(jsh_material.delete_Flag,'0') !='1'
@@ -134,8 +135,16 @@
         and ifnull(jsh_depotitem.delete_Flag,'0') !='1'
     </select>
 
+    <select id="findMaterialsListByHeaderId" resultType="java.lang.String">
+        select group_concat(concat(jsh_material.`Name`,' ',jsh_material.Model)) as mName
+        from jsh_depotitem
+        inner join jsh_material on jsh_depotitem.MaterialId = jsh_material.Id and ifnull(jsh_material.delete_Flag,'0') !='1'
+        where jsh_depotitem.HeaderId = ${id}
+        and ifnull(jsh_depotitem.delete_Flag,'0') !='1'
+    </select>
+
     <select id="findByAll" parameterType="com.jsh.erp.datasource.entities.DepotItemExample" resultMap="ResultWithInfoExMap">
-        select dh.Number,m.`name` MName,m.Model,di.UnitPrice,di.OperNumber,di.AllPrice,s.supplier SName,d.dName DName,
+        select dh.GateNumber,dh.Number,m.`name` MName,m.Model,di.UnitPrice,di.OperNumber,di.AllPrice,s.supplier SName,d.dName DName,
         date_format(dh.OperTime, '%Y-%m-%d') OperTime, concat(dh.SubType,dh.Type) as NewType
         from jsh_depothead dh
         inner join jsh_depotitem di on di.HeaderId=dh.id and ifnull(di.delete_Flag,'0') !='1'
@@ -267,7 +276,7 @@
     </select>
 
     <select id="findStatementAccount" parameterType="com.jsh.erp.datasource.entities.DepotItemExample" resultMap="ResultStatementAccount">
-        select dh.Number,concat(dh.SubType,dh.Type) as type,dh.DiscountLastMoney,dh.ChangeAmount,s.supplier supplierName,
+        select dh.GateNumber,dh.Number,concat(dh.SubType,dh.Type) as type,dh.DiscountLastMoney,dh.ChangeAmount,s.supplier supplierName,
         date_format(dh.OperTime,'%Y-%m-%d %H:%i:%S') as oTime from jsh_depothead dh
         inner join jsh_supplier s on s.id=dh.OrganId and ifnull(s.delete_Flag,'0') !='1'
         where s.type='${supType}' and (dh.SubType!='其它' and dh.SubType!='采购订单' and dh.SubType!='销售订单')
@@ -295,23 +304,23 @@
     <select id="findStatementAccountCount" resultType="java.lang.Integer">
         select sum(a) from
         (
-            select count(1) a from jsh_depothead dh
-            inner join jsh_supplier s on s.id=dh.OrganId and ifnull(s.delete_Flag,'0') !='1'
-            where s.type='${supType}' and (dh.SubType!='其它' and dh.SubType!='采购订单' and dh.SubType!='销售订单')
-            and dh.OperTime >='${beginTime}' and dh.OperTime &lt;='${endTime}'
-            <if test="organId != null">
-                and dh.OrganId=${organId}
-            </if>
-            and ifnull(dh.delete_Flag,'0') !='1'
-            UNION ALL
-            select count(1) a from jsh_accounthead ah
-            inner join jsh_supplier s on s.id=ah.OrganId and ifnull(s.delete_Flag,'0') !='1'
-            where s.type='${supType}'
-            and ah.BillTime >='${beginTime}' and ah.BillTime &lt;='${endTime}'
-            <if test="organId != null">
-                and ah.OrganId=${organId}
-            </if>
-            and ifnull(ah.delete_Flag,'0') !='1'
+        select count(1) a from jsh_depothead dh
+        inner join jsh_supplier s on s.id=dh.OrganId and ifnull(s.delete_Flag,'0') !='1'
+        where s.type='${supType}' and (dh.SubType!='其它' and dh.SubType!='采购订单' and dh.SubType!='销售订单')
+        and dh.OperTime >='${beginTime}' and dh.OperTime &lt;='${endTime}'
+        <if test="organId != null">
+            and dh.OrganId=${organId}
+        </if>
+        and ifnull(dh.delete_Flag,'0') !='1'
+        UNION ALL
+        select count(1) a from jsh_accounthead ah
+        inner join jsh_supplier s on s.id=ah.OrganId and ifnull(s.delete_Flag,'0') !='1'
+        where s.type='${supType}'
+        and ah.BillTime >='${beginTime}' and ah.BillTime &lt;='${endTime}'
+        <if test="organId != null">
+            and ah.OrganId=${organId}
+        </if>
+        and ifnull(ah.delete_Flag,'0') !='1'
         )
     </select>
 
@@ -339,25 +348,25 @@
     <insert id="adddepotHead" parameterType="com.jsh.erp.datasource.entities.DepotHead"
             useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into jsh_depothead (Type, SubType,
-        ProjectId, DefaultNumber, Number,
-        OperPersonName, CreateTime, OperTime,
-        OrganId, HandsPersonId, AccountId,
-        ChangeAmount, AllocationProjectId, TotalPrice,
-        PayType, Remark, Salesman,
-        AccountIdList, AccountMoneyList, Discount,
-        DiscountMoney, DiscountLastMoney, OtherMoney,
-        OtherMoneyList, OtherMoneyItem, AccountDay,
-        Status, LinkNumber,gatenumber)
+                                   ProjectId, DefaultNumber, Number,
+                                   OperPersonName, CreateTime, OperTime,
+                                   OrganId, HandsPersonId, AccountId,
+                                   ChangeAmount, AllocationProjectId, TotalPrice,
+                                   PayType, Remark, Salesman,
+                                   AccountIdList, AccountMoneyList, Discount,
+                                   DiscountMoney, DiscountLastMoney, OtherMoney,
+                                   OtherMoneyList, OtherMoneyItem, AccountDay,
+                                   Status, LinkNumber,gatenumber)
         values (#{type,jdbcType=VARCHAR}, #{subtype,jdbcType=VARCHAR},
-        #{projectid,jdbcType=BIGINT}, #{defaultnumber,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR},
-        #{operpersonname,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, #{opertime,jdbcType=TIMESTAMP},
-        #{organid,jdbcType=BIGINT}, #{handspersonid,jdbcType=BIGINT}, #{accountid,jdbcType=BIGINT},
-        #{changeamount,jdbcType=DECIMAL}, #{allocationprojectid,jdbcType=BIGINT}, #{totalprice,jdbcType=DECIMAL},
-        #{paytype,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{salesman,jdbcType=VARCHAR},
-        #{accountidlist,jdbcType=VARCHAR}, #{accountmoneylist,jdbcType=VARCHAR}, #{discount,jdbcType=DECIMAL},
-        #{discountmoney,jdbcType=DECIMAL}, #{discountlastmoney,jdbcType=DECIMAL}, #{othermoney,jdbcType=DECIMAL},
-        #{othermoneylist,jdbcType=VARCHAR}, #{othermoneyitem,jdbcType=VARCHAR}, #{accountday,jdbcType=VARCHAR},
-        #{status,jdbcType=VARCHAR}, #{linknumber,jdbcType=VARCHAR}, #{gatenumber,jdbcType=VARCHAR})
+                #{projectid,jdbcType=BIGINT}, #{defaultnumber,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR},
+                #{operpersonname,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, #{opertime,jdbcType=TIMESTAMP},
+                #{organid,jdbcType=BIGINT}, #{handspersonid,jdbcType=BIGINT}, #{accountid,jdbcType=BIGINT},
+                #{changeamount,jdbcType=DECIMAL}, #{allocationprojectid,jdbcType=BIGINT}, #{totalprice,jdbcType=DECIMAL},
+                #{paytype,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{salesman,jdbcType=VARCHAR},
+                #{accountidlist,jdbcType=VARCHAR}, #{accountmoneylist,jdbcType=VARCHAR}, #{discount,jdbcType=DECIMAL},
+                #{discountmoney,jdbcType=DECIMAL}, #{discountlastmoney,jdbcType=DECIMAL}, #{othermoney,jdbcType=DECIMAL},
+                #{othermoneylist,jdbcType=VARCHAR}, #{othermoneyitem,jdbcType=VARCHAR}, #{accountday,jdbcType=VARCHAR},
+                #{status,jdbcType=VARCHAR}, #{linknumber,jdbcType=VARCHAR}, #{gatenumber,jdbcType=VARCHAR})
       
     </insert>
     <update id="updatedepotHead" parameterType="com.jsh.erp.datasource.entities.DepotHead">
@@ -524,16 +533,16 @@
         where 1=1
         and
         (ProjectId in (
-            <foreach collection="depotIds" item="depotId" separator=",">
-                #{depotId}
-            </foreach>
-            )
-            OR
-            AllocationProjectId in (
-            <foreach collection="depotIds" item="depotId" separator=",">
-                #{depotId}
-            </foreach>
-            )
+        <foreach collection="depotIds" item="depotId" separator=",">
+            #{depotId}
+        </foreach>
+        )
+        OR
+        AllocationProjectId in (
+        <foreach collection="depotIds" item="depotId" separator=",">
+            #{depotId}
+        </foreach>
+        )
         )
         and ifnull(delete_Flag,'0') !='1'
     </select>
@@ -555,10 +564,10 @@
             and SubType='${subType}'
         </if>
         <!--<if test="hasSupplier == 1">-->
-            <!--and OrganId is not null-->
+        <!--and OrganId is not null-->
         <!--</if>-->
         <!--<if test="hasSupplier == 0">-->
-            <!--and OrganId is null-->
+        <!--and OrganId is null-->
         <!--</if>-->
         <if test="beginTime != null">
             and OperTime >= '${beginTime}'
@@ -574,7 +583,7 @@
         from jsh_depothead q
         where 1=1
         <if test="year != null">
-           and Year(OperTime)='${year}'
+            and Year(OperTime)='${year}'
         </if>
         <if test="type != null">
             and Type='${type}'

@@ -494,5 +494,34 @@ public class MaterialController {
         return dataArray;
     }
 
+    @RequestMapping(value = "machineType")
+    public JSONArray machineType(@RequestParam("id")Long id){
+        JSONArray array = new JSONArray();
+        Material material = new Material();
+        material.setId(id);
+        List<Material> list = materialService.machineType(material);
+        for (Material material1 : list){
+            JSONObject object = new JSONObject();
+            object.put("id", material1.getName());
+            object.put("depotName", material1.getName());
+            array.add(object);
+        }
+        return array;
+    }
+
+    @RequestMapping(value = "machineTypeCount")
+    public JSONArray machineTypeCount(@RequestParam("name")String name){
+        JSONArray array = new JSONArray();
+        Material material = new Material();
+        material.setName(name);
+        List<Material> list = materialService.machineTypeCount(material);
+        for (Material material1 : list){
+            JSONObject object = new JSONObject();
+            object.put("id", material1.getName());
+            object.put("depotName", material1.getName());
+            array.add(object);
+        }
+        return array;
+    }
 
 }
