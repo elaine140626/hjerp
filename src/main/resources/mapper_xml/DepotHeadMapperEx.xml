@@ -347,7 +347,7 @@
         AccountIdList, AccountMoneyList, Discount,
         DiscountMoney, DiscountLastMoney, OtherMoney,
         OtherMoneyList, OtherMoneyItem, AccountDay,
-        Status, LinkNumber,GateNumber)
+        Status, LinkNumber,GateNumber )
         values (#{type,jdbcType=VARCHAR}, #{subtype,jdbcType=VARCHAR},
                 #{projectid,jdbcType=BIGINT}, #{defaultnumber,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR},
                 #{operpersonname,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, #{opertime,jdbcType=TIMESTAMP},

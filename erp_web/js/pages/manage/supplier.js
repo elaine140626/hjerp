@@ -514,7 +514,7 @@ var supplierID = null;
              success: function (res) {
                  if (res > 0) {
                      $('#supplierMaterialDlg').dialog('close');
-                     $.messager.alert('提示：', '保存成功!');
+                     $.messager.alert('提示：', '保存成功！');
                  } else {
                      $.messager.alert('提示：', '保存失败！');
                  }

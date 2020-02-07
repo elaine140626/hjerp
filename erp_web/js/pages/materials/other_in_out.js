@@ -2037,7 +2037,7 @@ function bindEvent(){
             }
             if($('#GateNumber').length){
                 GateNumber = $('#GateNumber').combobox('getValue');
-            }
+            } 
             var infoStr=JSON.stringify({
                 Type: listType,
                 SubType: listSubType,
