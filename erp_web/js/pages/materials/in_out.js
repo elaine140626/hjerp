@@ -562,14 +562,14 @@ function initTableData(){
 								setStatusFun("6");
 							}
 						},
-						{
-							id:'installs',
-							text:'已安装',
-							iconCls:'icon-ok',
-							handler:function() {
-								setStatusFun("4");
-							}
-						},
+						// {
+						// 	id:'installs',
+						// 	text:'已安装',
+						// 	iconCls:'icon-ok',
+						// 	handler:function() {
+						// 		setStatusFun("4");
+						// 	}
+						// },
 						{
 							id:'export',
 							text:'导出详情',
@@ -615,14 +615,7 @@ function initTableData(){
 						}
 					});
 				} else if (res.data.userBusinessList[0].value == "[24]") {
-					tableToolBar.push({
-						id:'installs',
-						text:'已安装',
-						iconCls:'icon-ok',
-						handler:function() {
-							setStatusFun("4");
-						}
-					});
+					tableToolBar.push();
 				}
 			}
 		}
@@ -700,6 +693,8 @@ function initTableData(){
 							return "<span style='color:blue;'>售后订单</span>";
 						} else if (value === "6") {
 							return "<span style='color:blue;'>已付款</span>";
+						} else {
+							return "<span style='color:blue;'>售后订单</span>";
 						}
 					}
 				},
@@ -837,6 +832,8 @@ function initTableData(){
 							return "<span style='color:blue;'>售后订单</span>";
 						} else if (value === "6") {
 							return "<span style='color:blue;'>已付款</span>";
+						} else {
+							return "<span style='color:blue;'>售后订单</span>";
 						}
 					}
 				},
@@ -974,6 +971,8 @@ function initTableData(){
 							return "<span style='color:blue;'>售后订单</span>";
 						} else if (value === "6") {
 							return "<span style='color:blue;'>已付款</span>";
+						} else {
+							return "<span style='color:blue;'>售后订单</span>";
 						}
 					}
 				},
@@ -1105,6 +1104,8 @@ function initTableData(){
 							return "<span style='color:blue;'>售后订单</span>";
 						} else if (value === "6") {
 							return "<span style='color:blue;'>已付款</span>";
+						} else {
+							return "<span style='color:blue;'>售后订单</span>";
 						}
 					}
 				},
@@ -1803,7 +1804,7 @@ function initTableData_material(type,TotalPrice,biaoshi,roleID){
 							valueField: 'id',
 							textField: depotTextField,
 							method: 'get',
-							url: '/material/machineType?id='+624,
+							url: '/material/machineType?id='+materialId,
 							onSelect:function(rec){
 								debugger
 								var depotId = rec.id;
@@ -5441,8 +5442,11 @@ function bindSupplierGroup() {
 					if (res) {
 						$('#supplierDlg').dialog('close');
 						initSupplier(); //刷新供应商
+						$.messager.alert('提示：','保存成功！');
+					} else {
+						$.messager.alert('提示：','保存失败！');
 					}
-					alert("保存成功");
+
 				}
 			});
 			addDepotHead();
@@ -5529,10 +5533,13 @@ function bindSupplierCompany() {
 					if (res) {
 						$('#supplierDlg').dialog('close');
 						initSupplier(); //刷新供应商
+						$.messager.alert('提升：','保存成功！');
+					} else {
+						$.messager.alert('提升：','保存失败！');
 					}
 				}
 			});
-			alert("保存成功");
+
 			initSupplier(); //供应商
 			// addDepotHead();
 		});
@@ -5624,10 +5631,13 @@ function bindSupplierEvent() {
 					if (res) {
 						$('#supplierDlg').dialog('close');
 						initSupplier(); //刷新供应商
+						$.messager.alert('提示：',"保存成功");
+					} else {
+						$.messager.alert('提示：',"保存失败");
 					}
 				}
 			});
-			alert("保存成功");
+
 			initSupplier(); //供应商
 		});
 	}
@@ -6104,7 +6114,7 @@ function submitfile(e){
 				var values=data.split('&');
 				$("#showfile").attr('src','../images/'+values[0]);
 				$("#i_img_url").val(values[0]);
-				alert("保存成功");
+				$.messager.alert('提示：','保存成功！');
 			}
 		},
 		error: function (res) {
