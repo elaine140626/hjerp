@@ -36,6 +36,7 @@ var btnEnableList = getBtnStr(); //获取按钮的权限
 var mPropertyList = ""; //商品属性列表
 var defaultAccountId = 0; //默认账户id
 var OrganId = "";
+var GateNumber = "";
 $(function(){
     //初始化系统基础信息
     getType();
@@ -791,6 +792,14 @@ function initTableData_material(type,TotalPrice){
                             param.mpList = mPropertyList; //商品属性
                         },
                         onSelect:function(rec){
+                            if (rec.MaterialName.indexOf("闸") >= 0 ) {
+                                    $(".OrderZi").show();
+                                    $(".OrderKuan").show();
+                            }else{
+                                    $('#GateNumber').combobox("setValue","");
+                                    $(".OrderZi").hide();
+                                    $(".OrderKuan").hide();
+                                }
                             if(rec) {
                                 var mId = rec.Id;
                                 $.ajax({
@@ -1851,8 +1860,8 @@ function bindEvent(){
         return flag;
     }
     //保存信息
-    debugger
     $("#saveDepotHead").off("click").on("click",function(){
+        debugger
         if(!$('#depotHeadFM').form('validate')){
             return;
         } else {
@@ -1869,6 +1878,14 @@ function bindEvent(){
                     $.messager.alert('提示','请选择供应商！','warning');
                     return;
                 }
+                // if($(".OrderKuan").is(":hidden")){
+                //
+                // }else{
+                //     if(!$('#GateNumber').combobox('getValue'){
+                //         $.messager.alert('提示','请选择订单编号！','warning');
+                //         return;
+                //     }
+                // }
             }
             else if(listTitle === "采购入库列表"){
                 if(!$('#OrganId').combobox('getValue')){
@@ -2018,7 +2035,9 @@ function bindEvent(){
             if($("#AccountId").val() === "many"){ //多账户
                 getAccountID = null;
             }
-            var GateNumber = $("#GateNumber").val();
+            if($('#GateNumber').length){
+                GateNumber = $('#GateNumber').combobox('getValue');
+            } 
             var infoStr=JSON.stringify({
                 Type: listType,
                 SubType: listSubType,
