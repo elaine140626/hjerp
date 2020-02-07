@@ -631,4 +631,5 @@
       BarCode = #{barcode,jdbcType=VARCHAR}
     where Id = #{id,jdbcType=BIGINT}
   </update>
+
 </mapper>
