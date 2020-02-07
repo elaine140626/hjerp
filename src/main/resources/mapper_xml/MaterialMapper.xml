@@ -34,6 +34,7 @@
     <result column="delete_Flag" jdbcType="VARCHAR" property="deleteFlag" />
     <result column="BarCode" jdbcType="VARCHAR" property="barcode" />
     <result column="organId" jdbcType="BIGINT" property="organId" />
+    <result column="level" jdbcType="VARCHAR" property="level" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <!--
@@ -177,7 +178,7 @@
       UnitId, FirstOutUnit, FirstInUnit, 
       PriceStrategy, Enabled, OtherField1, 
       OtherField2, OtherField3, enableSerialNumber, 
-      tenant_id, delete_Flag, BarCode,organId
+      tenant_id, delete_Flag, BarCode,organId,level
       )
     values (#{id,jdbcType=BIGINT}, #{categoryid,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, 
       #{mfrs,jdbcType=VARCHAR}, #{packing,jdbcType=DECIMAL}, #{safetystock,jdbcType=DECIMAL}, 
@@ -187,7 +188,7 @@
       #{unitid,jdbcType=BIGINT}, #{firstoutunit,jdbcType=VARCHAR}, #{firstinunit,jdbcType=VARCHAR}, 
       #{pricestrategy,jdbcType=VARCHAR}, #{enabled,jdbcType=BIT}, #{otherfield1,jdbcType=VARCHAR}, 
       #{otherfield2,jdbcType=VARCHAR}, #{otherfield3,jdbcType=VARCHAR}, #{enableserialnumber,jdbcType=VARCHAR}, 
-      #{tenantId,jdbcType=BIGINT}, #{deleteFlag,jdbcType=VARCHAR}, #{barcode,jdbcType=VARCHAR},#{organId,jdbcType=BIGINT}
+      #{tenantId,jdbcType=BIGINT}, #{deleteFlag,jdbcType=VARCHAR}, #{barcode,jdbcType=VARCHAR},#{organId,jdbcType=BIGINT},#{level,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.jsh.erp.datasource.entities.Material">
@@ -281,6 +282,9 @@
       <if test="organId != null">
         organId,
       </if>
+      <if test="level != null">
+        level,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -366,6 +370,9 @@
       </if>
       <if test="organId != null">
         #{organId,jdbcType=BIGINT},
+      </if>
+      <if test="level != null">
+        #{level,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>

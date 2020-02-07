@@ -221,6 +221,16 @@ public class Material {
 
     private Long  organId;
 
+    private String level;
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
     public Long getOrganId() {
         return organId;
     }
