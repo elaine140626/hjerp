@@ -247,7 +247,7 @@ function initSupplier(){
             }
         },
         onSelect: function(rec){
-            initTableData_material("add");
+            addDepotHead(1);
             debugger
             if(listSubType === "零售"){
                 var option = "";
@@ -417,7 +417,8 @@ function initTableData(){
             text:'增加',
             iconCls:'icon-add',
             handler:function() {
-                addDepotHead();
+                debugger
+                addDepotHead(0);
             }
         },
         {
@@ -790,15 +791,6 @@ function initTableData_material(type,TotalPrice){
                             param.mpList = mPropertyList; //商品属性
                         },
                         onSelect:function(rec){
-                            debugger
-                            if (rec.MaterialName.indexOf("闸") >= 0 ) {
-                                $(".OrderZi").show();
-                                $(".OrderKuan").show();
-                            }else{
-                                $('#GateNumber').combobox("setValue","");
-                                $(".OrderZi").hide();
-                                $(".OrderKuan").hide();
-                            }
                             if(rec) {
                                 var mId = rec.Id;
                                 $.ajax({
@@ -1462,24 +1454,30 @@ function buildNumber() {
     });
 }
 //新增信息
-function addDepotHead(){
-    $('#depotHeadFM').form('clear');
-    var thisDateTime = getNowFormatDateTime(); //当前时间
-    $("#OperTime").val(thisDateTime);
-    buildNumber(); //生成单据编号
-    //初始化优惠率、优惠金额、优惠后金额、本次付|收款、本次欠款 为0
-    $("#Discount").val(0);
-    $("#DiscountMoney").val(0);
-    $("#DiscountLastMoney").val(0);
-    $("#ChangeAmount").val(0);
-    $("#Debt").val(0);
-    $("#AccountId").val(defaultAccountId); //初始化默认的账户Id
-    var addTitle = listTitle.replace("列表","信息");
-    $('#depotHeadDlg').dialog('open').dialog('setTitle','<img src="/js/easyui-1.3.5/themes/icons/edit_add.png"/>&nbsp;增加' + addTitle);
-    $(".window-mask").css({ width: webW ,height: webH});
+function addDepotHead(cz){
+    debugger
+    if (cz == 1){
 
-    orgDepotHead = "";
-    depotHeadID = 0;
+    }else {
+        $('#depotHeadFM').form('clear');
+        var thisDateTime = getNowFormatDateTime(); //当前时间
+        $("#OperTime").val(thisDateTime);
+        buildNumber(); //生成单据编号
+        //初始化优惠率、优惠金额、优惠后金额、本次付|收款、本次欠款 为0
+        $("#Discount").val(0);
+        $("#DiscountMoney").val(0);
+        $("#DiscountLastMoney").val(0);
+        $("#ChangeAmount").val(0);
+        $("#Debt").val(0);
+        $("#AccountId").val(defaultAccountId); //初始化默认的账户Id
+        var addTitle = listTitle.replace("列表","信息");
+        $('#depotHeadDlg').dialog('open').dialog('setTitle','<img src="/js/easyui-1.3.5/themes/icons/edit_add.png"/>&nbsp;增加' + addTitle);
+        $(".window-mask").css({ width: webW ,height: webH});
+
+        orgDepotHead = "";
+        depotHeadID = 0;
+    }
+
     initTableData_material("add"); //商品列表
     reject(); //撤销下、刷新商品列表
     function supplierDlgFun(type) {
@@ -1871,14 +1869,6 @@ function bindEvent(){
                     $.messager.alert('提示','请选择供应商！','warning');
                     return;
                 }
-                // if($(".OrderKuan").is(":hidden")){
-                //
-                // }else{
-                //     if($('#GateNumber').combobox('getValue') != null || $('#GateNumber').combobox('getValue') != ""){
-                //         $.messager.alert('提示','请选择订单编号！','warning');
-                //         return;
-                //     }
-                // }
             }
             else if(listTitle === "采购入库列表"){
                 if(!$('#OrganId').combobox('getValue')){
@@ -2028,6 +2018,7 @@ function bindEvent(){
             if($("#AccountId").val() === "many"){ //多账户
                 getAccountID = null;
             }
+            var GateNumber = $("#GateNumber").val();
             var infoStr=JSON.stringify({
                 Type: listType,
                 SubType: listSubType,
@@ -2036,7 +2027,7 @@ function bindEvent(){
                 DefaultNumber: $.trim($("#Number").attr("data-defaultNumber")),//初始编号
                 Number: $.trim($("#Number").val()),
                 LinkNumber: $.trim($("#LinkNumber").val()),
-                GateNumber:$.trim($("#GateNumber").val()),
+                GateNumber:GateNumber,
                 OperTime: $("#OperTime").val(),
                 OrganId: OrganId,
                 HandsPersonId: $.trim($("#HandsPersonId").val()),
