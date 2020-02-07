@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jsh.erp.constants.BusinessConstants;
 import com.jsh.erp.constants.ExceptionConstants;
-import com.jsh.erp.datasource.entities.DepotHead;
-import com.jsh.erp.datasource.entities.DepotHeadExample;
-import com.jsh.erp.datasource.entities.DepotItem;
-import com.jsh.erp.datasource.entities.User;
+import com.jsh.erp.datasource.entities.*;
 import com.jsh.erp.datasource.mappers.DepotHeadMapper;
 import com.jsh.erp.datasource.mappers.DepotHeadMapperEx;
 import com.jsh.erp.datasource.mappers.DepotItemMapperEx;
@@ -26,9 +23,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -90,6 +90,8 @@ public class DepotHeadService {
         }catch(Exception e){
             JshException.readFail(logger, e);
         }
+        int i = 0;
+        int k = Math.toIntExact(list.get(0).getId());
         if (null != list) {
             for (DepotHeadVo4List dh : list) {
                 if(dh.getOthermoneylist() != null) {
@@ -105,7 +107,15 @@ public class DepotHeadService {
                 if(dh.getOpertime() != null) {
                     dh.setOpertimeStr(getCenternTime(dh.getOpertime()));
                 }
-                dh.setMaterialsList(findMaterialsListByHeaderId(dh.getId()));
+                List<Material> materialList = findMaterialsListByHeaderId(dh.getId());
+                if ( k != dh.getId()){
+                    i=0;
+                }
+                dh.setMaterialsList(materialList.get(i).getName());
+                if (k == dh.getId()) {
+                    i++;
+                }
+                k = Math.toIntExact(dh.getId());
                 resList.add(dh);
             }
         }
@@ -259,8 +269,8 @@ public class DepotHeadService {
         return result;
     }
 
-    public String findMaterialsListByHeaderId(Long id)throws Exception {
-        String result = null;
+    public List<Material> findMaterialsListByHeaderId(Long id)throws Exception {
+        List<Material> result = null;
         try{
             result = depotHeadMapperEx.findMaterialsListByHeaderId(id);
         }catch(Exception e){
@@ -432,6 +442,8 @@ public class DepotHeadService {
             JshException.readFail(logger, e);
         }
         if (null != list) {
+            int i =0;
+            int k = Math.toIntExact(list.get(0).getId());
             for (DepotHeadVo4List dh : list) {
                 if(dh.getOthermoneylist() != null) {
                     String otherMoneyListStr = dh.getOthermoneylist().replace("[", "").replace("]", "").replaceAll("\"", "");
@@ -448,7 +460,15 @@ public class DepotHeadService {
                     dh.setTotalprice(dh.getTotalprice().abs());
                 }
                 dh.setOpertimeStr(getCenternTime(dh.getOpertime()));
-                dh.setMaterialsList(findMaterialsListByHeaderId(dh.getId()));
+                List<Material> materialList = findMaterialsListByHeaderId(dh.getId());
+                if ( k != dh.getId()){
+                    i=0;
+                }
+                dh.setMaterialsList(materialList.get(i).getName());
+                if (k == dh.getId()) {
+                    i++;
+                }
+                k = Math.toIntExact(dh.getId());
                 resList.add(dh);
             }
         }
@@ -650,6 +670,18 @@ public class DepotHeadService {
         return depotHeadMapperEx.getSaleByYear(type, subType, tenantId,year);
     }
 
+    /**
+     * 上传文件
+     * @param file
+     * @throws IOException
+     */
+    public void uploadContract(CommonsMultipartFile file) throws IOException {
+        //这是我的nginx静态路径，使用时需改为自己的对应路径
+        String path = "/data2/fphone/static/apk/" + file.getOriginalFilename();
+        File newFile = new File(path);
+        file.transferTo(newFile);
+    }
+
 
     public List<DepotHead>  findDefaultNumber()throws Exception {
         List<DepotHead> result=null;
@@ -660,6 +692,4 @@ public class DepotHeadService {
         }
         return result;
     }
-
-
 }
