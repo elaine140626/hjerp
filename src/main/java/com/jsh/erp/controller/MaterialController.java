@@ -494,5 +494,29 @@ public class MaterialController {
         return dataArray;
     }
 
+    /**
+     * 查找品名下拉框
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/findMaterialId")
+    public JSONArray getPersonByNumType(HttpServletRequest request)throws Exception {
+        JSONArray dataArray = new JSONArray();
+        try {
+            List<MaterialVo4Unit> dataList = materialService.findBySelect();
+            if (null != dataList) {
+                for (MaterialVo4Unit materialVo4Unit : dataList) {
+                    JSONObject item = new JSONObject();
+                    item.put("Id", materialVo4Unit.getId());
+                    item.put("MaterialName", materialVo4Unit.getName());
+                    dataArray.add(item);
+                }
+            }
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+        return dataArray;
+    }
+
 
 }

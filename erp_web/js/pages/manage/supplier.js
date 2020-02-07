@@ -10,6 +10,7 @@ var supplierID = null;
         ininPager();
         bindEvent();
         initSupplier();//初始化供应商
+        initMaterialId();//初始化产品和套餐
     });
 
     //根据名称获取类型
@@ -462,24 +463,60 @@ var supplierID = null;
          // if (checkSupplierName()) {
          //     return;
          // }
-         if ($('#organId').length) {
-             organId = $('#organId').combobox('getValue');
-         }
-         var kong = null;
-         var obj = $("#supplierMaterialFM").serializeObject();
+         var levelStr = "";
+             var level = $('#level').combobox('getValues').toString(); //销售人员
+             if(level) {
+                 var levelArray = level.split(",");
+                 for (var i = 0; i < levelArray.length; i++) {
+                     if (i === levelArray.length - 1) {
+                         levelStr += "<" + levelArray[i] + ">";
+                     }
+                     else {
+                         levelStr += "<" + levelArray[i] + ">,";
+                     }
+                 }
+             }
+
+         var infoStr=JSON.stringify({
+             organId:$('#organId').combobox('getValue'),
+             level:levelStr,
+             name:$.trim($("#name").val()),
+             model:$.trim($("#model").val()),
+             retailprice:$.trim($("#retailprice").val()),
+             unit:$.trim($("#unit").val()),
+             remark:$.trim($("#remark").val()),
+             categoryid:$.trim($("#categoryid").val()),
+             enabled:$.trim($("#enabled").val()),
+             packing:$.trim($("#packing").val()),
+             safetystock:$.trim($("#safetystock").val()),
+             standard:$.trim($("#standard").val()),
+             lowprice:$.trim($("#lowprice").val()),
+             color:$.trim($("#color").val()),
+             presetpriceone:$.trim($("#presetpriceone").val()),
+             presetpricetwo:$.trim($("#presetpricetwo").val()),
+             unitid:$.trim($("#unitid").val()),
+             firstoutunit:$.trim($("#firstoutunit").val()),
+             firstinunit:$.trim($("#firstinunit").val()),
+             pricestrategy:$.trim($("#pricestrategy").val()),
+             otherfield1:$.trim($("#otherfield1").val()),
+             otherfield2:$.trim($("#otherfield2").val()),
+             otherfield3:$.trim($("#otherfield3").val()),
+             deleteFlag:$.trim($("#deleteFlag").val()),
+             barcode:$.trim($("#barcode").val())
+         });
          $.ajax({
              url: "/material/addSupplierMaterial",
              type: "post",
              dataType: "json",
              data: {
-                 info: JSON.stringify(obj)
+                 info: infoStr
              },
              success: function (res) {
                  if (res > 0) {
                      $('#supplierMaterialDlg').dialog('close');
-                     alert("提示：", "新增供应商产品成功",res);
+                     $.messager.alert('提示：', '保存成功!');
                  } else {
-                     alert("提示：", "新增供应商产品失败",res);
+                     $.messager.alert('提示：', '保存失败！');
                  }
              },
              error:function(){}
@@ -521,7 +558,20 @@ var supplierID = null;
     }
 
 
-
+    //初始化产品和套餐
+    function initMaterialId() {
+        debugger
+        $('#level').combobox({
+            url: "/material/findMaterialId",
+            valueField:'Id',
+            textField:'MaterialName',
+            multiple: true,
+            filter: function(q, row) {
+                var opts = $(this).combobox('options');
+                return row[opts.textField].indexOf(q) > -1;
+            },
+        });
+    }
 
     function bindEvent(){
         //导入excel对话框
