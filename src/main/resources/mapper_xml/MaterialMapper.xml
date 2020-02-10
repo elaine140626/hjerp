@@ -112,6 +112,13 @@
     PriceStrategy, Enabled, OtherField1, OtherField2, OtherField3, enableSerialNumber, 
     tenant_id, delete_Flag, BarCode
   </sql>
+
+  <select id="machineType" parameterType="com.jsh.erp.datasource.entities.Material" resultMap="BaseResultMap">
+        SELECT * FROM jsh_material  WHERE `LEVEL` LIKE CONCAT(CONCAT('%',#{id,jdbcType=BIGINT}),'%')
+  </select>
+  <select id="machineTypeCount" parameterType="com.jsh.erp.datasource.entities.Material" resultMap="BaseResultMap">
+        SELECT * FROM jsh_material  WHERE `name` = #{name,jdbcType=VARCHAR}
+  </select>
   <select id="selectByExample" parameterType="com.jsh.erp.datasource.entities.MaterialExample" resultMap="BaseResultMap">
     <!--
       WARNING - @mbggenerated

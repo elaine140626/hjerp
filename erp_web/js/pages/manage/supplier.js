@@ -642,6 +642,7 @@ var supplierID = null;
                 success: function(res) {
                     if(res && res.code === 200) {
                         $('#supplierDlg').dialog('close');
+                        initSupplier();
                         //加载完以后重新初始化
                         var opts = $("#tableData").datagrid('options');
                         showSupplierDetails(opts.pageNumber, opts.pageSize);

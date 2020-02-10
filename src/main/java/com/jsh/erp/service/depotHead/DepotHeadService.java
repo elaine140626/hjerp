@@ -23,12 +23,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -90,8 +87,6 @@ public class DepotHeadService {
         }catch(Exception e){
             JshException.readFail(logger, e);
         }
-        int i = 0;
-        int k = Math.toIntExact(list.get(0).getId());
         if (null != list) {
             for (DepotHeadVo4List dh : list) {
                 if(dh.getOthermoneylist() != null) {
@@ -107,15 +102,7 @@ public class DepotHeadService {
                 if(dh.getOpertime() != null) {
                     dh.setOpertimeStr(getCenternTime(dh.getOpertime()));
                 }
-                List<Material> materialList = findMaterialsListByHeaderId(dh.getId());
-                if ( k != dh.getId()){
-                    i=0;
-                }
-                dh.setMaterialsList(materialList.get(i).getName());
-                if (k == dh.getId()) {
-                    i++;
-                }
-                k = Math.toIntExact(dh.getId());
+                dh.setMaterialsList(findMaterialsListByHeaderId(dh.getId()));
                 resList.add(dh);
             }
         }
@@ -248,8 +235,8 @@ public class DepotHeadService {
             }
         }
         if(buildOnlyNumber<BusinessConstants.SEQ_TO_STRING_MIN_LENGTH){
-           StringBuffer sb=new StringBuffer(buildOnlyNumber.toString());
-           int len=BusinessConstants.SEQ_TO_STRING_MIN_LENGTH.toString().length()-sb.length();
+            StringBuffer sb=new StringBuffer(buildOnlyNumber.toString());
+            int len=BusinessConstants.SEQ_TO_STRING_MIN_LENGTH.toString().length()-sb.length();
             for(int i=0;i<len;i++){
                 sb.insert(0,BusinessConstants.SEQ_TO_STRING_LESS_INSERT);
             }
@@ -269,12 +256,22 @@ public class DepotHeadService {
         return result;
     }
 
-    public List<Material> findMaterialsListByHeaderId(Long id)throws Exception {
-        List<Material> result = null;
+    public String findMaterialsListByHeaderId(Long id)throws Exception {
+        String result = null;
         try{
             result = depotHeadMapperEx.findMaterialsListByHeaderId(id);
         }catch(Exception e){
             JshException.readFail(logger, e);
+        }
+        return result;
+    }
+
+    public List<Material> findMaterialsListByHeaderMsg(Long id)throws Exception {
+        List<Material> result = null;
+        try {
+            result = depotHeadMapperEx.findMaterialsListByHeaderMsg(id);
+        }catch (Exception e){
+            JshException.readFail(logger,e);
         }
         return result;
     }
@@ -442,8 +439,6 @@ public class DepotHeadService {
             JshException.readFail(logger, e);
         }
         if (null != list) {
-            int i =0;
-            int k = Math.toIntExact(list.get(0).getId());
             for (DepotHeadVo4List dh : list) {
                 if(dh.getOthermoneylist() != null) {
                     String otherMoneyListStr = dh.getOthermoneylist().replace("[", "").replace("]", "").replaceAll("\"", "");
@@ -460,15 +455,7 @@ public class DepotHeadService {
                     dh.setTotalprice(dh.getTotalprice().abs());
                 }
                 dh.setOpertimeStr(getCenternTime(dh.getOpertime()));
-                List<Material> materialList = findMaterialsListByHeaderId(dh.getId());
-                if ( k != dh.getId()){
-                    i=0;
-                }
-                dh.setMaterialsList(materialList.get(i).getName());
-                if (k == dh.getId()) {
-                    i++;
-                }
-                k = Math.toIntExact(dh.getId());
+                dh.setMaterialsList(findMaterialsListByHeaderId(dh.getId()));
                 resList.add(dh);
             }
         }
@@ -670,18 +657,6 @@ public class DepotHeadService {
         return depotHeadMapperEx.getSaleByYear(type, subType, tenantId,year);
     }
 
-    /**
-     * 上传文件
-     * @param file
-     * @throws IOException
-     */
-    public void uploadContract(CommonsMultipartFile file) throws IOException {
-        //这是我的nginx静态路径，使用时需改为自己的对应路径
-        String path = "/data2/fphone/static/apk/" + file.getOriginalFilename();
-        File newFile = new File(path);
-        file.transferTo(newFile);
-    }
-
 
     public List<DepotHead>  findDefaultNumber()throws Exception {
         List<DepotHead> result=null;
@@ -692,4 +667,6 @@ public class DepotHeadService {
         }
         return result;
     }
+
+
 }
