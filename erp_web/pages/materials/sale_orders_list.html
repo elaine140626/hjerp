@@ -60,8 +60,8 @@
     <form id="depotHeadFM" method="post" novalidate>
         <table>
             <tr>
-                <td style="width:70px;">集团：</td>
-                <td style="padding:5px">
+                <td id="fileformsBJ1" style="width:70px;display: none;">集团：</td>
+                <td id="fileformsBJ2" style="padding:5px;display: none;">
                     <div class="org-list">
                         <input id="group" name="group" style="width:130px;"/>
                     </div>
@@ -70,8 +70,8 @@
                              style="cursor: pointer;" alt="添加集团" title="添加集团"/>
                     </div>
                 </td>
-                <td style="width:70px;">公司：</td>
-                <td style="padding:5px">
+                <td id="fileformsBJ3" style="width:70px;display: none;">公司：</td>
+                <td id="fileformsBJ4" style="padding:5px;display: none;">
                     <div class="org-list">
                         <input id="company" name="company" style="width:130px;"/>
                     </div>
@@ -80,8 +80,8 @@
                              style="cursor: pointer;" alt="添加公司" title="添加公司"/>
                     </div>
                 </td>
-                <td style="width:70px;">项目：</td>
-                <td style="padding:5px">
+                <td id="fileformsBJ5" style="width:70px;display: none;">项目：</td>
+                <td id="fileformsBJ6" style="padding:5px;display: none;">
                     <div class="org-list">
                         <input id="OrganId" name="OrganId" style="width:130px;"/>
                     </div>
@@ -91,8 +91,8 @@
                     </div>
                 </td>
                 <td id="fileformsMsg" style="display: none;">
-                    <a class="col-md-2 btn btn-base " id="uploadfile" style="display:none;" onclick="showFiles()" ><span class="glyphicon glyphicon-upload btn-base-padding"></span>上传</a>
-                    <form enctype="multipart/form-data" style="display:none;" id="fileform" method="post" action="../uploadFile_project_img_infos.call">
+                    <a id="uploadfile" style="display:none;" onclick="showFiles()" ><span>上传合同</span>上传</a>
+                    <form enctype="multipart/form-data" id="fileform" method="post" action="../uploadFile_project_img_infos.call">
                         <input type="file" name="uploadify" value="" onchange="submitfile(event)" id="myuploadFile" accept="image/*">
                     </form>
                 </td>
@@ -101,7 +101,7 @@
                 <td style="width:70px;">单据日期：</td>
                 <td style="padding:5px">
                     <input type="text" name="OperTime" id="OperTime"
-                           onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" class="txt Wdate"
+                           onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="txt Wdate"
                            style="width:140px;" readonly/>
                 </td>
                 <td style="width:80px;">单据编号：</td>
@@ -114,6 +114,28 @@
                     <input id="Salesman" name="Salesman" style="width:130px;"/>
                 </td>
                 <td style="width:100px;"></td>
+
+<!--                <td id="fileformsMsgs" >-->
+<!--                    <a id="uploadfiles" style="display:none;" onclick="showFiles()" ></a>-->
+<!--                    <form enctype="multipart/form-data" id="fileforms" method="post" action="../uploadFile_project_img_infos.call">-->
+<!--                        <input type="file" name="uploadify" value="" onchange="submitfile(event)" id="myuploadFiles" accept="image/*">-->
+<!--                    </form>-->
+<!--                </td>-->
+            </tr>
+            <tr>
+                <td style="width:70px;">收款日期：</td>
+                <td style="padding:5px">
+                    <input type="text" name="OperTime" id="OperTimes"
+                           onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="txt Wdate"
+                           style="width:140px;" readonly/>
+                </td>
+
+                <td style="width:70px;">发票类型</td>
+                <td style="padding:5px">
+                    <input id="conyract_money" name="conyract_money" style="width:130px;"/>
+                </td>
+                <td style="width:100px;"></td>
+
             </tr>
             <tr>
                 <td colspan="9">
@@ -123,7 +145,7 @@
             </tr>
             <tr>
                 <td colspan="9">
-                    <textarea name="Remark" id="Remark" rows="2" cols="2" placeholder="暂无备注信息"
+                    <textarea name="Remark" id="Remark" rows="2" cols="2" placeholder="项目备注安装条件（有无网络，有无电），如果是改造（需要备注项目上面所需要的闸机类型，人脸机类型，闸机是否需要打孔），"
                               style="width: 1130px; height:35px;"></textarea>
                 </td>
             </tr>
@@ -230,4 +252,5 @@
     <a href="javascript:void(0)" id="cancelOtherMoneyDlg" class="easyui-linkbutton" iconCls="icon-cancel">取消</a>
 </div>
 <div id="supplier"></div>
+</body>
 </html>

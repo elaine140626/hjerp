@@ -187,10 +187,21 @@ public class DepotController {
     public JSONArray findDepots() throws Exception{
         JSONArray arr = new JSONArray();
         try {
-            for (int i = 0 ;i<=99;i++){
+            for (int i = 0 ;i<=3;i++){
                 JSONObject item = new JSONObject();
-                item.put("id", i);
-                item.put("depotName", i);
+                if (i == 0){
+                    item.put("id", "专票：6%");
+                    item.put("depotName", "专票：6%");
+                } else if (i == 1){
+                    item.put("id", "专票：6%");
+                    item.put("depotName", "专票：13%");
+                } else if (i == 2){
+                    item.put("id", "专票：6%");
+                    item.put("depotName", "普票：6%");
+                } else if (i == 3){
+                    item.put("id", "专票：6%");
+                    item.put("depotName", "普票：13%");
+                }
                 arr.add(item);
             }
         } catch (Exception e) {

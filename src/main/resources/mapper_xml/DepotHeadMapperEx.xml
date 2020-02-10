@@ -87,7 +87,8 @@
         <!--and di.DepotId in (${depotIds})-->
         <!--</if>-->
         and ifnull(dh.delete_Flag,'0') !='1'
-        order by dh.Id desc
+        GROUP BY dh.DefaultNumber
+        ORDER BY dh.Id DESC
         <if test="offset != null and rows != null">
             limit #{offset},#{rows}
         </if>

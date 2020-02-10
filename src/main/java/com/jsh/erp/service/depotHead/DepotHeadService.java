@@ -88,8 +88,6 @@ public class DepotHeadService {
             JshException.readFail(logger, e);
         }
         if (null != list) {
-            int i = 0;
-            int k = Math.toIntExact(list.get(0).getId());
             for (DepotHeadVo4List dh : list) {
                 if(dh.getOthermoneylist() != null) {
                     String otherMoneyListStr = dh.getOthermoneylist().replace("[", "").replace("]", "").replaceAll("\"", "");
@@ -104,16 +102,7 @@ public class DepotHeadService {
                 if(dh.getOpertime() != null) {
                     dh.setOpertimeStr(getCenternTime(dh.getOpertime()));
                 }
-                List<Material> materialList = findMaterialsListByHeaderMsg(dh.getId());
-                if ( k != dh.getId()){
-                    i=0;
-                }
-                dh.setMaterialsList(materialList.get(i).getName());
-                if (k == dh.getId()) {
-                    i++;
-                }
-                k = Math.toIntExact(dh.getId());
-//                dh.setMaterialsList(findMaterialsListByHeaderId(dh.getId()));
+                dh.setMaterialsList(findMaterialsListByHeaderId(dh.getId()));
                 resList.add(dh);
             }
         }
