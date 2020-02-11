@@ -494,20 +494,49 @@ public class MaterialController {
         return dataArray;
     }
 
-    @RequestMapping(value = "machineType")
-    public JSONArray machineType(@RequestParam("id")Long id){
+    /**
+     * 查找人脸类型
+     * @param id
+     * @return
+     */
+    @GetMapping(value = "machineType")
+    public JSONArray machineType(@RequestParam("id")String id){
         JSONArray array = new JSONArray();
         Material material = new Material();
-        material.setId(id);
+        material.setLevel(id);
+        material.setName("脸");
+        List<Material> list = materialService.machineType(material);
+            for (Material material1 : list){
+                JSONObject object = new JSONObject();
+                object.put("id", material1.getName());
+                object.put("machine_type", material1.getName());
+                array.add(object);
+            }
+        return array;
+    }
+
+
+    /**
+     * 查找闸机类型
+     * @param id
+     * @return
+     */
+    @GetMapping(value = "gateType")
+    public JSONArray gateType(@RequestParam("id")String id){
+        JSONArray array = new JSONArray();
+        Material material = new Material();
+        material.setLevel(id);
+        material.setName("闸");
         List<Material> list = materialService.machineType(material);
         for (Material material1 : list){
             JSONObject object = new JSONObject();
             object.put("id", material1.getName());
-            object.put("depotName", material1.getName());
+            object.put("gate_type", material1.getName());
             array.add(object);
         }
         return array;
     }
+
 
     @RequestMapping(value = "machineTypeCount")
     public JSONArray machineTypeCount(@RequestParam("name")String name){

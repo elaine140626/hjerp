@@ -114,7 +114,7 @@
   </sql>
 
   <select id="machineType" parameterType="com.jsh.erp.datasource.entities.Material" resultMap="BaseResultMap">
-        SELECT * FROM jsh_material  WHERE `LEVEL` LIKE CONCAT(CONCAT('%',#{id,jdbcType=BIGINT}),'%')
+        SELECT * FROM jsh_material  WHERE `LEVEL` LIKE CONCAT(CONCAT('%',#{level ,jdbcType=VARCHAR}),'%') and `Name` LIKE CONCAT(CONCAT('%',#{name ,jdbcType=VARCHAR}),'%')
   </select>
   <select id="machineTypeCount" parameterType="com.jsh.erp.datasource.entities.Material" resultMap="BaseResultMap">
         SELECT * FROM jsh_material  WHERE `name` = #{name,jdbcType=VARCHAR}
