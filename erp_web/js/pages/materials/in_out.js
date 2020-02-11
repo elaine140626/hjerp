@@ -572,26 +572,10 @@ function initTableData(){
 						},
 						{
 							id: 'okDepotHead',
-							text: '审核',
-							iconCls: 'icon-ok',
-							handler: function () {
-								setStatusFun("1");
-							}
-						},
-						{
-							id: 'okDepotHead',
 							text: '反审核',
 							iconCls: 'icon-ok',
 							handler: function () {
 								setStatusFun("0");
-							}
-						},
-						{
-							id: 'oskDepotHead',
-							text: '已收款',
-							iconCls: 'icon-ok',
-							handler: function () {
-								setStatusFun("6");
 							}
 						},
 						// {
@@ -628,24 +612,10 @@ function initTableData(){
 							handler:function() {
 								addDepotHead();
 							}
-						},{
-							id:'okDepotHead',
-							text:'审核',
-							iconCls:'icon-ok',
-							handler:function() {
-								setStatusFun("1");
-							}
 						}
 					)
 				} else if (res.data.userBusinessList[0].value == "[17]") {
-					tableToolBar.push({
-						id:'oskDepotHead',
-						text:'已收款',
-						iconCls:'icon-ok',
-						handler:function() {
-							setStatusFun("6");
-						}
-					});
+					tableToolBar.push();
 				} else if (res.data.userBusinessList[0].value == "[24]") {
 					tableToolBar.push();
 				}
@@ -725,8 +695,10 @@ function initTableData(){
 							return "<span style='color:blue;'>售后订单</span>";
 						} else if (value === "6") {
 							return "<span style='color:blue;'>已收款</span>";
-						} else {
-							return "<span style='color:blue;'>售后订单</span>";
+						} else if (value === "7"){
+							return "<span style='color:blue;'>已开票</span>";
+						} else if (value === "2"){
+							return "<span style='color:blue;'>已发货</span>";
 						}
 					}
 				},
@@ -852,8 +824,10 @@ function initTableData(){
 							return "<span style='color:blue;'>售后订单</span>";
 						} else if (value === "6") {
 							return "<span style='color:blue;'>已收款</span>";
-						} else {
-							return "<span style='color:blue;'>售后订单</span>";
+						} else if (value === "7"){
+							return "<span style='color:blue;'>已开票</span>";
+						} else if (value === "2"){
+							return "<span style='color:blue;'>已发货</span>";
 						}
 					}
 				},
@@ -981,8 +955,10 @@ function initTableData(){
 							return "<span style='color:blue;'>售后订单</span>";
 						} else if (value === "6") {
 							return "<span style='color:blue;'>已收款</span>";
-						} else {
-							return "<span style='color:blue;'>售后订单</span>";
+						} else if (value === "7"){
+							return "<span style='color:blue;'>已开票</span>";
+						} else if (value === "2"){
+							return "<span style='color:blue;'>已发货</span>";
 						}
 					}
 				},
@@ -1098,8 +1074,10 @@ function initTableData(){
 							return "<span style='color:blue;'>售后订单</span>";
 						} else if (value === "6") {
 							return "<span style='color:blue;'>已收款</span>";
-						} else {
-							return "<span style='color:blue;'>售后订单</span>";
+						} else if (value === "7"){
+							return "<span style='color:blue;'>已开票</span>";
+						} else if (value === "2"){
+							return "<span style='color:blue;'>已发货</span>";
 						}
 					}
 				},
@@ -2694,13 +2672,6 @@ function initTableData_material(type,TotalPrice,biaoshi,roleID){
 					{ title: '税率(%)',field: 'TaxRate',editor:'validatebox',hidden:isShowTaxColumn,width:78},
 					{ title: '税额',field: 'TaxMoney',editor:'validatebox',hidden:isShowTaxColumn,width:78},
 					{ title: '价税合计',field: 'TaxLastMoney',editor:'validatebox',hidden:isShowTaxColumn,width:78},
-
-					// { title: '联系人姓名',field: 'contacts_name',editor:'validatebox',width:78},
-					// { title: '联系人电话',field: 'contacts_phone',editor:'validatebox',width:78},
-					// { title: '联系人微信',field: 'we_chat',editor:'validatebox',width:78},
-					// { title: '公司/施工单位名称',field: 'company',editor:'validatebox',width:78},
-					// { title: '工程地址',field: 'project_address',editor:'validatebox',width:78},
-					// { title: '工程名称',field: 'project_name',editor:'validatebox',width:78},
 					{ title: '收款',field: 'payment',editor:'validatebox',width:78,
 						formatter: function (value, row, index) {
 							return row.DepotName;
@@ -2727,31 +2698,6 @@ function initTableData_material(type,TotalPrice,biaoshi,roleID){
 						}
 					},
 					{ title: '发票',field: 'invoice',editor:'validatebox',width:78,
-						formatter: function (value, row, index) {
-							return row.DepotName;
-						},
-						editor: {
-							type: 'combobox',
-							options: {
-								valueField: 'id',
-								textField: depotTextField,
-								method: 'get',
-								url: '/depot/findDepot',
-								onSelect:function(rec){
-									var depotId = rec.id;
-									body =$("#depotHeadFM .datagrid-body");
-									footer =$("#depotHeadFM .datagrid-footer");
-									input = ".datagrid-editable-input";
-									var mId = body.find("[field='MaterialId']").find(".combo-value").val();
-									if(mId){
-										var type = "select"; //type 类型：点击 click，选择 select
-										findStockNumById(depotId, mId, monthTime, body, input, ratioDepot, type);
-									}
-								}
-							}
-						}
-					},
-					{ title: '发货',field: 'gate',editor:'validatebox',width:78,
 						formatter: function (value, row, index) {
 							return row.DepotName;
 						},
@@ -3602,6 +3548,31 @@ function initTableData_material(type,TotalPrice,biaoshi,roleID){
 							}
 						}
 					},
+					{ title: '安装',field: 'install',editor:'validatebox',width:78,
+						formatter: function (value, row, index) {
+							return row.DepotName;
+						},
+						editor: {
+							type: 'combobox',
+							options: {
+								valueField: 'id',
+								textField: depotTextField,
+								method: 'get',
+								url: '/depot/findDepot',
+								onSelect:function(rec){
+									var depotId = rec.id;
+									body =$("#depotHeadFM .datagrid-body");
+									footer =$("#depotHeadFM .datagrid-footer");
+									input = ".datagrid-editable-input";
+									var mId = body.find("[field='MaterialId']").find(".combo-value").val();
+									if(mId){
+										var type = "select"; //type 类型：点击 click，选择 select
+										findStockNumById(depotId, mId, monthTime, body, input, ratioDepot, type);
+									}
+								}
+							}
+						}
+					},
 					{ title: '人脸机类型',field: 'machine_type',editor:'validatebox',width:78},
 					{ title: '人脸机数量',field: 'machine_number',editor:'validatebox',width:78},
 					{ title: '闸机类型',field: 'gate_type',editor:'validatebox' ,width:78},
@@ -3730,38 +3701,40 @@ function initTableData_material_show(TotalPrice){
 		columns:[[
 			{ title: '商品类型',field: 'MType',width:80, hidden:isShowMaterialTypeColumn},
 			{ title: depotHeadName,field: 'DepotName',editor:'validatebox',width:90},
+			{ title: '订单类型',field: 'order_type',width:78},
 			{ title: '品名(型号)(扩展信息)(单位)',field: 'MaterialName',width:230},
 			{ title: '库存',field: 'Stock',width:70},
 			{ title: anotherDepotHeadName,field: 'AnotherDepotName',hidden:isShowAnotherDepot,width:90},
 			{ title: '单位',field: 'Unit',editor:'validatebox',width:60},
 			{ title: '数量',field: 'OperNumber',editor:'validatebox',width:60},
-			{ title: '分批数量',field: 'finishNumber',editor:'validatebox',hidden:isShowFinishColumn,width:60},
+			// { title: '分批数量',field: 'finishNumber',editor:'validatebox',hidden:isShowFinishColumn,width:60},
 			{ title: '单价',field: 'UnitPrice',editor:'validatebox',width:60},
 			{ title: '含税单价',field: 'TaxUnitPrice',editor:'validattebox',hidden:isShowTaxColumn,width:78},
 			{ title: '金额',field: 'AllPrice',editor:'validatebox',width:78},
 			{ title: '税率',field: 'TaxRate',editor:'validatebox',hidden:isShowTaxColumn,width:78},
 			{ title: '税额',field: 'TaxMoney',editor:'validatebox',hidden:isShowTaxColumn,width:78},
 			{ title: '价税合计',field: 'TaxLastMoney',editor:'validatebox',hidden:isShowTaxColumn,width:78},
+			{ title: '工程名称',field: 'OrganName',editor:'validatebox',width:78},
+			{ title: '姓名',field: 'contacts',editor:'validatebox',width:78},
+			{ title: '电话',field: 'phonenum',editor:'validatebox',width:78},
+			// { title: '联系人微信',field: 'we_chat',editor:'validatebox',width:78},
+			// { title: '公司/施工单位名称',field: 'company',editor:'validatebox',width:78},
+			{ title: '工程地址',field: 'description',editor:'validatebox',width:78},
 
-			{ title: '联系人姓名',field: 'contacts_name',editor:'validatebox',width:78},
-			{ title: '联系人电话',field: 'contacts_phone',editor:'validatebox',width:78},
-			{ title: '联系人微信',field: 'we_chat',editor:'validatebox',width:78},
-			{ title: '公司/施工单位名称',field: 'company',editor:'validatebox',width:78},
-			{ title: '工程地址',field: 'project_address',editor:'validatebox',width:78},
-			{ title: '工程名称',field: 'project_name',editor:'validatebox',width:78},
 			{ title: '合同',field: 'contract',width:78},
 			{ title: '合同编号',field: 'conyract_number',width:78},
-			{ title: '合同金额',field: 'conyract_money',width:78},
+			// { title: '合同金额',field: 'conyract_money',width:78},
 			{ title: '收款',field: 'payment',width:78},
 			{ title: '发票',field: 'invoice',width:78},
+			{ title: '发货',field: 'gate',width:78},
 			{ title: '安装',field: 'install',width:78},
-			{ title: '安装人',field: 'installer',width:78},
-			{ title: '最晚安装日期',field: 'installer_time',width:78},
+			// { title: '安装人',field: 'installer',width:78},
+			// { title: '最晚安装日期',field: 'installer_time',width:78},
 			{ title: '人脸机类型',field: 'machine_type',width:78},
 			{ title: '人脸机数量',field: 'machine_number',width:78},
 			{ title: '闸机类型',field: 'gate_type',width:78},
 			{ title: '闸机数量',field: 'gate_number',width:78},
-			{ title: '订单类型',field: 'order_type',width:78},
+
 			{ title: '备注',field: 'Remark',editor:'validatebox',width:120},
 			{ title: '品名-别',field: 'OtherField1',editor:'validatebox',hidden:otherColumns,width:60},
 			{ title: '型号-别',field: 'OtherField2',editor:'validatebox',hidden:otherColumns,width:60},
@@ -5915,14 +5888,14 @@ function addDepotHeadAndDetail(url,infoStr){
 	});
 }
 //修改单据主表及单据子表
-function updateDepotHeadAndDetail(url,infoStr,preTotalPrice){
+function updateDepotHeadAndDetail(url,infoStr,preTotalPrice) {
 	debugger
 	var inserted = $("#materialData").datagrid('getChanges', "inserted");
 	var deleted = $("#materialData").datagrid('getChanges', "deleted");
 	var updated = $("#materialData").datagrid('getChanges', "updated");
 	var inst = updated[0].install;
-	if (gate == "是"){
-		if (userdepot =="[10]") {
+	if (gate == "是") {
+		if (userdepot == "[10]") {
 
 		} else {
 			if (updated[0].gate != "是") {
@@ -5931,8 +5904,8 @@ function updateDepotHeadAndDetail(url,infoStr,preTotalPrice){
 			}
 		}
 	}
-	if (install == "是"){
-		if (userdepot =="[10]") {
+	if (install == "是") {
+		if (userdepot == "[10]") {
 		} else {
 			if (updated[0].install != "是") {
 				$.messager.alert('提示：', '您没有权限修改安装状态！如需变更请联系管理员');
@@ -5940,17 +5913,8 @@ function updateDepotHeadAndDetail(url,infoStr,preTotalPrice){
 			}
 		}
 	}
-	if (install == "是"){
-		if (userdepot =="[10]") {
-		} else {
-			if (updated[0].install != "是") {
-				$.messager.alert('提示：', '您没有权限修改安装状态！如需变更请联系管理员');
-				return;
-			}
-		}
-	}
-	if (invoice == "是"){
-		if (userdepot =="[10]") {
+	if (invoice == "是") {
+		if (userdepot == "[10]") {
 		} else {
 			if (updated[0].invoice != "是") {
 				$.messager.alert('提示：', '您没有权限修改发票状态！如需变更请联系管理员');
@@ -5958,8 +5922,8 @@ function updateDepotHeadAndDetail(url,infoStr,preTotalPrice){
 			}
 		}
 	}
-	if (payment == "是"){
-		if (userdepot =="[10]") {
+	if (payment == "是") {
+		if (userdepot == "[10]") {
 		} else {
 			if (updated[0].payment != "是") {
 				$.messager.alert('提示：', '您没有权限修改收款状态！如需变更请联系管理员');
@@ -5967,21 +5931,42 @@ function updateDepotHeadAndDetail(url,infoStr,preTotalPrice){
 			}
 		}
 	}
-	if (contract == "是"){
-		if (userdepot =="[10]") {
+	if (contract == "是") {
+		if (userdepot == "[10]") {
 
-		}else {
+		} else {
 			if (updated[0].contract != "是") {
 				$.messager.alert('提示：', '您没有权限修改合同状态！如需变更请联系管理员');
 				return;
 			}
 		}
 	}
-	if (inst == "是"){
-		setStatusFunMPI("4");
-
-		skipDepotHead(0);
+	if (payment == "否") {
+		if (updated[0].payment == "是") {
+			setStatusFunMPI("6");
+		}
 	}
+	if (invoice == "否") {
+		if (updated[0].invoice == "是") {
+			setStatusFunMPI("7");
+		}
+	}
+	if (gate == "否") {
+		if (updated[0].gate == "是") {
+			setStatusFunMPI("2");
+		}
+	}
+	if (contract == "否") {
+		if (updated[0].contract == "是") {
+			setStatusFunMPI("1");
+		}
+	}
+	if (install == "否") {
+		if (inst == "是") {
+			setStatusFunMPI("4");
+		}
+	}
+
 	$.ajax({
 		type:"post",
 		url: url,
