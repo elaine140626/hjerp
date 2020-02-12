@@ -609,6 +609,14 @@ function initTableData(){
 							handler:function() {
 								exportMSG();
 							}
+						},
+						{
+							id:'export',
+							text:'导出清华研究院对账',
+							iconCls:'icon-ok',
+							handler:function() {
+								exportMSGS();
+							}
 						}
 					)
 				} else if (res.data.userBusinessList[0].value == "[18]") {
