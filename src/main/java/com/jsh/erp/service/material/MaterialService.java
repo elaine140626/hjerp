@@ -415,6 +415,9 @@ public class MaterialService {
     public List<Material> machineType(Material material){
         return materialMapper.machineType(material);
     }
+    public List<Material> machineTypes(Material material){
+        return materialMapper.machineTypes(material);
+    }
 
     public List<Material> machineTypeCount(Material material){
         return materialMapper.machineTypeCount(material);

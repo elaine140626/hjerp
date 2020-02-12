@@ -113,9 +113,18 @@
     tenant_id, delete_Flag, BarCode
   </sql>
 
-  <select id="machineType" parameterType="com.jsh.erp.datasource.entities.Material" resultMap="BaseResultMap">
-        SELECT * FROM jsh_material  WHERE `LEVEL` LIKE CONCAT(CONCAT('%',#{id,jdbcType=BIGINT}),'%')
+  <select id="machineSeleAll" parameterType="com.jsh.erp.datasource.entities.Material" resultMap="BaseResultMap">
+        SELECT * FROM jsh_material  WHERE `name`= #{name,jdbcType=BIGINT}
   </select>
+
+  <select id="machineType" parameterType="com.jsh.erp.datasource.entities.Material" resultMap="BaseResultMap">
+        SELECT * FROM jsh_material  WHERE `LEVEL` LIKE CONCAT(CONCAT('%',#{id,jdbcType=BIGINT}),'%') and name LIKE '%人脸%'
+  </select>
+
+  <select id="machineTypes" parameterType="com.jsh.erp.datasource.entities.Material" resultMap="BaseResultMap">
+        SELECT * FROM jsh_material  WHERE `LEVEL` LIKE CONCAT(CONCAT('%',#{id,jdbcType=BIGINT}),'%') and name LIKE '%闸%'
+  </select>
+
   <select id="machineTypeCount" parameterType="com.jsh.erp.datasource.entities.Material" resultMap="BaseResultMap">
         SELECT * FROM jsh_material  WHERE `name` = #{name,jdbcType=VARCHAR}
   </select>

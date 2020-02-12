@@ -193,13 +193,13 @@ public class DepotController {
                     item.put("id", "专票：6%");
                     item.put("depotName", "专票：6%");
                 } else if (i == 1){
-                    item.put("id", "专票：6%");
+                    item.put("id", "专票：13%");
                     item.put("depotName", "专票：13%");
                 } else if (i == 2){
-                    item.put("id", "专票：6%");
+                    item.put("id", "普票：6%");
                     item.put("depotName", "普票：6%");
                 } else if (i == 3){
-                    item.put("id", "专票：6%");
+                    item.put("id", "普票：13%");
                     item.put("depotName", "普票：13%");
                 }
                 arr.add(item);

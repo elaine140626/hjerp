@@ -8,6 +8,14 @@
         <result column="HandsPersonName" jdbcType="VARCHAR" property="handsPersonName" />
         <result column="AccountName" jdbcType="VARCHAR" property="accountName" />
         <result column="AllocationProjectName" jdbcType="VARCHAR" property="allocationProjectName" />
+        <result column="supplier" jdbcType="VARCHAR" property="supplier" />
+        <result column="contacts" jdbcType="VARCHAR" property="contacts" />
+        <result column="phonenum" jdbcType="VARCHAR" property="phonenum" />
+        <result column="description" jdbcType="VARCHAR" property="description" />
+        <result column="supplier_id" jdbcType="INTEGER" property="supplier_id" />
+        <result column="Munit" jdbcType="VARCHAR" property="Munit" />
+        <result column="address" jdbcType="VARCHAR" property="address" />
+
     </resultMap>
 
     <resultMap id="Materidl" type="com.jsh.erp.datasource.entities.Material">
@@ -56,6 +64,7 @@
 
     <select id="selectByConditionDepotHead" parameterType="com.jsh.erp.datasource.entities.DepotHeadExample" resultMap="ResultMapEx">
         select distinct dh.*,di.*, d.name ProjectName, s.supplier OrganName, p.name HandsPersonName, a.name AccountName, dd.name AllocationProjectName
+        ,s.supplier, s.contacts,s.phonenum,s.description,s.supplier_id,s.address
         from jsh_depothead dh
         left join jsh_depot d on dh.ProjectId=d.id and ifnull(d.delete_Flag,'0') !='1'
         left join jsh_supplier s on dh.OrganId=s.id and ifnull(s.delete_Flag,'0') !='1'
