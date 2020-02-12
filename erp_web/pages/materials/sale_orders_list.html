@@ -96,6 +96,20 @@
                     <input id="conyract_money" name="conyract_money" style="width:130px;"/>
                 </td>
 
+                <td id="fileformsMsg2" style="display: none;"></td>
+                <td id="fileformsMsg" style="display: none;">
+                    <a id="uploadfile" style="display:none;" onclick="showFiles()" ><span>上传合同</span>上传</a>
+                    <form enctype="multipart/form-data" id="fileform" method="post" action="../uploadFile_project_img_infos.call">
+                        <input type="file" name="uploadify" value="" onchange="submitfile(event)" id="myuploadFile" accept="image/*">
+                    </form>
+                </td>
+                <td id="fileformsMsg3" style="display: none;"></td>
+                <td id="fileformsMsg1" style="display: none;">
+                    <a id="uploadfiles" style="display:none;" onclick="showFiles()" ><span>上传合同</span>上传</a>
+                    <form enctype="multipart/form-data" id="fileforms" method="post" action="../uploadFile_project_img_infos.call">
+                        <input type="file" name="uploadify" value="" onchange="submitfile(event)" id="myuploadFiles" accept="image/*">
+                    </form>
+                </td>
 
             </tr>
             <tr>
@@ -129,18 +143,6 @@
 <!--                        <input type="file" name="uploadify" value="" onchange="submitfile(event)" id="myuploadFiles" accept="image/*">-->
 <!--                    </form>-->
 <!--                </td>-->
-            </tr>
-            <tr id="fileformsMsgs" style="display: none;">
-
-                <td>
-                    <a id="uploadfile" style="display:none;" onclick="showFiles()" ><span>上传合同</span>上传</a>
-                    <form enctype="multipart/form-data" id="fileform" method="post" action="../uploadFile_project_img_infos.call">
-                        <input type="file" name="uploadify" value="" onchange="submitfile(event)" id="myuploadFile" accept="image/*">
-                    </form>
-                </td>
-
-                <td style="width:100px;"></td>
-
             </tr>
             <tr>
                 <td colspan="9">
