@@ -220,6 +220,10 @@ public class DepotItemController {
                     item.put("gate_type",diEx.getGate_type());
                     item.put("gate_number",diEx.getGate_number());
                     item.put("order_type",diEx.getOrder_type());
+                    item.put("OrganName",diEx.getOrganName());
+                    item.put("contacts",diEx.getContacts());
+                    item.put("phonenum",diEx.getPhonenum());
+                    item.put("description",diEx.getDescription());
                     dataArray.add(item);
                 }
             }

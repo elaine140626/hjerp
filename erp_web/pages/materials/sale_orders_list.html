@@ -90,12 +90,27 @@
                              style="cursor: pointer;" alt="添加项目" title="添加项目"/>
                     </div>
                 </td>
+
+                <td style="width:70px;" >发票类型</td>
+                <td style="padding:5px;">
+                    <input id="conyract_money" name="conyract_money" style="width:130px;"/>
+                </td>
+
+                <td id="fileformsMsg2" style="display: none;"></td>
                 <td id="fileformsMsg" style="display: none;">
                     <a id="uploadfile" style="display:none;" onclick="showFiles()" ><span>上传合同</span>上传</a>
                     <form enctype="multipart/form-data" id="fileform" method="post" action="../uploadFile_project_img_infos.call">
                         <input type="file" name="uploadify" value="" onchange="submitfile(event)" id="myuploadFile" accept="image/*">
                     </form>
                 </td>
+                <td id="fileformsMsg3" style="display: none;"></td>
+                <td id="fileformsMsg1" style="display: none;">
+                    <a id="uploadfiles" style="display:none;" onclick="showFiles()" ><span>上传合同</span>上传</a>
+                    <form enctype="multipart/form-data" id="fileforms" method="post" action="../uploadFile_project_img_infos.call">
+                        <input type="file" name="uploadify" value="" onchange="submitfile(event)" id="myuploadFiles" accept="image/*">
+                    </form>
+                </td>
+
             </tr>
             <tr>
                 <td style="width:70px;">单据日期：</td>
@@ -113,6 +128,13 @@
                 <td style="padding:5px">
                     <input id="Salesman" name="Salesman" style="width:130px;"/>
                 </td>
+
+                <td style="width:70px;">收款日期：</td>
+                <td style="padding:5px">
+                    <input type="text" name="OperTime" id="OperTimes"
+                           onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="txt Wdate"
+                           style="width:140px;" readonly/>
+                </td>
                 <td style="width:100px;"></td>
 
 <!--                <td id="fileformsMsgs" >-->
@@ -121,21 +143,6 @@
 <!--                        <input type="file" name="uploadify" value="" onchange="submitfile(event)" id="myuploadFiles" accept="image/*">-->
 <!--                    </form>-->
 <!--                </td>-->
-            </tr>
-            <tr>
-                <td style="width:70px;">收款日期：</td>
-                <td style="padding:5px">
-                    <input type="text" name="OperTime" id="OperTimes"
-                           onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="txt Wdate"
-                           style="width:140px;" readonly/>
-                </td>
-
-                <td style="width:70px;">发票类型</td>
-                <td style="padding:5px">
-                    <input id="conyract_money" name="conyract_money" style="width:130px;"/>
-                </td>
-                <td style="width:100px;"></td>
-
             </tr>
             <tr>
                 <td colspan="9">
