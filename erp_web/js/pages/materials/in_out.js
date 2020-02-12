@@ -578,6 +578,14 @@ function initTableData(){
 								setStatusFun("0");
 							}
 						},
+						{
+							id: 'okDepotHead',
+							text: '安装',
+							iconCls: 'icon-ok',
+							handler: function () {
+								setStatusFun("4");
+							}
+						},
 						// {
 						// 	id:'installs',
 						// 	text:'已安装',
@@ -617,7 +625,14 @@ function initTableData(){
 				} else if (res.data.userBusinessList[0].value == "[17]") {
 					tableToolBar.push();
 				} else if (res.data.userBusinessList[0].value == "[24]") {
-					tableToolBar.push();
+					tableToolBar.push({
+						id: 'okDepotHead',
+						text: '安装',
+						iconCls: 'icon-ok',
+						handler: function () {
+							setStatusFun("4");
+						}
+					});
 				}
 			}
 		}
@@ -3990,7 +4005,54 @@ function setStatusFun(status) {
 		});
 	}
 }
-
+function setStatusStatus(status) {
+	var row = $('#tableData').datagrid('getChecked');
+	if(row.length == 0) {
+		$.messager.alert('提示','没有记录被选中！','info');
+		return;
+	}
+	if(row.length > 0) {
+		$.messager.confirm('确认','确定要操作选中的' + row.length + '条信息吗？',function(r) {
+			if (r) {
+				var ids = "";
+				for(var i = 0;i < row.length; i ++) {
+					if(i == row.length-1) {
+						if(row[i].status != "4") {
+							ids += row[i].id;
+						}
+						break;
+					}
+					ids += row[i].id + ",";
+				}
+				if(ids) {
+					$.ajax({
+						type:"post",
+						url: "/depotHead/batchSetStatus",
+						dataType: "json",
+						async :  false,
+						success: function (res) {
+							if(res && res.code === 200) {
+								$("#searchBtn").click();
+								$(":checkbox").attr("checked", false);
+							} else if (res && res.code == 300) {
+								$.messager.alert('提示', '操作信息失败，请稍后再试！', 'error');
+							} else {
+								$.messager.alert('提示', '操作信息失败，请稍后再试！', 'error');
+							}
+						},
+						//此处添加错误处理
+						error:function() {
+							$.messager.alert('提示','操作信息异常，请稍后再试！','error');
+							return;
+						}
+					});
+				} else {
+					$.messager.alert('提示','没有能操作的单据！','warning');
+				}
+			}
+		});
+	}
+}
 function setStatusFunMPI(status) {
 	var row = $('#tableData').datagrid('getChecked');
 	if(row.length == 0) {
@@ -4081,11 +4143,10 @@ function buildNumber() {
 //新增信息
 function addDepotHead(){
 
-	if (userdepot == "[18]" || userdepot == "[20]" || userdepot == "[10]"){
-		$("#fileformsMsg").show();//显示
-	}else{
-		$("#fileformsMsg").hide();//隐藏
-	}
+	$("#fileformsMsg").hide();//隐藏
+	$("#fileformsMsg1").hide();//隐藏
+	$("#fileformsMsg2").hide();//隐藏
+	$("#fileformsMsg3").hide();//隐藏
 	$("#fileformsBJ1").show();
 	$("#fileformsBJ2").show();
 	$("#fileformsBJ3").show();
@@ -4194,11 +4255,10 @@ function addDepotHead(){
 //编辑信息
 function editDepotHead(index, res){
 	debugger;
-	if (userdepot == "[18]" || userdepot == "[20]" || userdepot == "[10]"){
-		$("#fileformsMsg").show();//显示
-	}else{
-		$("#fileformsMsg").hide();//隐藏
-	}
+	$("#fileformsMsg").show();//显示
+	$("#fileformsMsg1").show();//显示
+	$("#fileformsMsg2").show();//显示
+	$("#fileformsMsg3").show();//显示
 	$("#fileformsBJ1").hide();
 	$("#fileformsBJ2").hide();
 	$("#fileformsBJ3").hide();
@@ -4332,7 +4392,7 @@ function editDepotHead(index, res){
 		url = '/depotHead/updateDepotHeadAndDetail?id=' + res.id; //更新接口
 	}
 }
-function editDepotHeadItem(index, res){
+function editDepotHeadItemss(index, res){
 	if(!res) {
 		res = $("#tableData").datagrid("getRows")[index];
 	}
@@ -5888,7 +5948,7 @@ function addDepotHeadAndDetail(url,infoStr){
 	});
 }
 //修改单据主表及单据子表
-function updateDepotHeadAndDetail(url,infoStr,preTotalPrice) {
+function editDepotHeadItem(url,infoStr,preTotalPrice) {
 	debugger
 	var inserted = $("#materialData").datagrid('getChanges', "inserted");
 	var deleted = $("#materialData").datagrid('getChanges', "deleted");
@@ -5961,12 +6021,6 @@ function updateDepotHeadAndDetail(url,infoStr,preTotalPrice) {
 			setStatusFunMPI("1");
 		}
 	}
-	if (install == "否") {
-		if (inst == "是") {
-			setStatusFunMPI("4");
-		}
-	}
-
 	$.ajax({
 		type:"post",
 		url: url,
