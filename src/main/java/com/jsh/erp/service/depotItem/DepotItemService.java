@@ -372,13 +372,13 @@ public class DepotItemService {
                     depotItem.setInvoice("否");
                     depotItem.setPayment("否");
                     depotItem.setContract("否");
-                    if (tempInsertedJson.getString("machine_type") != null && !tempInsertedJson.getString("machine_type").equals("")){
+                    if (tempInsertedJson.getString("machine_type") != null && !tempInsertedJson.getString("machine_type").equals("") && !tempInsertedJson.getString("machine_type").equals("无")){
                         Material material = new Material();
                         material.setName(tempInsertedJson.getString("machine_type"));
                         Material materialList = materialMapper.machineSeleAlls(material);
                         depotItem.setMachinetype_id(materialList.getId());
                     }
-                    if (tempInsertedJson.getString("gate_type") != null && !tempInsertedJson.getString("gate_type").equals("")){
+                    if (tempInsertedJson.getString("gate_type") != null && !tempInsertedJson.getString("gate_type").equals("") && !tempInsertedJson.getString("gate_type").equals("无")){
                         Material material = new Material();
                         material.setName(tempInsertedJson.getString("gate_type"));
                         Material materialList = materialMapper.machineSeleAlls(material);
