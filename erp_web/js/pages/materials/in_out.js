@@ -4125,6 +4125,7 @@ function setStatusGate(status) {
                     $.messager.alert('查询提示', '查询数据后台异常，请稍后再试！', 'error');
                 }
             })
+			
             //         var ids = "";
             //
             //         for(var i = 0;i < row.length; i ++) {
