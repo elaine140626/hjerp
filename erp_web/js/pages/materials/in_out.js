@@ -4236,7 +4236,6 @@ var number = 0;
 var AllPrice = 0;
 //出库提示弹出框
 function outEject(res) {
-	debugger
 	for (i = 0; i < res.data.length;i++){
 		if (res.data[i].machine_number2 == 0 && res.data[i].gate_number2 == 0) {
 			$.messager.alert('温馨提示', '本订单货已全部发完', 'info');
