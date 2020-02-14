@@ -35,6 +35,7 @@
     <result column="BarCode" jdbcType="VARCHAR" property="barcode" />
     <result column="organId" jdbcType="BIGINT" property="organId" />
     <result column="level" jdbcType="VARCHAR" property="level" />
+    <result column="HandsPersonId" jdbcType="BIGINT" property="handspersonid" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <!--

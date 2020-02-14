@@ -39,6 +39,9 @@ public interface DepotItemMapperEx {
     List<DepotItemVo4WithInfoEx> getDetailList(
             @Param("headerId") Long headerId);
 
+    List<DepotItemVo4WithInfoEx> getDetailNumberList(
+            @Param("number") String number);
+
     List<DepotItemVo4WithInfoEx> findByAll(
             @Param("headIds") String headIds,
             @Param("materialIds") String materialIds,
@@ -69,6 +72,10 @@ public interface DepotItemMapperEx {
             @Param("beginTime") String beginTime,
             @Param("endTime") String endTime,
             @Param("tenantId") Long tenantId);
+
+    DepotItemVo4WithInfoEx findMachineTypeId(@Param("tId") Long tId,@Param("mId") Long mId);
+
+    DepotItemVo4WithInfoEx findGateTypeId(@Param("tId") Long tId,@Param("mId") Long mId);
 
     /**
      * 通过单据主表id查询所有单据子表数据
