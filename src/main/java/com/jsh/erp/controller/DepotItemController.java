@@ -238,6 +238,146 @@ public class DepotItemController {
         return res;
     }
 
+    /**
+     * 按单据编号查询数据
+     * @param number
+     * @param mpList
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @GetMapping(value = "/getDetailNumberList")
+    public BaseResponseInfo getDetailNumberList(@RequestParam("number") String number,
+                                          @RequestParam("mpList") String mpList,
+                                          HttpServletRequest request)throws Exception {
+        BaseResponseInfo res = new BaseResponseInfo();
+        Map<String, Object> map = new HashMap<String, Object>();
+        Long tenantId = Long.parseLong(request.getSession().getAttribute("tenantId").toString());
+        try {
+            List<DepotItemVo4WithInfoEx> dataList = new ArrayList<DepotItemVo4WithInfoEx>();
+            if(number != "") {
+                dataList = depotItemService.getDetailNumberList(number);
+            }
+            String[] mpArr = mpList.split(",");
+            //存放数据json数组
+            JSONArray dataArray = new JSONArray();
+            if (null != dataList) {
+                for (DepotItemVo4WithInfoEx diEx : dataList) {
+                    JSONObject item = new JSONObject();
+                    item.put("Id", diEx.getId());
+                    item.put("MaterialId", diEx.getMaterialid() == null ? "" : diEx.getMaterialid());
+                    String ratio; //比例
+                    if (diEx.getUnitId() == null || diEx.getUnitId().equals("")) {
+                        ratio = "";
+                    } else {
+                        ratio = diEx.getUName();
+                        ratio = ratio.substring(ratio.indexOf("("));
+                    }
+                    //品名/型号/扩展信息/包装
+                    String MaterialName = (diEx.getMName() == null || diEx.getMName().equals("")) ? "" : diEx.getMName()
+                            + ((diEx.getMModel() == null || diEx.getMModel().equals("")) ? "" : "(" + diEx.getMModel() + ")");
+                    String materialOther = getOtherInfo(mpArr, diEx);
+                    MaterialName = MaterialName + materialOther + ((diEx.getUName() == null || diEx.getUName().equals("")) ? "" : "(" + diEx.getUName() + ")") + ratio;
+                    item.put("MaterialName", MaterialName == null ? "" : MaterialName);
+                    item.put("MaterialStock", depotItemService.getStockByParam(diEx.getDepotid(),diEx.getMachinetype_id(),null,null,tenantId));
+                    item.put("gateStock", depotItemService.getStockByParam(diEx.getDepotid(),diEx.getGatetype_id(),null,null,tenantId));
+                    item.put("depotId",diEx.getDepotid());
+                    item.put("Unit", diEx.getMunit());
+                    item.put("Machinetype_id", diEx.getMachinetype_id());
+                    item.put("AllPrice", diEx.getAllprice());
+                    item.put("Gatetype_id", diEx.getGatetype_id());
+                    item.put("OperNumber", diEx.getOpernumber());
+                    item.put("BasicNumber", diEx.getBasicnumber());
+                    //统计该商品已分批出库的总数量-用于订单
+                    item.put("finishNumber", depotItemService.getFinishNumber(diEx.getMaterialid(),diEx.getHeaderid()));
+                    item.put("UnitPrice", diEx.getUnitprice());
+                    item.put("TaxUnitPrice", diEx.getTaxunitprice());
+                    item.put("Salesman", diEx.getSalesman());
+                    item.put("AllPrice", diEx.getAllprice());
+                    item.put("Remark", diEx.getRemark());
+                    item.put("Img", diEx.getImg());
+                    item.put("DepotId", diEx.getDepotid() == null ? "" : diEx.getDepotid());
+                    item.put("DepotName", diEx.getDepotid() == null ? "" : diEx.getDepotName());
+                    item.put("AnotherDepotId", diEx.getAnotherdepotid() == null ? "" : diEx.getAnotherdepotid());
+                    item.put("AnotherDepotName", diEx.getAnotherdepotid() == null ? "" : diEx.getAnotherDepotName());
+                    item.put("TaxRate", diEx.getTaxrate());
+                    item.put("TaxMoney", diEx.getTaxmoney());
+                    item.put("TaxLastMoney", diEx.getTaxlastmoney());
+                    item.put("OtherField1", diEx.getOtherfield1());
+                    item.put("OtherField2", diEx.getOtherfield2());
+                    item.put("OtherField3", diEx.getOtherfield3());
+                    item.put("OtherField4", diEx.getOtherfield4());
+                    item.put("OtherField5", diEx.getOtherfield5());
+                    item.put("MType", diEx.getMtype());
+                    item.put("op", 1);
+                    item.put("contacts_name",diEx.getContacts_name());
+                    item.put("contacts_phone",diEx.getContacts_phone());
+                    item.put("company",diEx.getCompany());
+                    item.put("we_chat",diEx.getWe_chat());
+                    item.put("project_address",diEx.getProject_address());
+                    item.put("project_name",diEx.getProject_name());
+                    item.put("card_ognizer",diEx.getCard_ognizer());
+                    item.put("ognizer_number",diEx.getOgnizer_number());
+                    item.put("contract",diEx.getContract());
+                    item.put("conyract_number",diEx.getConyract_number());
+                    item.put("conyract_money",diEx.getConyract_money());
+                    item.put("payment",diEx.getPayment());
+                    item.put("invoice",diEx.getInvoice());
+                    item.put("install",diEx.getInstall());
+                    item.put("installer",diEx.getInstaller());
+                    item.put("installer_time",diEx.getInstaller_time());
+                    item.put("machine",diEx.getMachine());
+                    item.put("machine_type",diEx.getMachine_type());
+                    item.put("machine_number",diEx.getMachine_number());
+                    item.put("machine_number2",diEx.getMachine_number2());
+                    item.put("gate",diEx.getGate());
+                    item.put("gate_type",diEx.getGate_type());
+                    item.put("gate_number",diEx.getGate_number());
+                    item.put("gate_number2",diEx.getGate_number2());
+                    item.put("order_type",diEx.getOrder_type());
+                    item.put("OrganName",diEx.getOrganName());
+                    item.put("contacts",diEx.getContacts());
+                    item.put("phonenum",diEx.getPhonenum());
+                    item.put("description",diEx.getDescription());
+                    dataArray.add(item);
+                }
+            }
+            res.code = 200;
+            res.data = dataArray;
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.code = 500;
+            res.data = "获取数据失败";
+        }
+        return res;
+    }
+
+    //修改数量
+    @GetMapping(value = "/updateDepotNumber")
+    public BaseResponseInfo updateDepotNumber(@RequestParam("gate_number2") int gate_number2,@RequestParam("machine_number2") int machine_number2,
+                                              @RequestParam("Id") Long Id, HttpServletRequest request)throws Exception {
+        BaseResponseInfo res = new BaseResponseInfo();
+        Long tenantId = Long.parseLong(request.getSession().getAttribute("tenantId").toString());
+        int result = 0;
+        try {
+            DepotItem depotItem = new DepotItem();
+            depotItem.setMachine_number2(machine_number2);
+            depotItem.setGate_number2(gate_number2);
+            depotItem.setId(Id);
+            result = depotItemService.updateDepotItemWithObj(depotItem);
+            res.code = 200;
+            res.data = 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.code = 500;
+            res.data = "获取数据失败";
+        }
+        return res;
+    }
+
+
+
+
 
     /**
      * 获取扩展信息
@@ -514,7 +654,7 @@ public class DepotItemController {
             map.put("total", total);
             //存放数据json数组
             JSONArray dataArray = new JSONArray();
-            if (null != dataList) {
+                if (null != dataList) {
                 for (DepotItemVo4WithInfoEx diEx : dataList) {
                     JSONObject item = new JSONObject();
                     BigDecimal OutSumRetail = depotItemService.buyOrSale("出库", "零售", diEx.getMId(), monthTime,"number");
@@ -768,5 +908,56 @@ public class DepotItemController {
             res = 0;
         }
         return res;
+    }
+
+
+
+    /**
+     *根据人脸机材料id查找信息
+     */
+    @GetMapping(value = "/findMachineTypeId")
+    public BaseResponseInfo findMachineTypeId(@RequestParam("tId") Long tId,@RequestParam("mId") Long mId,HttpServletRequest request, HttpServletResponse response)throws Exception {
+        BaseResponseInfo res = new BaseResponseInfo();
+        JSONObject Array = new JSONObject();
+        try {
+            DepotItemVo4WithInfoEx depotItemVo4WithInfoEx = depotItemService.findMachineTypeId(tId,mId);
+            if (depotItemVo4WithInfoEx != null){
+                Array.put("HandsPersonId",depotItemVo4WithInfoEx.getHandspersonid());
+                Array.put("organId",depotItemVo4WithInfoEx.getOrganId());
+            }
+            res.code = 200;
+            res.data = Array;
+        }catch (Exception e){
+            e.printStackTrace();
+            res.code =  res.code = 500;
+            res.data = "获取数据失败";
+        }
+        return  res;
+
+    }
+
+
+    /**
+     *根据闸机材料id查找信息
+     */
+    @GetMapping(value = "/findGateTypeId")
+    public BaseResponseInfo findGateTypeId(@RequestParam("tId") Long tId,@RequestParam("mId") Long mId,HttpServletRequest request, HttpServletResponse response)throws Exception {
+        BaseResponseInfo res = new BaseResponseInfo();
+        JSONObject Array = new JSONObject();
+        try {
+            DepotItemVo4WithInfoEx depotItemVo4WithInfoEx = depotItemService.findGateTypeId(tId,mId);
+            if (depotItemVo4WithInfoEx != null){
+                Array.put("HandsPersonId",depotItemVo4WithInfoEx.getHandspersonid());
+                Array.put("organId",depotItemVo4WithInfoEx.getOrganId());
+            }
+            res.code = 200;
+            res.data = Array;
+        }catch (Exception e){
+            e.printStackTrace();
+            res.code =  res.code = 500;
+            res.data = "获取数据失败";
+        }
+        return  res;
+
     }
 }

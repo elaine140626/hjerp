@@ -20,6 +20,7 @@ import com.jsh.erp.service.serialNumber.SerialNumberService;
 import com.jsh.erp.service.user.UserService;
 import com.jsh.erp.utils.QueryUtils;
 import com.jsh.erp.utils.StringUtil;
+import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -227,6 +228,40 @@ public class DepotItemService {
         }
         return list;
     }
+
+    public List<DepotItemVo4WithInfoEx> getDetailNumberList(String number)throws Exception {
+        List<DepotItemVo4WithInfoEx> list =null;
+        try{
+            list = depotItemMapperEx.getDetailNumberList(number);
+        }catch(Exception e){
+            JshException.readFail(logger, e);
+        }
+        return list;
+    }
+
+
+    public DepotItemVo4WithInfoEx findMachineTypeId(Long tId,Long mId)throws Exception {
+        DepotItemVo4WithInfoEx depotItemVo4WithInfoEx =null;
+        try{
+            depotItemVo4WithInfoEx = depotItemMapperEx.findMachineTypeId(tId,mId);
+        }catch(Exception e){
+            JshException.readFail(logger, e);
+        }
+        return depotItemVo4WithInfoEx;
+    }
+
+
+    public DepotItemVo4WithInfoEx findGateTypeId(Long tId,Long mId)throws Exception {
+        DepotItemVo4WithInfoEx depotItemVo4WithInfoEx =null;
+        try{
+            depotItemVo4WithInfoEx = depotItemMapperEx.findGateTypeId(tId,mId);
+        }catch(Exception e){
+            JshException.readFail(logger, e);
+        }
+        return depotItemVo4WithInfoEx;
+    }
+
+    ;
 
     public List<DepotItemVo4WithInfoEx> findByAll(String headIds, String materialIds, Integer offset, Integer rows)throws Exception {
         List<DepotItemVo4WithInfoEx> list =null;

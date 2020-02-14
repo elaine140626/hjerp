@@ -48,11 +48,15 @@
     <result column="installer" jdbcType="VARCHAR" property="installer" />
     <result column="installer_time" jdbcType="VARCHAR" property="installer_time" />
     <result column="machine" jdbcType="VARCHAR" property="machine" />
+    <result column="machinetype_id" jdbcType="BIGINT" property="machinetype_id" />
     <result column="machine_type" jdbcType="VARCHAR" property="machine_type" />
     <result column="machine_number" jdbcType="VARCHAR" property="machine_number" />
+    <result column="machine_number2" jdbcType="BIGINT" property="machine_number2" />
     <result column="gate" jdbcType="VARCHAR" property="gate" />
+    <result column="gatetype_id" jdbcType="BIGINT" property="gatetype_id" />
     <result column="gate_type" jdbcType="VARCHAR" property="gate_type" />
     <result column="gate_number" jdbcType="VARCHAR" property="gate_number" />
+    <result column="gate_number2" jdbcType="BIGINT" property="gate_number2" />
     <result column="order_type" jdbcType="VARCHAR" property="order_type" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -723,6 +727,12 @@
       </if>
       <if test="deleteFlag != null">
         delete_Flag = #{deleteFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="machine_number2 != null">
+        machine_number2 = #{machine_number2,jdbcType=BIGINT},
+      </if>
+      <if test="gate_number2 != null">
+        gate_number2 = #{gate_number2,jdbcType=BIGINT},
       </if>
     </set>
     where Id = #{id,jdbcType=BIGINT}

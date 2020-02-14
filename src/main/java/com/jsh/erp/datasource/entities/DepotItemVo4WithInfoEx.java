@@ -6,6 +6,12 @@ public class DepotItemVo4WithInfoEx extends DepotItem{
 
     private Long MId;
 
+    private String Salesman;
+
+    private Long organId;
+
+    private Long handspersonid;
+
     private String MName;
 
     private String MModel;
@@ -35,6 +41,30 @@ public class DepotItemVo4WithInfoEx extends DepotItem{
     private BigDecimal presetPriceOne;
 
     private String priceStrategy;
+
+    public Long getOrganId() {
+        return organId;
+    }
+
+    public void setOrganId(Long organId) {
+        this.organId = organId;
+    }
+
+    public Long getHandspersonid() {
+        return handspersonid;
+    }
+
+    public void setHandspersonid(Long handspersonid) {
+        this.handspersonid = handspersonid;
+    }
+
+    public String getSalesman() {
+        return Salesman;
+    }
+
+    public void setSalesman(String salesman) {
+        Salesman = salesman;
+    }
 
     public Long getMId() {
         return MId;

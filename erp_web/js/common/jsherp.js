@@ -495,7 +495,7 @@ if (typeof jQuery === "undefined") {
                         msg = msg.substring(8);
                         js.log(msg)
                     }
-                    top.toastr.options = {
+                        top.toastr.options = {
                         closeButton: true,
                         positionClass: positionClass,
                         timeOut: msgTimeout
