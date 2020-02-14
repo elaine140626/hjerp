@@ -39,6 +39,11 @@ var defaultAccountId = 0; //默认账户id
 var materialId = 0; //商品ID
 var lian = "脸";
 var zha = "闸"
+var MaterialStock = 0;
+var gateStock = 0;
+var mqk = "";
+var gqk = "";
+var reduceNumber = 0;
 
 var supplier_id = 0;
 var gate = "";//发货
@@ -635,14 +640,24 @@ function initTableData(){
 				} else if (res.data.userBusinessList[0].value == "[17]") {
 					tableToolBar.push();
 				} else if (res.data.userBusinessList[0].value == "[24]") {
-					tableToolBar.push({
-						id: 'okDepotHead',
-						text: '安装',
-						iconCls: 'icon-ok',
-						handler: function () {
-							setStatusFun("4");
-						}
-					});
+					tableToolBar.push(
+						{
+							id: 'okDepotHead',
+							text: '安装',
+							iconCls: 'icon-ok',
+							handler: function () {
+								setStatusFun("4");
+							}
+						},
+						{
+                            id: 'okDepoGate',
+                            text: '发货',
+                            iconCls: 'icon-ok',
+                            handler: function () {
+								setStatusGate("2");
+                            }
+                        }
+					);
 				}
 			}
 		}
@@ -1167,11 +1182,11 @@ function initTableData(){
 				},
 				// { title: '是否需要安装',field: 'install',width:130},
 				// { title: '是否需要人脸机',field: 'machine',width:130},
-				// { title: '人脸机类型',field: 'machine_type',width:130},
-				// { title: '人脸机数量',field: 'machine_number',width:130},
+				{ title: '人脸机类型',field: 'machine_type',hidden:isShowLastMoneyColumn,width:130},
+                { title: '人脸机数量',field: 'machine_number',hidden:isShowLastMoneyColumn,width:130},
 				// { title: '闸机是否需要',field: 'gate',width:130},
-				// { title: '闸机类型',field: 'gate_type',width:130},
-				// { title: '闸机数量',field: 'gate_number',width:130},
+				{ title: '闸机类型',field: 'gate_type',hidden:isShowLastMoneyColumn,width:130},
+				{ title: '闸机数量',field: 'gate_number',hidden:isShowLastMoneyColumn,width:130},
 				// { title: '操作员',field: 'operpersonname',width:60},
 				{ title: '金额合计',field: 'totalprice',width:60},
 				{ title: '含税合计',field: 'totaltaxlastmoney',hidden:isShowLastMoneyColumn,width:60,formatter:function(value,rec){
@@ -3821,9 +3836,10 @@ function initTableData_material_show(TotalPrice){
 			// { title: '最晚安装日期',field: 'installer_time',width:78},
 			{ title: '人脸机类型',field: 'machine_type',width:78},
 			{ title: '人脸机数量',field: 'machine_number',width:78},
+            { title: '未发货人脸机数量',field: 'machine_number2',width:78},
 			{ title: '闸机类型',field: 'gate_type',width:78},
 			{ title: '闸机数量',field: 'gate_number',width:78},
-
+            { title: '未发货闸机数量',field: 'gate_number2',width:78},
 			{ title: '备注',field: 'Remark',editor:'validatebox',width:120},
 			{ title: '品名-别',field: 'OtherField1',editor:'validatebox',hidden:otherColumns,width:60},
 			{ title: '型号-别',field: 'OtherField2',editor:'validatebox',hidden:otherColumns,width:60},
@@ -4079,6 +4095,311 @@ function setStatusFun(status) {
 		});
 	}
 }
+
+
+//出库操作
+function setStatusGate(status) {
+    var row = $('#tableData').datagrid('getChecked');
+    if (row.length == 0) {
+        $.messager.alert('提示', '没有记录被选中！', 'info');
+        return;
+    }
+    if (row.length > 0) {
+        for (var i = 0; i < row.length; i++) {
+        	debugger
+            $.ajax({
+                type: "get",
+                url: '/depotItem/getDetailNumberList',
+                data: {
+                    number: row[i].number,
+                    mpList: mPropertyList
+                },
+                dataType: "json",
+                success: function (res) {
+                    if (res && res.code === 200) {
+                        outEject(res);
+                    }
+                },
+                error: function () {
+                    $.messager.alert('查询提示', '查询数据后台异常，请稍后再试！', 'error');
+                }
+            })
+            var ids = "";
+
+            for(var i = 0;i < row.length; i ++) {
+                if(i == row.length-1) {
+                    if(row[i].status == "1") {
+                        ids += row[i].id;
+                    }
+                    break;
+                }
+                ids += row[i].id + ",";
+            }
+            if(ids) {
+                $.ajax({
+                    type:"post",
+                    url: "/depotHead/batchSetStatus",
+                    dataType: "json",
+                    async :  false,
+                    data: ({
+                        status: status,
+                        depotHeadIDs : ids
+                    }),
+                    success: function (res) {
+                        if(res && res.code === 200) {
+                            $("#searchBtn").click();
+                            $(":checkbox").attr("checked", false);
+                        } else if (res && res.code == 300) {
+                            $.messager.alert('提示', '操作信息失败，请稍后再试！', 'error');
+                        } else {
+                            $.messager.alert('提示', '操作信息失败，请稍后再试！', 'error');
+                        }
+                    },
+                    //此处添加错误处理
+                    error:function() {
+                        $.messager.alert('提示','操作信息异常，请稍后再试！','error');
+                        return;
+                    }
+                });
+            } else {
+                $.messager.alert('提示','没有能操作的单据！','warning');
+            }
+
+        }
+    }
+}
+
+var Machinetype_id = 0;
+var Gatetype_id = 0;
+var MHandsPersonId = 0;
+var MorganId = 0;
+var GHandsPersonId = 0;
+var GorganId = 0;
+var Salesman = "";
+var number = 0;
+var AllPrice = 0;
+//出库提示弹出框
+function outEject(res) {
+	debugger
+    for (i = 0; i < res.data.length;i++){
+        $('#outStockDlg').dialog('open').dialog('setTitle', '<img src="/js/easyui-1.3.5/themes/icons/pencil.png"/>&nbsp;出库详情提示');
+        MaterialStock = res.data[i].MaterialStock;
+        gateStock = res.data[i].gateStock;
+        Salesman = res.data[i].Salesman;
+        Machinetype_id = res.data[i].Machinetype_id;
+        Gatetype_id = res.data[i].Gatetype_id;
+        number = res.data[i].OperNumber;
+        AllPrice = res.data[i].AllPrice;
+        $("#product").text(res.data[i].MaterialName);
+        $("#outId").text(res.data[i].Id);
+        if (res.data[i].machine_type != ""){
+        	$("#display1").show();
+        	$("#face").text(res.data[i].machine_type);
+        	$("#facecount").val(res.data[i].machine_number2*number);
+            $("#facecount2").val(res.data[i].machine_number2*number);
+        	$("#faceunit").text(res.data[i].Unit);
+        }else{
+        	$("#display1").hide();
+        }
+        if (res.data[i].gate_type != ""){
+            $("#display2").show();
+            $("#gate").text(res.data[i].gate_type);
+            $("#gatecount").val(res.data[i].gate_number2*res.data[i].OperNumber);
+            $("#gatecount2").val(res.data[i].gate_number2*res.data[i].OperNumber);
+            $("#gateunit").text(res.data[i].Unit);
+        }else{
+            $("#display2").hide();
+        }
+
+		}
+}
+
+//修改出库信息
+function saveoutStockDlg(){
+	debugger
+	var  num = 0;
+    var outId = $("#outId").text();
+    var face = $("#face").text();
+    var gate = $("#gate").text();
+    var machine_number2 = $("#facecount").val();//发出的人脸数量
+    var gate_number2 = $("#gatecount").val();	//发出的闸机数量
+    var thisDateTime = getNowFormatDateTime(); //当前时间
+    var ts = "";
+    if (machine_number2 == 0 && gate_number2 == 0){
+        $.messager.alert('温馨提示', '本订单货已全部发完', 'error');
+
+	} else {
+        var url1="/depotHead/addDepotHeadAndDetail";
+        buildNumber(); //生成单据编号
+        findTypeId(Machinetype_id,1,outId);
+        findTypeId(Gatetype_id,2,outId);
+        listType = "出库";
+        listSubType = "销售";
+
+        var infoStr1=JSON.stringify({
+            Type: listType,
+            SubType: listSubType,
+            ProjectId: null,
+            AllocationProjectId: "",
+            DefaultNumber: $.trim($("#OutNumber").attr("data-defaultNumber")),//初始编号
+            Number: $.trim($("#OutNumber").val()),
+            LinkNumber: null,
+            OperTime:thisDateTime,
+            OrganId: MorganId,//人脸机供应商id
+            HandsPersonId: MHandsPersonId,//人脸采购经手人id
+            Salesman: Salesman, //销售人员
+            AccountId: "",
+            ChangeAmount: AllPrice, //付款/收款
+            TotalPrice: AllPrice, //合计
+            PayType: "现付", //现付/预付款
+            Remark: "",
+            AccountIdList: null, //账户列表-多账户
+            AccountMoneyList: "", //账户金额列表-多账户
+            Discount:null,//优惠率
+            DiscountMoney: null,//优惠金额
+            DiscountLastMoney: null,//优惠后的金额
+            OtherMoney: null, //采购费用、销售费用
+            OtherMoneyList: null, //支出项目列表-涉及费用
+            OtherMoneyItem: null, //支出项目金额列表-涉及费用
+            AccountDay: null,//结算天数
+        });
+        var infoStr2=JSON.stringify({
+            Type: listType,
+            SubType: listSubType,
+            ProjectId: null,
+            AllocationProjectId: "",
+            DefaultNumber: $.trim($("#OutNumber").attr("data-defaultNumber")),//初始编号
+            Number: $.trim($("#OutNumber").val()),
+            LinkNumber: null,
+            OperTime:thisDateTime,
+            OrganId: GorganId,//闸机供应商id
+            HandsPersonId: GHandsPersonId,//闸机采购经手人id
+            Salesman: Salesman, //销售人员
+            AccountId: "",
+            ChangeAmount: AllPrice, //付款/收款
+            TotalPrice: AllPrice, //合计
+            PayType: "现付", //现付/预付款
+            Remark: "",
+            AccountIdList: null, //账户列表-多账户
+            AccountMoneyList: "", //账户金额列表-多账户
+            Discount:null,//优惠率
+            DiscountMoney: null,//优惠金额
+            DiscountLastMoney: null,//优惠后的金额
+            OtherMoney: null, //采购费用、销售费用
+            OtherMoneyList: null, //支出项目列表-涉及费用
+            OtherMoneyItem: null, //支出项目金额列表-涉及费用
+            AccountDay: null,//结算天数
+        });
+        if (machine_number2 > 0 && MaterialStock - machine_number2 > 0) {
+            addDepotHeadAndDetails2(url1,infoStr1,1);
+        }else if (MaterialStock - machine_number2 < 0) {
+            mqk = "库存不足,";
+            num += 1;
+        }
+
+        if (gate_number2 > 0 && gateStock - gate_number2 > 0){
+            addDepotHeadAndDetails2(url1,infoStr2,2);
+        }else if (gateStock - gate_number2 < 0) {
+            gqk ="库存不足,"
+            num += 1;
+        }
+        if (num <= 1){
+            updateNumber2();
+        }
+        if (reduceNumber == 1) {
+            $.messager.alert('提示', ''+mqk+''+gqk, 'error');
+        }else{
+            $.messager.alert('提示', '出库失败！', 'error');
+        }
+	}
+    $('#outStockDlg').dialog('close');
+}
+
+
+//查询供应商id和经手人id
+function findTypeId(mId,pd,tId) {
+	debugger
+	if (pd == 1){
+        $.ajax({
+            type: "get",
+            url: '/depotItem/findMachineTypeId',
+            data: {
+                tId:tId,
+                mId:mId
+            },
+            dataType: "json",
+            success: function (res) {
+                if (res && res.code === 200) {
+                    MHandsPersonId = res.data.HandsPersonId;
+                    MorganId = res.data.organId;
+                }
+            },
+            error: function () {
+                $.messager.alert('查询提示', '修改数据后台异常，请稍后再试！', 'error');
+            }
+        })
+	} else if (pd == 2) {
+        $.ajax({
+            type: "get",
+            url: '/depotItem/findGateTypeId',
+            data: {
+                tId:tId,
+                mId:mId
+            },
+            dataType: "json",
+            success: function (res) {
+                if (res && res.code === 200) {
+                    GHandsPersonId = res.data.HandsPersonId;
+                    GorganId = res.data.organId;
+                }
+            },
+            error: function () {
+                $.messager.alert('查询提示', '修改数据后台异常，请稍后再试！', 'error');
+            }
+        })
+	}
+}
+
+
+
+//修改未发货数量
+function updateNumber2() {
+	debugger
+    var Id = $("#outId").text();
+    var machine_number2 = $("#facecount").val();//发出的人脸数量
+    var gate_number2 = $("#gatecount").val();	//发出的闸机数量
+    var facecount2 = $("#facecount2").val();	//原始人脸数量
+    var gatecount2 = $("#gatecount2").val();	//原始闸机数量
+	var gnumber = 0;
+	var mnumber = 0;
+	gnumber = gatecount2 - gate_number2;
+    mnumber = facecount2 - machine_number2;
+	if (gnumber < 0) {
+        gnumber = 0;
+	}
+	if (mnumber < 0) {
+		mnumber = 0;
+	}
+    $.ajax({
+        type: "get",
+        url: '/depotItem/updateDepotNumber',
+        data: {
+            gate_number2:gnumber,
+            machine_number2:mnumber,
+            Id:Id
+        },
+        dataType: "json",
+        success: function (res) {
+           if (res && res.code == 200) {
+				reduceNumber = 1;
+		   }
+        },
+        error: function () {
+            $.messager.alert('查询提示', '修改数据后台异常，请稍后再试！', 'error');
+        }
+    })
+}
+
 function setStatusStatus(status) {
 	var row = $('#tableData').datagrid('getChecked');
 	if(row.length == 0) {
@@ -4207,6 +4528,7 @@ function buildNumber() {
 				var defaultNumber = obj.DefaultNumber;
 				var newNumber = amountNum + defaultNumber;
 				$("#Number").val(newNumber).attr("data-defaultNumber",newNumber);
+				$("#OutNumber").val(newNumber).attr("data-defaultNumber",newNumber);
 			}
 		},
 		error:function(){
@@ -4963,7 +5285,7 @@ function bindEvent(){
 				OrganId: OrganId,
 				HandsPersonId: $.trim($("#HandsPersonId").val()),
 				Salesman: SalesmanStr, //销售人员
-				AccountId: getAccountID,
+				AccountId: null,
 				ChangeAmount: ChangeAmount, //付款/收款
 				TotalPrice: TotalPrice, //合计
 				PayType: thisPayType, //现付/预付款
@@ -5975,6 +6297,7 @@ function CheckData(type) {
 }
 //新增单据主表及单据子表
 function addDepotHeadAndDetail(url,infoStr){
+	debugger
 	var inserted = null;
 
 	if(pageType === "skip") {
@@ -6021,6 +6344,55 @@ function addDepotHeadAndDetail(url,infoStr){
 		}
 	});
 }
+
+
+//新增单据主表及单据子表
+function addDepotHeadAndDetails2(url,infoStr,pd){
+    debugger
+    var inserted = null;
+    var deleted = [];
+    var updated = [];
+    $.ajax({
+        type:"post",
+        url: url,
+        dataType: "json",
+        async :  false,
+        data: ({
+            info:infoStr,
+            inserted: JSON.stringify(inserted),
+            deleted: JSON.stringify(deleted),
+            updated: JSON.stringify(updated)
+        }),
+        success: function (tipInfo){
+            if(tipInfo){
+                if(tipInfo.code!=200){
+                    $.messager.alert('提示', tipInfo.msg, 'warning');
+                    return;
+                }
+                if (pd==1) {
+                    mqk = "人脸机出库成功";
+				}else{
+                	gqk == "闸机出库成功";
+				}
+
+            }else {
+                if (pd==1) {
+                    mqk = "人脸机出库失败";
+                }else{
+                    gqk == "闸机出库失败";
+                }
+
+            }
+        },
+        //此处添加错误处理
+        error:function() {
+            $.messager.alert('提示','保存信息异常，请稍后再试！','error');
+            return;
+        }
+    });
+}
+
+
 //修改单据主表及单据子表
 function editDepotHeadItem(url,infoStr,preTotalPrice) {
 	debugger

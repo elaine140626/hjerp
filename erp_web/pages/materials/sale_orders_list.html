@@ -258,6 +258,37 @@
     <a href="javascript:void(0)" id="saveOtherMoneyDlg" class="easyui-linkbutton" iconCls="icon-ok">保存</a>
     <a href="javascript:void(0)" id="cancelOtherMoneyDlg" class="easyui-linkbutton" iconCls="icon-cancel">取消</a>
 </div>
+<div id="outStockDlg" class="easyui-dialog" style="width:380px;padding:10px 20px;top:80px"
+     closed="true" modal="true" buttons="#outStockDlgBtn" cache="false" collapsible="false" closable="true">
+    <table class="out-dlg">
+        <p>你将出库的&nbsp;&nbsp;<span class="product" name="product" id="product"></span>&nbsp;&nbsp;其中包括：</p>
+        <tr class="out-content-tmp">
+           <td id="display1" style="display: none">
+               <span name="outId" id="outId" style="display: none"></span>
+               <input name="OutNumber" id="OutNumber" class="easyui-validatebox"
+                      data-options="required:true,validType:'length[2,30]'" style="width: 150px;display: none" readonly/>
+               <span class="face" name="face" id="face">海清人脸机</span>
+               <input type="text" style="width: 30px;" name="facecount" id="facecount"></input>
+               <span name="facecount2" id="facecount2" style="display: none"></span>
+               <span class="faceunit" name="faceunit" id="faceunit">台</span>,
+           </td>
+           <td id="display2" style="display: none">
+                <span class="gate" name="gate" id="gate">闸机</span>
+                <input type="text" style="width: 30px;" name="gatecount" id="gatecount"></input>
+                <span name="gatecount2" id="gatecount2" style="display: none"></span>
+                <span class="gateunit" name="gateunit" id="gateunit">台</span>
+           </td>
+        </tr>
+        <tr class="out-content-tmp">
+
+        </tr>
+    </table>
+</div>
+<div id="outStockDlgBtn">
+    <a href="javascript:void(0)" id="saveoutStockDlg" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveoutStockDlg()">确定出库</a>
+    <a href="javascript:void(0)" id="canceloutStockDlg" class="easyui-linkbutton" iconCls="icon-cancel"
+       onclick="javascript:$('#outStockDlg').dialog('close')">取消</a>
+</div>
 <div id="supplier"></div>
 </body>
 </html>
