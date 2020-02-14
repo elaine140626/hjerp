@@ -500,10 +500,17 @@ public class MaterialController {
         Material material = new Material();
         material.setId(id);
         List<Material> list = materialService.machineType(material);
-        for (Material material1 : list){
+        if (list.size()>0) {
+            for (Material material1 : list) {
+                JSONObject object = new JSONObject();
+                object.put("id", material1.getName());
+                object.put("depotName", material1.getName());
+                array.add(object);
+            }
+        } else {
             JSONObject object = new JSONObject();
-            object.put("id", material1.getName());
-            object.put("depotName", material1.getName());
+            object.put("id", "无");
+            object.put("depotName", "无");
             array.add(object);
         }
         return array;
@@ -515,10 +522,17 @@ public class MaterialController {
         Material material = new Material();
         material.setId(id);
         List<Material> list = materialService.machineTypes(material);
-        for (Material material1 : list){
+        if (list.size()>0) {
+            for (Material material1 : list) {
+                JSONObject object = new JSONObject();
+                object.put("id", material1.getName());
+                object.put("depotName", material1.getName());
+                array.add(object);
+            }
+        }else{
             JSONObject object = new JSONObject();
-            object.put("id", material1.getName());
-            object.put("depotName", material1.getName());
+            object.put("id", "无");
+            object.put("depotName", "无");
             array.add(object);
         }
         return array;

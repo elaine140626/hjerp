@@ -107,6 +107,31 @@ public class DepotController {
     }
 
     /**
+     * 获取仓库列表
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/findDepotByDepotName")
+    public JSONArray findDepotByDepotName() throws Exception{
+        JSONArray arr = new JSONArray();
+        try {
+            List<Depot> dataList = depotService.findDepotByDepotName();
+            //开始拼接json数据
+            if (null != dataList) {
+                for (Depot depot : dataList) {
+                    JSONObject item = new JSONObject();
+                    item.put("id",depot.getId());
+                    item.put("name",depot.getName());
+                    arr.add(item);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return arr;
+    }
+
+    /**
      * 获取用户拥有权限的仓库列表
      * @param type
      * @param keyId

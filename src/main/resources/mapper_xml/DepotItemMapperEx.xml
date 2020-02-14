@@ -236,6 +236,9 @@
         <if test="tenantId != null">
             and di.tenant_id=#{tenantId}
         </if>
+        <if test="depotId != null">
+            and depotId = #{depotId}
+        </if>
         and ifnull(dh.delete_Flag,'0') !='1'
         and ifnull(di.delete_Flag,'0') !='1') as curep
     </select>

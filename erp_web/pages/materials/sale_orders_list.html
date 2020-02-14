@@ -100,15 +100,17 @@
                 <td id="fileformsMsg" style="display: none;">
                     <a id="uploadfile" style="display:none;" onclick="showFiles()" ><span>上传合同</span>上传</a>
                     <form enctype="multipart/form-data" id="fileform" method="post" action="../uploadFile_project_img_infos.call">
-                        <input type="file" name="uploadify" value="" onchange="submitfile(event)" id="myuploadFile" accept="image/*">
+                        <input type="file" name="uploadify" value="" onchange="submitfile(event)" id="myuploadFile" accept="image/*" style="display: none">
                     </form>
+                    <button onclick="updateFile('myuploadFile')">上传合同</button>
                 </td>
                 <td id="fileformsMsg3" style="display: none;"></td>
                 <td id="fileformsMsg1" style="display: none;">
-                    <a id="uploadfiles" style="display:none;" onclick="showFiles()" ><span>上传合同</span>上传</a>
-                    <form enctype="multipart/form-data" id="fileforms" method="post" action="../uploadFile_project_img_infos.call">
-                        <input type="file" name="uploadify" value="" onchange="submitfile(event)" id="myuploadFiles" accept="image/*">
+                    <a id="uploadfiles" style="display:none;" onclick="showFilesMSG()" ><span>上传底单</span>上传</a>
+                    <form enctype="multipart/form-data" id="fileforms" method="post"  action="../uploadFile_project_img_infos.call">
+                        <input type="file" name="uploadify" value="" onchange="submitfiles(event)" id="myuploadFiles" accept="image/*" style="display: none">
                     </form>
+                    <button onclick="updateFile('myuploadFiles')">上传底单</button>
                 </td>
 
             </tr>

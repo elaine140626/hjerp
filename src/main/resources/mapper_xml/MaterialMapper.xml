@@ -117,6 +117,10 @@
         SELECT * FROM jsh_material  WHERE `name`= #{name,jdbcType=BIGINT}
   </select>
 
+  <select id="machineSeleAlls" parameterType="com.jsh.erp.datasource.entities.Material" resultMap="BaseResultMap">
+        SELECT * FROM jsh_material  WHERE `name`= #{name,jdbcType=BIGINT}
+  </select>
+
   <select id="machineType" parameterType="com.jsh.erp.datasource.entities.Material" resultMap="BaseResultMap">
         SELECT * FROM jsh_material  WHERE `LEVEL` LIKE CONCAT(CONCAT('%',#{id,jdbcType=BIGINT}),'%') and name LIKE '%人脸%'
   </select>

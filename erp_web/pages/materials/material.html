@@ -22,6 +22,10 @@
 <div id="tablePanel" class="easyui-panel" data-options="fit:true" style="padding:1px;top:300px;" title="商品列表" iconCls="icon-list">
     <table id="searchTable">
         <tr>
+            <td>仓库</td>
+            <td>
+                <input name="DepotId" id="DepotId" style="width:80px;"/>
+            </td>
             <td>类别：</td>
             <td>
                 <input name="searchParentName" id="searchParentName" style="width: 100px;" readonly="readonly"/>
@@ -1445,8 +1449,10 @@
 
 
         function showMaterialDetails(pageNo, pageSize) {
+            debugger
             var name = $.trim($("#searchName").val());
             var model = $.trim($("#searchModel").val());
+            var id = $('#DepotId').combobox('getValue');
             $.ajax({
                 type: "get",
                 url: "/material/list",
@@ -1455,6 +1461,7 @@
                     search: JSON.stringify({
                         name: name,
                         model: model,
+                        depotId: id,
                         categoryIds: types,
                         mpList: mPropertyListShort
                     }),
