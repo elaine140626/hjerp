@@ -376,13 +376,13 @@ public class DepotItemService {
                         Material material = new Material();
                         material.setName(tempInsertedJson.getString("machine_type"));
                         Material materialList = materialMapper.machineSeleAlls(material);
-                        depotItem.setMachinetype_id(Integer.parseInt(String.valueOf(materialList.getId())));
+                        depotItem.setMachinetype_id(materialList.getId());
                     }
                     if (tempInsertedJson.getString("gate_type") != null && !tempInsertedJson.getString("gate_type").equals("")){
                         Material material = new Material();
                         material.setName(tempInsertedJson.getString("gate_type"));
                         Material materialList = materialMapper.machineSeleAlls(material);
-                        depotItem.setGatetype_id(Integer.parseInt(String.valueOf(materialList.getId())));
+                        depotItem.setGatetype_id(materialList.getId());
                     }
                     if (tempInsertedJson.getInteger("machine_number") != null) {
                         Integer ii = tempInsertedJson.getInteger("OperNumber");//数量
