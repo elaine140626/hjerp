@@ -39,6 +39,7 @@ var defaultAccountId = 0; //默认账户id
 var materialId = 0; //商品ID
 var lian = "脸";
 var zha = "闸"
+
 var MaterialStock = 0;
 var gateStock = 0;
 var mqk = "";
