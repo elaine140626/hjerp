@@ -4107,7 +4107,7 @@ function setStatusGate(status) {
     }
     if (row.length > 0) {
         for (var i = 0; i < row.length; i++) {
-        	debugger
+            debugger
             $.ajax({
                 type: "get",
                 url: '/depotItem/getDetailNumberList',
@@ -4125,49 +4125,51 @@ function setStatusGate(status) {
                     $.messager.alert('查询提示', '查询数据后台异常，请稍后再试！', 'error');
                 }
             })
-            var ids = "";
-
-            for(var i = 0;i < row.length; i ++) {
-                if(i == row.length-1) {
-                    if(row[i].status == "1") {
-                        ids += row[i].id;
-                    }
-                    break;
+			
+            //         var ids = "";
+            //
+            //         for(var i = 0;i < row.length; i ++) {
+            //             if(i == row.length-1) {
+            //                 if(row[i].status == "1") {
+            //                     ids += row[i].id;
+            //                 }
+            //                 break;
+            //             }
+            //             ids += row[i].id + ",";
+            //         }
+            //         if(ids) {
+            //             $.ajax({
+            //                 type:"post",
+            //                 url: "/depotHead/batchSetStatus",
+            //                 dataType: "json",
+            //                 async :  false,
+            //                 data: ({
+            //                     status: status,
+            //                     depotHeadIDs : ids
+            //                 }),
+            //                 success: function (res) {
+            //                     if(res && res.code === 200) {
+            //                         $("#searchBtn").click();
+            //                         $(":checkbox").attr("checked", false);
+            //                     } else if (res && res.code == 300) {
+            //                         $.messager.alert('提示', '操作信息失败，请稍后再试！', 'error');
+            //                     } else {
+            //                         $.messager.alert('提示', '操作信息失败，请稍后再试！', 'error');
+            //                     }
+            //                 },
+            //                 //此处添加错误处理
+            //                 error:function() {
+            //                     $.messager.alert('提示','操作信息异常，请稍后再试！','error');
+            //                     return;
+            //                 }
+            //             });
+            //         } else {
+            //             $.messager.alert('提示','没有能操作的单据！','warning');
+            //         }
+            //
                 }
-                ids += row[i].id + ",";
-            }
-            if(ids) {
-                $.ajax({
-                    type:"post",
-                    url: "/depotHead/batchSetStatus",
-                    dataType: "json",
-                    async :  false,
-                    data: ({
-                        status: status,
-                        depotHeadIDs : ids
-                    }),
-                    success: function (res) {
-                        if(res && res.code === 200) {
-                            $("#searchBtn").click();
-                            $(":checkbox").attr("checked", false);
-                        } else if (res && res.code == 300) {
-                            $.messager.alert('提示', '操作信息失败，请稍后再试！', 'error');
-                        } else {
-                            $.messager.alert('提示', '操作信息失败，请稍后再试！', 'error');
-                        }
-                    },
-                    //此处添加错误处理
-                    error:function() {
-                        $.messager.alert('提示','操作信息异常，请稍后再试！','error');
-                        return;
-                    }
-                });
-            } else {
-                $.messager.alert('提示','没有能操作的单据！','warning');
             }
 
-        }
-    }
 }
 
 var Machinetype_id = 0;
