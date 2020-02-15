@@ -107,6 +107,31 @@ public class DepotController {
     }
 
     /**
+     * 获取仓库列表
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/findDepotByDepotName")
+    public JSONArray findDepotByDepotName() throws Exception{
+        JSONArray arr = new JSONArray();
+        try {
+            List<Depot> dataList = depotService.findDepotByDepotName();
+            //开始拼接json数据
+            if (null != dataList) {
+                for (Depot depot : dataList) {
+                    JSONObject item = new JSONObject();
+                    item.put("id",depot.getId());
+                    item.put("name",depot.getName());
+                    arr.add(item);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return arr;
+    }
+
+    /**
      * 获取用户拥有权限的仓库列表
      * @param type
      * @param keyId
@@ -193,13 +218,13 @@ public class DepotController {
                     item.put("id", "专票：6%");
                     item.put("depotName", "专票：6%");
                 } else if (i == 1){
-                    item.put("id", "专票：6%");
+                    item.put("id", "专票：13%");
                     item.put("depotName", "专票：13%");
                 } else if (i == 2){
-                    item.put("id", "专票：6%");
+                    item.put("id", "普票：6%");
                     item.put("depotName", "普票：6%");
                 } else if (i == 3){
-                    item.put("id", "专票：6%");
+                    item.put("id", "普票：13%");
                     item.put("depotName", "普票：13%");
                 }
                 arr.add(item);

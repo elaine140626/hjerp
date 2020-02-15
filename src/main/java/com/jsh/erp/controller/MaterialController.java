@@ -494,49 +494,49 @@ public class MaterialController {
         return dataArray;
     }
 
-    /**
-     * 查找人脸类型
-     * @param id
-     * @return
-     */
-    @GetMapping(value = "machineType")
-    public JSONArray machineType(@RequestParam("id")String id){
+    @RequestMapping(value = "machineType")
+    public JSONArray machineType(@RequestParam("id")Long id){
         JSONArray array = new JSONArray();
         Material material = new Material();
-        material.setLevel(id);
-        material.setName("脸");
+        material.setId(id);
         List<Material> list = materialService.machineType(material);
-            for (Material material1 : list){
+        if (list.size()>0) {
+            for (Material material1 : list) {
                 JSONObject object = new JSONObject();
                 object.put("id", material1.getName());
-                object.put("machine_type", material1.getName());
+                object.put("depotName", material1.getName());
                 array.add(object);
             }
-        return array;
-    }
-
-
-    /**
-     * 查找闸机类型
-     * @param id
-     * @return
-     */
-    @GetMapping(value = "gateType")
-    public JSONArray gateType(@RequestParam("id")String id){
-        JSONArray array = new JSONArray();
-        Material material = new Material();
-        material.setLevel(id);
-        material.setName("闸");
-        List<Material> list = materialService.machineType(material);
-        for (Material material1 : list){
+        } else {
             JSONObject object = new JSONObject();
-            object.put("id", material1.getName());
-            object.put("gate_type", material1.getName());
+            object.put("id", "无");
+            object.put("depotName", "无");
             array.add(object);
         }
         return array;
     }
 
+    @RequestMapping(value = "machineTypes")
+    public JSONArray machineTypes(@RequestParam("id")Long id){
+        JSONArray array = new JSONArray();
+        Material material = new Material();
+        material.setId(id);
+        List<Material> list = materialService.machineTypes(material);
+        if (list.size()>0) {
+            for (Material material1 : list) {
+                JSONObject object = new JSONObject();
+                object.put("id", material1.getName());
+                object.put("depotName", material1.getName());
+                array.add(object);
+            }
+        }else{
+            JSONObject object = new JSONObject();
+            object.put("id", "无");
+            object.put("depotName", "无");
+            array.add(object);
+        }
+        return array;
+    }
 
     @RequestMapping(value = "machineTypeCount")
     public JSONArray machineTypeCount(@RequestParam("name")String name){

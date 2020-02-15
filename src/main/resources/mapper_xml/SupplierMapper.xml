@@ -118,6 +118,12 @@
 
   </select>
 
+
+  <select id="seleSupplier" resultType="java.lang.String">
+         SELECT supplier FROM jsh_supplier WHERE id = ${id}
+   </select>
+
+
   <select id="selectByExample" parameterType="com.jsh.erp.datasource.entities.SupplierExample" resultMap="BaseResultMap">
     <!--
       WARNING - @mbggenerated

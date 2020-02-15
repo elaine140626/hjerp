@@ -514,7 +514,6 @@ function  AddMaterial() {
         success: function (res) {
             if (res > 0) {
                 $('#supplierMaterialDlg').dialog('close');
-                $("#level").combobox("setValue", "");
                 $.messager.alert('提示：', '保存成功！');
             } else {
                 $.messager.alert('提示：', '保存失败！');
@@ -600,7 +599,6 @@ function initMaterialId() {
         }
     });
 }
-
 function bindEvent(){
     //导入excel对话框
     $('#importExcelDlg').dialog({
@@ -670,6 +668,7 @@ function bindEvent(){
             success: function(res) {
                 if(res && res.code === 200) {
                     $('#supplierDlg').dialog('close');
+                    initSupplier();
                     //加载完以后重新初始化
                     var opts = $("#tableData").datagrid('options');
                     showSupplierDetails(opts.pageNumber, opts.pageSize);

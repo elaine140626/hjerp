@@ -2852,7 +2852,7 @@ function addDepotHeadAndDetail(url,infoStr){
         }
     });
 }
-//修改单据主表及单据子表
+修改单据主表及单据子表
 function updateDepotHeadAndDetail(url,infoStr,preTotalPrice){
     var inserted = $("#materialData").datagrid('getChanges', "inserted");
     var deleted = $("#materialData").datagrid('getChanges', "deleted");

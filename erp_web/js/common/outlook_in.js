@@ -2,7 +2,7 @@
     //	InitLeftMenu();
     tabClose();
     tabCloseEven();
-
+    DepotName();
 
     //	$('#tabs').tabs('add',{
     //		title:'title',
@@ -19,6 +19,16 @@
     //        }
     //    });
 })
+function DepotName() {
+    $('#DepotId').combobox({
+        url: "/depot/findDepotByDepotName",
+        valueField: 'id',
+        textField: "name",
+        onSelect:function(rec){
+            $("#DepotId").combobox('setValue', rec.name);
+        }
+    });
+}
 
 //初始化左侧
 function InitLeftMenu() {

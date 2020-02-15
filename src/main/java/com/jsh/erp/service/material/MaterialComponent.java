@@ -1,5 +1,7 @@
 package com.jsh.erp.service.material;
 
+import com.jsh.erp.datasource.entities.Depot;
+import com.jsh.erp.datasource.mappers.DepotMapper;
 import com.jsh.erp.service.ICommonQuery;
 import com.jsh.erp.service.depot.DepotResource;
 import com.jsh.erp.service.depot.DepotService;
@@ -29,15 +31,24 @@ public class MaterialComponent implements ICommonQuery {
     public List<?> select(Map<String, String> map)throws Exception {
         return getMaterialList(map);
     }
-
+@Resource
+private DepotMapper depotMapper;
     private List<?> getMaterialList(Map<String, String> map) throws Exception{
         String search = map.get(Constants.SEARCH);
         String name = StringUtil.getInfo(search, "name");
+        String depotName = StringUtil.getInfo(search,"depotId");
+        Long depotId = null;
+        if (depotName != null && !depotName.equals("")) {
+            Depot depot = new Depot();
+            depot.setName(depotName);
+            Depot depotList = depotMapper.findDepotByName(depot);
+            depotId = depotList.getId();
+        }
         String model = StringUtil.getInfo(search, "model");
         String categoryIds = StringUtil.getInfo(search, "categoryIds");
         String mpList = StringUtil.getInfo(search, "mpList");
         String order = QueryUtils.order(map);
-        return materialService.select(name, model,categoryIds,mpList, QueryUtils.offset(map), QueryUtils.rows(map));
+        return materialService.select(name, model,categoryIds,mpList, QueryUtils.offset(map), QueryUtils.rows(map),depotId);
     }
 
     @Override

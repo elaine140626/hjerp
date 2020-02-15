@@ -171,6 +171,12 @@ public class DepotService {
         }
         return list;
     }
+
+
+    public List<Depot> findDepotByDepotName()throws Exception{
+        return depotMapper.findDepotByDepotName();
+    }
+
     public List<Depot> findUserDepots()throws Exception{
         DepotExample example = new DepotExample();
         example.createCriteria().andTypeEqualTo(0).andDeleteFlagNotEqualTo(BusinessConstants.DELETE_FLAG_DELETED);

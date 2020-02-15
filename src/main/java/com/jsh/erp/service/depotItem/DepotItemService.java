@@ -5,10 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.jsh.erp.constants.BusinessConstants;
 import com.jsh.erp.constants.ExceptionConstants;
 import com.jsh.erp.datasource.entities.*;
-import com.jsh.erp.datasource.mappers.DepotHeadMapper;
-import com.jsh.erp.datasource.mappers.DepotItemMapper;
-import com.jsh.erp.datasource.mappers.DepotItemMapperEx;
-import com.jsh.erp.datasource.mappers.SerialNumberMapperEx;
+import com.jsh.erp.datasource.mappers.*;
 import com.jsh.erp.datasource.vo.DepotItemStockWarningCount;
 import com.jsh.erp.datasource.vo.DepotItemVo4Stock;
 import com.jsh.erp.exception.BusinessRunTimeException;
@@ -44,6 +41,8 @@ public class DepotItemService {
     private final static String IN = "in";
     private final static String OUT = "out";
 
+    @Resource
+    private MaterialMapper materialMapper;
     @Resource
     private MsgService msgService;
     @Resource
@@ -373,6 +372,26 @@ public class DepotItemService {
                     depotItem.setInvoice("否");
                     depotItem.setPayment("否");
                     depotItem.setContract("否");
+                    if (tempInsertedJson.getString("machine_type") != null && !tempInsertedJson.getString("machine_type").equals("") && !tempInsertedJson.getString("machine_type").equals("无")){
+                        Material material = new Material();
+                        material.setName(tempInsertedJson.getString("machine_type"));
+                        Material materialList = materialMapper.machineSeleAlls(material);
+                        depotItem.setMachinetype_id(materialList.getId());
+                    }
+                    if (tempInsertedJson.getString("gate_type") != null && !tempInsertedJson.getString("gate_type").equals("") && !tempInsertedJson.getString("gate_type").equals("无")){
+                        Material material = new Material();
+                        material.setName(tempInsertedJson.getString("gate_type"));
+                        Material materialList = materialMapper.machineSeleAlls(material);
+                        depotItem.setGatetype_id(materialList.getId());
+                    }
+                    if (tempInsertedJson.getInteger("machine_number") != null) {
+                        Integer ii = tempInsertedJson.getInteger("OperNumber");//数量
+                        Integer kk = tempInsertedJson.getInteger("machine_number");//人脸机数量
+                        Integer ee = tempInsertedJson.getInteger("gate_number");//闸机数量
+                        depotItem.setMachine_number2(ii * kk);
+                        depotItem.setGate_number2(ii * ee);
+                    }
+
                     if (!StringUtil.isEmpty(tempInsertedJson.get("OperNumber").toString())) {
                         depotItem.setOpernumber(tempInsertedJson.getBigDecimal("OperNumber"));
                         try {

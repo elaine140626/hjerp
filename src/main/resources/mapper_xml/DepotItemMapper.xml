@@ -58,6 +58,10 @@
     <result column="gate_number" jdbcType="VARCHAR" property="gate_number" />
     <result column="gate_number2" jdbcType="BIGINT" property="gate_number2" />
     <result column="order_type" jdbcType="VARCHAR" property="order_type" />
+    <result column="machine_number2" jdbcType="INTEGER" property="machine_number2" />
+    <result column="gate_number2" jdbcType="INTEGER" property="gate_number2" />
+    <result column="machinetype_id" jdbcType="INTEGER" property="machinetype_id" />
+    <result column="gatetype_id" jdbcType="INTEGER" property="gatetype_id" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <!--
@@ -365,6 +369,18 @@
       <if test="order_type != null">
         order_type,
       </if>
+      <if test="machine_number2 != null">
+        machine_number2,
+      </if>
+      <if test="gate_number2 != null">
+        gate_number2,
+      </if>
+      <if test="machinetype_id != null">
+        machinetype_id,
+      </if>
+      <if test="gatetype_id != null">
+        gatetype_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -510,6 +526,18 @@
       </if>
       <if test="order_type != null">
         #{order_type,jdbcType=VARCHAR},
+      </if>
+      <if test="machine_number2 != null">
+        #{machine_number2,jdbcType=INTEGER},
+      </if>
+      <if test="gate_number2 != null">
+        #{gate_number2,jdbcType=INTEGER},
+      </if>
+      <if test="machinetype_id != null">
+        #{machinetype_id,jdbcType=INTEGER},
+      </if>
+      <if test="gatetype_id != null">
+        #{gatetype_id,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>

@@ -3,17 +3,16 @@ package com.jsh.erp.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jsh.erp.constants.ExceptionConstants;
-import com.jsh.erp.datasource.entities.DepotHead;
-import com.jsh.erp.datasource.entities.Msg;
+import com.jsh.erp.datasource.entities.*;
+import com.jsh.erp.datasource.mappers.DepotHeadMapperEx;
+import com.jsh.erp.datasource.mappers.MaterialMapper;
 import com.jsh.erp.datasource.mappers.MsgMapperEx;
-import com.jsh.erp.datasource.entities.Person;
+import com.jsh.erp.datasource.mappers.SupplierMapper;
 import com.jsh.erp.datasource.vo.*;
 import com.jsh.erp.exception.BusinessParamCheckingException;
 import com.jsh.erp.service.depotHead.DepotHeadService;
 import com.jsh.erp.service.msg.MsgService;
-import com.jsh.erp.utils.BaseResponseInfo;
-import com.jsh.erp.utils.ErpInfo;
-import com.jsh.erp.utils.Tools;
+import com.jsh.erp.utils.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpRequest;
@@ -31,6 +30,8 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static com.jsh.erp.utils.ResponseJsonUtil.returnJson;
@@ -46,6 +47,8 @@ public class DepotHeadController {
 
     @Resource
     private DepotHeadService depotHeadService;
+    @Resource
+    private DepotHeadMapperEx depotHeadMapperEx;
     @Resource
     private MsgService msgService;
 
@@ -685,5 +688,116 @@ public class DepotHeadController {
             e.printStackTrace();
         }
         return dataArray;
+    }
+    @Resource
+    private SupplierMapper supplierMapper;
+    @GetMapping(value = "/exportDepotItemMSExcel")
+    public int exportDepotItemMSExcel(HttpServletRequest request, HttpServletResponse response)throws Exception {
+        int res = 0;
+        try {
+            List<DepotHeadVo4List> dataList = depotHeadMapperEx.selectByConditionDepotHead("其它","销售订单",null,null,null,null,null,0,100);
+            //存放数据json数组
+            String[] names = {"合同编号", "客户名称", "供应商","工程名称", "采购型号", "数量","单价", "总价", "合同总额",
+                    "收款日期", "已收款金额", "未收款金额"};
+            String title = "项目对账表";
+            List<String[]> objects = new ArrayList<String[]>();
+            if (null != dataList) {
+                for (DepotHeadVo4List diEx : dataList) {
+                    String[] objs = new String[12];
+                    objs[0] = diEx.getConyract_number()== null ? " ":diEx.getConyract_number().toString();
+                    String companyName = supplierMapper.seleSupplier(Long.valueOf(diEx.getSupplier_id()));
+                    objs[1] = companyName;//公司名称
+                    objs[2] = "一虎电子";
+                    objs[3] = diEx.getSupplier()== null ? "0":diEx.getSupplier().toString();
+                    String name = depotHeadMapperEx.findMaterialsListByHeaderId(diEx.getHeaderId());
+                    objs[4] = name;//采购型号
+                    objs[5] = diEx.getOperNumber()== null ? "0":diEx.getOperNumber().toString();//数量
+                    objs[6] = diEx.getUnitPrice()== null ? " ":diEx.getUnitPrice().toString();//单价
+                    objs[7] = diEx.getTotalprice()== null ? " ":diEx.getTotalprice().setScale(0,BigDecimal.ROUND_DOWN).toString();
+                    objs[8] = diEx.getTotalprice() == null ? " ":diEx.getTotalprice().setScale(0,BigDecimal.ROUND_DOWN).toString();
+                    objs[9] = diEx.getInstaller_time() == null ? " ":diEx.getInstaller_time().toString();
+                    if (diEx.getPayment().equals("是")){
+                        objs[10] = diEx.getTotalprice() == null ? " ":diEx.getTotalprice().setScale(0,BigDecimal.ROUND_DOWN).toString();
+                        objs[11] = "0.00";
+                    }else {
+                        objs[10] = "0.00";
+                        objs[11] = diEx.getTotalprice() == null ? " ":diEx.getTotalprice().setScale(0,BigDecimal.ROUND_DOWN).toString();
+                    }
+                    objects.add(objs);
+                }
+                res = 1;
+
+            }
+            File file = ExcelUtils.exportObjectsWithoutTitle(title, names, title, objects);
+            ExportExecUtil.showExec(file, file.getName(), response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res = 0;
+        }
+        return res;
+    }
+
+    @Resource
+    private MaterialMapper materialMapper;
+    @GetMapping(value = "/exportDepotItemMSExcelBaoDin")
+    public int exportDepotItemMSExcelBaoDin(HttpServletRequest request, HttpServletResponse response)throws Exception {
+        int res = 0;
+        try {
+            List<DepotHeadVo4List> dataList = depotHeadMapperEx.selectByConditionDepotHead("其它","销售订单",null,null,null,null,null,0,100);
+            //存放数据json数组
+            String[] names = {"申请日期", "开票单位全称", "发票抬头","保定清研订单号（合同编号）", "发票类型", "订单总金额","收税分类编码+货物名称", "规格型号", "单位",
+                    "数量", "含税价格", "含税开票金额","公司名称","纳税号","公司地址","公司电话","开户行","账号","备注"};
+            String title = "清华研究院对账表";
+            List<String[]> objects = new ArrayList<String[]>();
+            if (null != dataList) {
+                Date currentTime = new Date();
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                String dateString = formatter.format(currentTime);
+                for (DepotHeadVo4List diEx : dataList) {
+                    Supplier companyName = supplierMapper.selectByPrimaryKey(Long.valueOf(diEx.getSupplier_id()));//公司名称
+                    String name = depotHeadMapperEx.findMaterialsListByHeaderId(diEx.getHeaderId());//采购型号
+                    String[] objs = new String[19];
+                    objs[0] = dateString;//申请日期
+                    objs[1] = "保定清研物联网科技有限公司";//开票单位全称
+                    objs[2] = companyName.getSupplier();//公司名称
+                    objs[3] = diEx.getConyract_number()== null ? " ":diEx.getConyract_number().toString();//保定清研订单号（合同编号）
+                    objs[4] = diEx.getConyract_money()==null ? " ":diEx.getConyract_money().toString();//发票类型
+                    objs[5] = diEx.getTotalprice() == null ? " ":diEx.getTotalprice().setScale(0,BigDecimal.ROUND_DOWN).toString();;//订单总金额
+//                    for (int i = 1;i<=2;i++){
+//                        Material material = new Material();
+//                        if (i == 1){
+//                            if (diEx.getMachine_type() != null || diEx.getMachine_type() != ""){
+////                                List<Material> materialList = materialMapper.machineSeleAll(material);
+////                                material.setName();
+//                            }
+//                        }
+//                    }
+
+
+                    objs[6] = diEx.getConyract_money()==null ? " ":"计算机网络设备，"+diEx.getConyract_money().toString();//收税分类编码+货物名称
+                    objs[7] = "";//规格型号
+                    objs[8] = diEx.getMunit()==null ? " ":""+diEx.getMunit().toString();//单位
+                    objs[9] = diEx.getOperNumber()== null ? "0":diEx.getOperNumber().toString();//数量
+                    objs[10] = diEx.getUnitPrice()== null ? " ":diEx.getUnitPrice().toString();//含税单价
+                    objs[11] = diEx.getTotalprice()== null ? " ":diEx.getTotalprice().setScale(0,BigDecimal.ROUND_DOWN).toString();//含税总金额
+                    objs[12] = companyName.getSupplier();//公司名称
+                    objs[13] = companyName.getTaxnum();//纳税号
+                    objs[14] = companyName.getAddress();//地址
+                    objs[15] = companyName.getTelephone();//电话
+                    objs[16] = companyName.getBankname();//开户会
+                    objs[17] = companyName.getAccountnumber();//账号
+                    objs[18] = diEx.getDescription() == null ? " ":diEx.getDescription().toString();//备注
+                    objects.add(objs);
+                }
+                res = 1;
+
+            }
+            File file = ExcelUtils.exportObjectsWithoutTitle(title, names, title, objects);
+            ExportExecUtil.showExec(file, file.getName(), response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res = 0;
+        }
+        return res;
     }
 }

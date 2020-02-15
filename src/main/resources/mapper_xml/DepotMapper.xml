@@ -117,6 +117,20 @@
     where `type` = 2
   </select>
 
+
+  <select id="findDepotByName" parameterType="com.jsh.erp.datasource.entities.Depot" resultMap="BaseResultMap">
+    select distinct id, `name`, address, warehousing, truckage, type, sort, remark, principal, tenant_id,
+    delete_Flag, is_default from jsh_depot
+    where `name` = #{name,jdbcType=VARCHAR}
+  </select>
+
+  <select id="findDepotByDepotName" parameterType="com.jsh.erp.datasource.entities.DepotExample" resultMap="BaseResultMap">
+      select distinct id, `name`, address, warehousing, truckage, type, sort, remark, principal, tenant_id,
+      delete_Flag, is_default from jsh_depot
+      where `type` = 0 and delete_Flag = 0
+  </select>
+
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     <!--
       WARNING - @mbggenerated

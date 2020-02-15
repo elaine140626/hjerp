@@ -66,7 +66,7 @@ public class MaterialService {
         return list;
     }
 
-    public List<MaterialVo4Unit> select(String name, String model, String categoryIds,String mpList, int offset, int rows)
+    public List<MaterialVo4Unit> select(String name, String model, String categoryIds,String mpList, int offset, int rows,Long depotId)
             throws Exception{
         String[] mpArr = mpList.split(",");
         List<MaterialVo4Unit> resList = new ArrayList<MaterialVo4Unit>();
@@ -102,7 +102,7 @@ public class MaterialService {
                 }
                 m.setMaterialOther(materialOther);
                 Long tenantId = m.getTenantId();
-                m.setStock(depotItemService.getStockByParam(null,m.getId(),null,null,tenantId));
+                m.setStock(depotItemService.getStockByParam(depotId,m.getId(),null,null,tenantId));
                 resList.add(m);
             }
         }
@@ -414,6 +414,9 @@ public class MaterialService {
 
     public List<Material> machineType(Material material){
         return materialMapper.machineType(material);
+    }
+    public List<Material> machineTypes(Material material){
+        return materialMapper.machineTypes(material);
     }
 
     public List<Material> machineTypeCount(Material material){
