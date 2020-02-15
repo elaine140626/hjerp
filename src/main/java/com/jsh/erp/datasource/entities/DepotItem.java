@@ -396,6 +396,33 @@ public class DepotItem {
     private String contacts;
     private String phonenum;
     private String description;
+    private String operTimes;
+    private String conyractMoney;
+    private String conyractNumber;
+
+    public String getConyractMoney() {
+        return conyractMoney;
+    }
+
+    public void setConyractMoney(String conyractMoney) {
+        this.conyractMoney = conyractMoney;
+    }
+
+    public String getConyractNumber() {
+        return conyractNumber;
+    }
+
+    public void setConyractNumber(String conyractNumber) {
+        this.conyractNumber = conyractNumber;
+    }
+
+    public String getOperTimes() {
+        return operTimes;
+    }
+
+    public void setOperTimes(String operTimes) {
+        this.operTimes = operTimes;
+    }
 
     public String getDescription(){
         return description;

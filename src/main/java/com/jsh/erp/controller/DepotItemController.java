@@ -158,6 +158,9 @@ public class DepotItemController {
                 for (DepotItemVo4WithInfoEx diEx : dataList) {
                     JSONObject item = new JSONObject();
                     item.put("Id", diEx.getId());
+                    item.put("conyract_number", diEx.getConyractNumber());
+                    item.put("conyract_money", diEx.getConyractMoney());
+                    item.put("OperTimes", diEx.getOperTimes());
                     item.put("MaterialId", diEx.getMaterialid() == null ? "" : diEx.getMaterialid());
                     String ratio; //比例
                     if (diEx.getUnitId() == null || diEx.getUnitId().equals("")) {

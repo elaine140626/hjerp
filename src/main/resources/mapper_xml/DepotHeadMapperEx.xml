@@ -366,7 +366,7 @@
                 AccountIdList, AccountMoneyList, Discount,
                 DiscountMoney, DiscountLastMoney, OtherMoney,
                 OtherMoneyList, OtherMoneyItem, AccountDay,
-                Status, LinkNumber,GateNumber )
+                Status, LinkNumber,GateNumber,conyract_number,conyract_money,OperTimes)
         values (#{type,jdbcType=VARCHAR}, #{subtype,jdbcType=VARCHAR},
                 #{projectid,jdbcType=BIGINT}, #{defaultnumber,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR},
                 #{operpersonname,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, #{opertime,jdbcType=TIMESTAMP},
@@ -376,7 +376,8 @@
                 #{accountidlist,jdbcType=VARCHAR}, #{accountmoneylist,jdbcType=VARCHAR}, #{discount,jdbcType=DECIMAL},
                 #{discountmoney,jdbcType=DECIMAL}, #{discountlastmoney,jdbcType=DECIMAL}, #{othermoney,jdbcType=DECIMAL},
                 #{othermoneylist,jdbcType=VARCHAR}, #{othermoneyitem,jdbcType=VARCHAR}, #{accountday,jdbcType=VARCHAR},
-                #{status,jdbcType=VARCHAR}, #{linknumber,jdbcType=VARCHAR},#{gatenumber,jdbcType=VARCHAR})
+                #{status,jdbcType=VARCHAR}, #{linknumber,jdbcType=VARCHAR},#{gatenumber,jdbcType=VARCHAR},
+                #{conyract_number,jdbcType=VARCHAR},#{conyract_money,jdbcType=VARCHAR},#{operTimes,jdbcType=VARCHAR})
 
     </insert>
     <update id="updatedepotHead" parameterType="com.jsh.erp.datasource.entities.DepotHead">
