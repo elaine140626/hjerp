@@ -123,7 +123,7 @@
   </select>
 
   <select id="machineType" parameterType="com.jsh.erp.datasource.entities.Material" resultMap="BaseResultMap">
-        SELECT * FROM jsh_material  WHERE `LEVEL` LIKE CONCAT(CONCAT('%',#{id,jdbcType=BIGINT}),'%') and name LIKE '%人脸%'
+        SELECT * FROM jsh_material  WHERE `LEVEL` LIKE CONCAT(CONCAT('%',#{id,jdbcType=BIGINT}),'%') and (name LIKE '%人脸%' or name like '%身份证%')
   </select>
 
   <select id="machineTypes" parameterType="com.jsh.erp.datasource.entities.Material" resultMap="BaseResultMap">

@@ -635,6 +635,7 @@ public class DepotHeadController {
                                              HttpServletRequest request, HttpServletResponse response) throws IOException {
         //文件上传路径
         String path = request.getServletContext().getRealPath("/img/");
+        logger.error("假钞1151"+path);
         //上传文件名
         String filename = file.getOriginalFilename();
         File filepath = new File(path, filename);

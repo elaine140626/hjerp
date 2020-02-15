@@ -1187,7 +1187,6 @@ function initTableData(){
 }
 //查找库存的方法
 function findStockNumById(depotId, mId, monthTime, body, input, ratio, type){
-	debugger
 	var thisRatio = 1; //比例
 	$.ajax({
 		url: "/material/findById",
@@ -4157,6 +4156,7 @@ function setStatusFun(status) {
 }
 //出库操作
 function setStatusGate(status) {
+	debugger
 	var row = $('#tableData').datagrid('getChecked');
 	if (row.length == 0) {
 		$.messager.alert('提示', '没有记录被选中！', 'info');
@@ -4164,7 +4164,6 @@ function setStatusGate(status) {
 	}
 	if (row.length > 0) {
 		for (var i = 0; i < row.length; i++) {
-			debugger
 			var ids = "";
 			for(var i = 0;i < row.length; i ++) {
 				if(i == row.length-1) {
@@ -4273,7 +4272,6 @@ function outEject(res) {
 }
 //保存出库信息
 function saveoutStockDlg(){
-	debugger
 	var  num = 0;
 	var outId = $("#outId").text();
 	var face = $("#face").text();
@@ -4364,7 +4362,6 @@ function saveoutStockDlg(){
 }
 //查询供应商id和经手人id
 function findTypeId(mId,pd,tId) {
-	debugger
 	if (pd == 1){
 		$.ajax({
 			type: "get",
@@ -4407,7 +4404,6 @@ function findTypeId(mId,pd,tId) {
 }
 //修改未发货数量
 function updateNumber2() {
-	debugger
 	var Id = $("#outId").text();
 	var machine_number2 = $("#facecount").val();//发出的人脸数量
 	var gate_number2 = $("#gatecount").val();	//发出的闸机数量
@@ -4700,7 +4696,6 @@ function addDepotHead(){
 }
 //编辑信息
 function editDepotHead(index, res){
-	debugger
 	$("#fileformsMsg").show();//显示
 	$("#fileformsMsg1").show();//显示
 	$("#fileformsMsg2").show();//显示
@@ -4731,6 +4726,8 @@ function editDepotHead(index, res){
 	} else {
 		$("#Number").val(res.number).attr("data-defaultNumber",res.number);
 		$("#OperTime").val(res.opertimeStr);
+		$("#OperTimes").val(res.operTimes);
+		$("#conyract_number").val(res.conyract_number);
 		$("#LinkNumber").val(res.linknumber); //关联订单号
 		$("#AccountId").val(res.accountid); //账户Id
 		$("#DiscountLastMoney").val(res.discountlastmoney); //优惠后金额
@@ -4782,6 +4779,16 @@ function editDepotHead(index, res){
 			}
 			$("#Salesman").combobox('setValues', salesmanArray);
 		}
+		if (res.conyract_money){
+			var arrayList = res.conyract_money.split(",");
+			var array = []
+			for(var i=0;i<arrayList.length;i++){
+				if(arrayList[i]){
+					array.push(arrayList[i].replace("<","").replace(">",""));
+				}
+			}
+			$("#conyract_money").combobox('setValues',array);
+		}
 	}
 
 	//采购入库、销售出库的多账户加载
@@ -4830,7 +4837,6 @@ function editDepotHead(index, res){
 		initTableData_material("add",null,2,24); //商品列表
 	}
 	reject(); //撤销下、刷新商品列表
-	debugger
 	if(pageType === "skip") {
 		url = '/depotHead/addDepotHeadAndDetail'; //如果是从订单跳转过来，则此处为新增的接口
 		//jshjshjsh
@@ -5331,6 +5337,9 @@ function bindEvent(){
 				Number: $.trim($("#Number").val()),
 				LinkNumber: $.trim($("#LinkNumber").val()),
 				OperTime: $("#OperTime").val(),
+				conyract_number: $("#conyract_number").val(),
+				conyract_money: $('#conyract_money').combobox('getValue'),
+				OperTimes: $("#OperTimes").val(),
 				OrganId: OrganId,
 				HandsPersonId: $.trim($("#HandsPersonId").val()),
 				Salesman: SalesmanStr, //销售人员
@@ -6442,29 +6451,44 @@ function addDepotHeadAndDetails2(url,infoStr,pd){
 }
 //修改单据主表及单据子表
 function updateDepotHeadAndDetail(url,infoStr,preTotalPrice) {
-	debugger
 	var inserted = $("#materialData").datagrid('getChanges', "inserted");
 	var deleted = $("#materialData").datagrid('getChanges', "deleted");
 	var updated = $("#materialData").datagrid('getChanges', "updated");
 	if (updated.length){
+		if (contract == "否") {
+			if (updated[0].contract == "是") {
+				setStatusFunMPI("1");
+			}
+		}
+
 		if (payment == "否") {
 			if (updated[0].payment == "是") {
-				setStatusFunMPI("6");
+				if (contract == "是") {
+					setStatusFunMPI("6");
+				} else {
+					$.messager.alert('提示：', '合同处于未签订状态	，收款不能被修改');
+					return;
+				}
 			}
 		}
 		if (invoice == "否") {
 			if (updated[0].invoice == "是") {
-				setStatusFunMPI("7");
+				if (contract == "是" && payment == "是") {
+					setStatusFunMPI("7");
+				} else {
+					$.messager.alert('提示：', '订单处于为未收款	，开票不能被修改');
+					return;
+				}
 			}
 		}
 		if (gate == "否") {
 			if (updated[0].gate == "是") {
-				setStatusFunMPI("2");
-			}
-		}
-		if (contract == "否") {
-			if (updated[0].contract == "是") {
-				setStatusFunMPI("1");
+				if (contract == "是" && payment == "是" && invoice == "是") {
+					setStatusFunMPI("2");
+				} else {
+					$.messager.alert('提示：', '订单处于为未开票	，发货不能被修改');
+					return;
+				}
 			}
 		}
 		if (gate == "是") {

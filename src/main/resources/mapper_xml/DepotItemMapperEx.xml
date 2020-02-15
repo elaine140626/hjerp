@@ -139,7 +139,7 @@
         SELECT di.*, m.Name MName, m.Model MModel, m.Unit MaterialUnit, m.Color MColor,
              m.Standard MStandard, m.Mfrs MMfrs, m.OtherField1 MOtherField1, m.OtherField2 MOtherField2,
              m.OtherField3 MOtherField3, dp1.name DepotName, dp2.name AnotherDepotName, u.id UnitId, u.UName,
-             di.we_chat ,s.supplier OrganName , s.contacts,s.phonenum,s.description
+             di.we_chat ,s.supplier OrganName , s.contacts,s.phonenum,s.description,dh.conyract_number conyractNumber,dh.conyract_money conyractMoney,dh.OperTimes
         FROM jsh_depotitem di LEFT JOIN jsh_material m ON m.tenant_id = 63 AND di.MaterialId = m.id
         AND ifnull(m.delete_Flag, '0') != '1' LEFT JOIN jsh_unit u ON u.tenant_id = 63 AND m.UnitId = u.id
         AND ifnull(u.delete_Flag, '0') != '1'

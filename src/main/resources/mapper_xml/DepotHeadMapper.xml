@@ -62,6 +62,7 @@
     <result column="order_type" jdbcType="VARCHAR" property="order_type" />
     <result column="OperNumber" jdbcType="VARCHAR" property="operNumber" />
     <result column="GateNumber" jdbcType="VARCHAR" property="gatenumber" />
+    <result column="OperTimes" jdbcType="VARCHAR" property="operTimes" />
   </resultMap>
 
   <sql id="Example_Where_Clause">
