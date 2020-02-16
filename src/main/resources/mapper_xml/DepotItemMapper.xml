@@ -756,10 +756,10 @@
       <if test="deleteFlag != null">
         delete_Flag = #{deleteFlag,jdbcType=VARCHAR},
       </if>
-      <if test="machine_number2 != null">
+      <if test="machine_number2 != null and machine_number2 !=0 ">
         machine_number2 = #{machine_number2,jdbcType=BIGINT},
       </if>
-      <if test="gate_number2 != null">
+      <if test="gate_number2 != null and gate_number2 != 0">
         gate_number2 = #{gate_number2,jdbcType=BIGINT},
       </if>
     </set>

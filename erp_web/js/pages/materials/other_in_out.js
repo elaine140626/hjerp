@@ -1873,15 +1873,14 @@ function bindEvent(){
                 }
             }
             //输入框提示
+            debugger
             if(listTitle === "采购订单列表"){
                 if(!$('#OrganId').combobox('getValue')){
                     $.messager.alert('提示','请选择供应商！','warning');
                     return;
                 }
-                // if($(".OrderKuan").is(":hidden")){
-                //
-                // }else{
-                //     if(!$('#GateNumber').combobox('getValue'){
+                // if(!$(".OrderKuan").is(":hidden")){
+                //     if(!$('#GateNumber').combobox('getValue')){
                 //         $.messager.alert('提示','请选择订单编号！','warning');
                 //         return;
                 //     }
