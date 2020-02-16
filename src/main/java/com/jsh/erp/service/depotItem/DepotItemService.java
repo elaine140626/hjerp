@@ -372,13 +372,13 @@ public class DepotItemService {
                     depotItem.setInvoice("否");
                     depotItem.setPayment("否");
                     depotItem.setContract("否");
-                    if (tempInsertedJson.getString("machine_type") != null && !tempInsertedJson.getString("machine_type").equals("") && !tempInsertedJson.getString("machine_type").equals("无")){
+                    if (tempInsertedJson.getString("machine_type") != null && !tempInsertedJson.getString("machine_type").equals("") && !tempInsertedJson.getString("machine_type").equals("无")) {
                         Material material = new Material();
                         material.setName(tempInsertedJson.getString("machine_type"));
                         Material materialList = materialMapper.machineSeleAlls(material);
                         depotItem.setMachinetype_id(materialList.getId());
                     }
-                    if (tempInsertedJson.getString("gate_type") != null && !tempInsertedJson.getString("gate_type").equals("") && !tempInsertedJson.getString("gate_type").equals("无")){
+                    if (tempInsertedJson.getString("gate_type") != null && !tempInsertedJson.getString("gate_type").equals("") && !tempInsertedJson.getString("gate_type").equals("无")) {
                         Material material = new Material();
                         material.setName(tempInsertedJson.getString("gate_type"));
                         Material materialList = materialMapper.machineSeleAlls(material);
@@ -387,11 +387,13 @@ public class DepotItemService {
                     if (tempInsertedJson.getInteger("machine_number") != null) {
                         Integer ii = tempInsertedJson.getInteger("OperNumber");//数量
                         Integer kk = tempInsertedJson.getInteger("machine_number");//人脸机数量
-                        Integer ee = tempInsertedJson.getInteger("gate_number");//闸机数量
                         depotItem.setMachine_number2(ii * kk);
+                    }
+                    if (tempInsertedJson.getInteger("gate_number") != null) {
+                        Integer ii = tempInsertedJson.getInteger("OperNumber");//数量
+                        Integer ee = tempInsertedJson.getInteger("gate_number");//闸机数量
                         depotItem.setGate_number2(ii * ee);
                     }
-
                     if (!StringUtil.isEmpty(tempInsertedJson.get("OperNumber").toString())) {
                         depotItem.setOpernumber(tempInsertedJson.getBigDecimal("OperNumber"));
                         try {
@@ -413,7 +415,7 @@ public class DepotItemService {
                                 if (Unit.equals(basicUnit)) { //如果等于基础单位
                                     depotItem.setBasicnumber(oNumber); //数量一致
                                 } else if (Unit.equals(otherUnit)) { //如果等于副单位
-                                    depotItem.setBasicnumber(oNumber.multiply(new BigDecimal(ratio)) ); //数量乘以比例
+                                    depotItem.setBasicnumber(oNumber.multiply(new BigDecimal(ratio))); //数量乘以比例
                                 }
                             } else {
                                 depotItem.setBasicnumber(oNumber); //其他情况
@@ -537,40 +539,39 @@ public class DepotItemService {
                     /**
                      * 出库时判断库存是否充足
                      * */
-                    if(BusinessConstants.DEPOTHEAD_TYPE_OUT.equals(depotHead.getType())){
-                        if(depotItem==null){
+                    if (BusinessConstants.DEPOTHEAD_TYPE_OUT.equals(depotHead.getType())) {
+                        if (depotItem == null) {
                             continue;
                         }
-                        Material material= materialService.getMaterial(depotItem.getMaterialid());
-                        if(material==null){
+                        Material material = materialService.getMaterial(depotItem.getMaterialid());
+                        if (material == null) {
                             continue;
                         }
-                        BigDecimal stock = getStockByParam(depotItem.getDepotid(),depotItem.getMaterialid(),null,null,tenantId);
-                        BigDecimal thisBasicNumber = depotItem.getBasicnumber()==null?BigDecimal.ZERO:depotItem.getBasicnumber();
-                        if(stock.compareTo(thisBasicNumber)<0){
+                        BigDecimal stock = getStockByParam(depotItem.getDepotid(), depotItem.getMaterialid(), null, null, tenantId);
+                        BigDecimal thisBasicNumber = depotItem.getBasicnumber() == null ? BigDecimal.ZERO : depotItem.getBasicnumber();
+                        if (stock.compareTo(thisBasicNumber) < 0) {
                             throw new BusinessRunTimeException(ExceptionConstants.MATERIAL_STOCK_NOT_ENOUGH_CODE,
-                                    String.format(ExceptionConstants.MATERIAL_STOCK_NOT_ENOUGH_MSG,material==null?"":material.getName()));
+                                    String.format(ExceptionConstants.MATERIAL_STOCK_NOT_ENOUGH_MSG, material == null ? "" : material.getName()));
                         }
 
                         /**出库时处理序列号*/
-                        if(!BusinessConstants.SUB_TYPE_TRANSFER.equals(depotHead.getSubtype())) {
+                        if (!BusinessConstants.SUB_TYPE_TRANSFER.equals(depotHead.getSubtype())) {
                             /**
                              * 判断商品是否开启序列号，开启的收回序列号，未开启的跳过
                              * */
-                            if(BusinessConstants.ENABLE_SERIAL_NUMBER_ENABLED.equals(material.getEnableserialnumber())) {
+                            if (BusinessConstants.ENABLE_SERIAL_NUMBER_ENABLED.equals(material.getEnableserialnumber())) {
                                 //查询单据子表中开启序列号的数据列表
                                 serialNumberService.checkAndUpdateSerialNumber(depotItem, userInfo);
                             }
                         }
                     }
                     this.insertDepotItemWithObj(depotItem);
+                    Msg msg = new Msg();
+                    msg.setMsgTitle(String.valueOf(headerId));
+                    msg.setId(headerId);
+                    msgService.updateMsgContract(msg);
                 }
-                Msg msg = new Msg();
-                msg.setMsgTitle(String.valueOf(headerId));
-                msg.setId(headerId);
-                msgService.updateMsgContract(msg);
             }
-
             if (null != updatedJson) {
                 for (int i = 0; i < updatedJson.size(); i++) {
                     JSONObject tempUpdatedJson = JSONObject.parseObject(updatedJson.getString(i));

@@ -479,6 +479,15 @@
             <if test="contract != null">
                 contract = #{contract,jdbcType=VARCHAR},
             </if>
+            <if test="conyract_number != null">
+                conyract_number = #{conyract_number,jdbcType=VARCHAR},
+            </if>
+            <if test="conyract_money != null">
+                conyract_money = #{conyract_money,jdbcType=VARCHAR},
+            </if>
+            <if test="operTimes != null">
+                OperTimes = #{operTimes,jdbcType=VARCHAR},
+            </if>
         </set>
         where Id = #{id,jdbcType=BIGINT}
     </update>
