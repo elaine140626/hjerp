@@ -31,6 +31,7 @@
     <result column="delete_Flag" jdbcType="VARCHAR" property="deleteFlag" />
     <result column="supply" jdbcType="VARCHAR" property="supply" />
     <result column="method" jdbcType="VARCHAR" property="method" />
+    <result column="sales_type" jdbcType="VARCHAR" property="sales_type" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <!--
@@ -182,7 +183,7 @@
       AllNeedGet, AllNeedPay, fax,
       telephone, address, taxNum,
       bankName, accountNumber, taxRate,
-      tenant_id, delete_Flag,supply,method,supplier_id)
+      tenant_id, delete_Flag,supply,method,supplier_id,sales_type)
     values (#{id,jdbcType=BIGINT}, #{supplier,jdbcType=VARCHAR}, #{contacts,jdbcType=VARCHAR},
       #{phonenum,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR},
       #{isystem,jdbcType=TINYINT}, #{type,jdbcType=VARCHAR}, #{enabled,jdbcType=BIT},
@@ -190,7 +191,8 @@
       #{allneedget,jdbcType=DECIMAL}, #{allneedpay,jdbcType=DECIMAL}, #{fax,jdbcType=VARCHAR},
       #{telephone,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{taxnum,jdbcType=VARCHAR},
       #{bankname,jdbcType=VARCHAR}, #{accountnumber,jdbcType=VARCHAR}, #{taxrate,jdbcType=DECIMAL},
-      #{tenantId,jdbcType=BIGINT}, #{deleteFlag,jdbcType=VARCHAR}, #{supply,jdbcType=VARCHAR},#{method,jdbcType=VARCHAR},#{sipplier_id,jdbcType=VARCHAR})
+      #{tenantId,jdbcType=BIGINT}, #{deleteFlag,jdbcType=VARCHAR}, #{supply,jdbcType=VARCHAR},
+       #{method,jdbcType=VARCHAR},#{sipplier_id,jdbcType=VARCHAR},#{sales_type,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.jsh.erp.datasource.entities.Supplier">
     <!--
@@ -277,6 +279,9 @@
       <if test="supplier_id != null">
         supplier_id,
       </if>
+      <if test="sales_type != null">
+        sales_type
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -357,6 +362,10 @@
       <if test="supplier_id != null">
         #{supplier_id,jdbcType=VARCHAR},
       </if>
+      <if test="sales_type != null">
+        #{sales_type,jdbcType=VARCHAR}
+      </if>
+
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.jsh.erp.datasource.entities.SupplierExample" resultType="java.lang.Integer">
