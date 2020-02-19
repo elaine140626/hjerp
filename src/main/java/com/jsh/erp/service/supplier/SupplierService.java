@@ -426,4 +426,15 @@ public class SupplierService {
 
         return supplierMapper.addSupplier(supplier);
     }
+
+
+    public String findSalesType(Long sId)throws Exception {
+       String result = null;
+        try{
+            result = supplierMapper.findSalesType(sId);
+        }catch(Exception e){
+            JshException.readFail(logger, e);
+        }
+        return result;
+    }
 }

@@ -552,4 +552,51 @@ public class SupplierController {
 //        return i;
 //    }
 
+    /**
+     * 查找产品类型信息-下拉框
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/findSalesType")
+    public JSONArray findSalesType(@RequestParam("sId")Long sId, HttpServletRequest request)throws Exception {
+        JSONArray arr = new JSONArray();
+        List<Supplier> supplierList = new ArrayList<Supplier>();
+        try {
+            String salesType = supplierService.findSalesType(sId);
+            if (salesType != null){
+                if (salesType.indexOf("1") >= 0){
+                    Supplier materialType = new Supplier();
+                    materialType.setId((long)1);
+                    materialType.setSales_type("人脸机");
+                    supplierList.add(materialType);
+                }
+                if (salesType.indexOf("2") >= 0){
+                    Supplier gateType = new Supplier();
+                    gateType.setId((long)2);
+                    gateType.setSales_type("闸机");
+                    supplierList.add(gateType);
+                }
+                if (salesType.indexOf("3") >= 0){
+                    Supplier cardType = new Supplier();
+                    cardType.setId((long)3);
+                    cardType.setSales_type("身份证读卡器");
+                    supplierList.add(cardType);
+                }
+            }
+            JSONArray dataArray = new JSONArray();
+            if (null != supplierList) {
+                for (Supplier list : supplierList) {
+                    JSONObject item = new JSONObject();
+                    item.put("Id", list.getId());
+                    item.put("tName", list.getSales_type());
+                    dataArray.add(item);
+                }
+            }
+            arr = dataArray;
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+        return arr;
+    }
+
 }

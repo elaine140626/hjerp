@@ -45,5 +45,15 @@ public class TypeService {
         return result;
     }
 
+    public List<Type> selectTypeId(Type type)throws Exception {
+        List<Type> result=null;
+        try{
+            result=typeMapper.selectTypeId(type);
+        }catch(Exception e){
+            JshException.readFail(logger, e);
+        }
+        return result;
+    }
+
 
 }

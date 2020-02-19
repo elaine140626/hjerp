@@ -2926,7 +2926,7 @@ function updateDepotHeadAndDetail(url,infoStr,preTotalPrice){
         dataType: "json",
         async :  false,
         data: ({
-            id:url.substring(url.lastIndexOf("?id=")+4,url.length),
+            id:url.substring(url.lastIndexOf("?id==")+4,url.length),
             info:infoStr,
             inserted: JSON.stringify(inserted),
             deleted: JSON.stringify(deleted),

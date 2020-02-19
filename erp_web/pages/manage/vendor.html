@@ -150,10 +150,24 @@
     <form id="supplierMaterialFM">
         <table>
             <tr>
-                <td style="width:70px;">供应商：</td>
-                <td style="padding:5px;width:170px;">
+                <td >供应商：</td>
+                <td style="width:170px;">
                     <div class="org-list">
-                        <input id="organId" name="organId" style="width:160px;"/>
+                        <input id="organId" name="organId" style="width:160px;" class="easyui-combobox"/>
+                    </div>
+                </td>
+                <td >产品类型：</td>
+                <td style="width:170px;">
+                    <div class="org-list">
+                        <input id="sales_types" name="sales_types" style="width: 160px;" class="easyui-combobox" />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td >类型分类：</td>
+                <td style="width:170px;">
+                    <div class="org-list">
+                        <input id="type_type" name="type_type" style="width: 160px;" class="easyui-combobox"/>
                     </div>
                 </td>
                 <td>产品名称:</td>
@@ -162,25 +176,30 @@
                 </td>
             </tr>
             <tr>
-                <td style="width:70px;">所属品名：</td>
-                <td style="padding:5px;width:170px;">
-                    <div class="org-list">
-                        <input id="level" name="level" style="width:160px;" class="easyui-combobox" />
-                    </div>
-                </td>
+                <!--<td style="width:70px;">所属品名：</td>-->
+                <!--<td style="padding:5px;width:170px;">-->
+                    <!--<div class="org-list">-->
+                        <!--<input id="level" name="level" style="width:160px;" class="easyui-combobox" />-->
+                    <!--</div>-->
+                <!--</td>-->
                 <td >型号:</td>
                 <td style="padding:1px">
                     <input name="model" id="model" class="easyui-validatebox" style="width: 160px;height: 20px"/>
                 </td>
-            </tr>
-            <tr>
                 <td >单价:</td>
                 <td style="padding:1px">
                     <input name="retailprice" id="retailprice" class="easyui-validatebox" style="width: 160px;height: 20px"/>
                 </td>
+            </tr>
+            <tr>
                 <td>规格:</td>
                 <td style="padding:1px">
                     <input name="unit" id="unit" class="easyui-validatebox" style="width: 160px;height: 20px"/>
+                </td>
+                <td>备注:</td>
+                <td style="padding:1px">
+                    <input name="remark" id="remark" class="easyui-validatebox" style="width: 160px;height: 20px"/>
+                </td>
                 <td style="display: none">
                     <input name="categoryid" id="categoryid" ><input name="enabled" id="enabled" /><input name="packing" id="packing">
                     <input name="safetystock" id="safetystock"> <input name="standard" id="standard"> <input name="lowprice" id="lowprice">
@@ -188,12 +207,6 @@
                     <input name="unitid" id="unitid"><input name="firstoutunit" id="firstoutunit"> <input name="firstinunit" id="firstinunit">
                     <input name="pricestrategy" id="pricestrategy"><input name="otherfield1" id="otherfield1"><input name="otherfield2" id="otherfield2">
                     <input name="otherfield3" id="otherfield3"><input name="deleteFlag" id="deleteFlag"><input name="barcode" id="barcode">
-                </td>
-            </tr>
-            <tr>
-                <td>备注:</td>
-                <td style="padding:1px">
-                    <input name="remark" id="remark" class="easyui-validatebox" style="width: 160px;height: 20px"/>
                 </td>
             </tr>
         </table>

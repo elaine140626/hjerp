@@ -225,6 +225,26 @@ public class Material {
 
     private String level;
 
+    private String  sales_typeId;
+
+    private Long  type_typeId;
+
+    public String getSales_typeId() {
+        return sales_typeId;
+    }
+
+    public void setSales_typeId(String sales_typeId) {
+        this.sales_typeId = sales_typeId;
+    }
+
+    public Long getType_typeId() {
+        return type_typeId;
+    }
+
+    public void setType_typeId(Long type_typeId) {
+        this.type_typeId = type_typeId;
+    }
+
     public String getLevel() {
         return level;
     }
