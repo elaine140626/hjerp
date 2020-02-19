@@ -10,4 +10,5 @@ public interface TypeMapper {
      * @return
      */
     List<Type> selectType();
+
 }

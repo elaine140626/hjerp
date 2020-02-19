@@ -16,6 +16,7 @@ public class TypeComponent implements ICommonQuery {
         return null;
     }
 
+
     @Override
     public List<?> select(Map<String, String> parameterMap) throws Exception {
         return null;

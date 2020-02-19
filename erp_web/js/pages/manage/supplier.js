@@ -711,6 +711,7 @@ function bindEvent(){
             }
         }
 
+
         var obj = $("#supplierFM").serializeObject();
         obj.type = listType;
         obj.enabled = 1;

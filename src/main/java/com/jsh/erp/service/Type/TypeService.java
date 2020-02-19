@@ -34,6 +34,7 @@ public class TypeService {
     private TypeMapper typeMapper;
 
 
+
     public List<Type> selectType()throws Exception {
         List<Type> result=null;
         try{

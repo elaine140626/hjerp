@@ -42,6 +42,7 @@ public class TypeController {
                     dataArray.add(item);
                 }
             }
+
             arr = dataArray;
         } catch(Exception e){
             e.printStackTrace();

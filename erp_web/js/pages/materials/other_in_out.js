@@ -1898,6 +1898,7 @@ function bindEvent(){
                     return;
                 }
             }
+
             else if(listTitle === "零售退货列表"){
                 if(!$('#AccountId').val()){
                     $.messager.alert('提示','请选择付款账户！','warning');
