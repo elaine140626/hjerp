@@ -566,11 +566,11 @@ public class DepotItemService {
                         }
                     }
                     this.insertDepotItemWithObj(depotItem);
-                    Msg msg = new Msg();
-                    msg.setMsgTitle(String.valueOf(headerId));
-                    msg.setId(headerId);
-                    msgService.updateMsgContract(msg);
                 }
+                Msg msg = new Msg();
+                msg.setMsgTitle(String.valueOf(headerId));
+                msg.setId(headerId);
+                msgService.updateMsgContract(msg);
             }
             if (null != updatedJson) {
                 for (int i = 0; i < updatedJson.size(); i++) {

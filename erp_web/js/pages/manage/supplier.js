@@ -11,6 +11,7 @@ $(function() {
     bindEvent();
     initSupplier();//初始化供应商
     initMaterialId();//初始化产品和套餐
+    initType();//初始化产品类型
 });
 
 //根据名称获取类型
@@ -558,6 +559,48 @@ function initSupplier(){
 }
 
 
+//初始化产品类型
+function initType(){
+    $('#sales_type').combobox({
+        url: "/type/selectType",
+        mathod:'post',
+        valueField:'Id',
+        textField:'tName',
+        multiple: true,
+        formatter: function(row) {
+            var opts = $(this).combobox('options');
+            return '<input type="checkbox" class="combobox-checkbox">'+ row[opts.textField];
+        },
+        onLoadSuccess: function () {  //下拉框数据加载成功调用
+            var opts = $(this).combobox('options');
+            var target = this;
+            var values = $(target).combobox('getValues');//获取选中的值的values
+            $.map(values, function (value) {
+                var el = opts.finder.getEl(target, value);
+                el.find('input.combobox-checkbox')._propAttr('checked', true);
+            })
+        },
+        onSelect: function (row) { //选中一个选项时调用
+            var opts = $(this).combobox('options');
+            //获取选中的值的values
+            $('#sales_type').val($(this).combobox('getValues'));
+
+            //设置选中值所对应的复选框为选中状态
+            var el = opts.finder.getEl(this, row[opts.valueField]);
+            el.find('input.combobox-checkbox')._propAttr('checked', true);
+        },
+        onUnselect: function (row) {//不选中一个选项时调用
+            var opts = $(this).combobox('options');
+            //获取选中的值的values
+            $('#sales_type').val($(this).combobox('getValues'));
+
+            var el = opts.finder.getEl(this, row[opts.valueField]);
+            el.find('input.combobox-checkbox')._propAttr('checked', false);
+        }
+    });
+}
+
+
 //初始化产品和套餐
 function initMaterialId() {
     debugger
@@ -654,10 +697,24 @@ function bindEvent(){
             $.messager.alert('提示','期初应收和期初应付不能同时输入','info');
             return;
         }
+        var sales_typeStr = "";
+        var sales_type = $('#sales_type').combobox('getValues').toString(); //销售人员
+        if(sales_type) {
+            var sales_typeArray = sales_type.split(",");
+            for (var i = 0; i < sales_typeArray.length; i++) {
+                if (i === sales_typeArray.length - 1) {
+                    sales_typeStr += "<" + sales_typeArray[i] + ">";
+                }
+                else {
+                    sales_typeStr += "<" + sales_typeArray[i] + ">,";
+                }
+            }
+        }
 
         var obj = $("#supplierFM").serializeObject();
         obj.type = listType;
         obj.enabled = 1;
+        obj.sales_type = sales_typeStr;
         $.ajax({
             url: url,
             type:"post",

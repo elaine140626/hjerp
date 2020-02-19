@@ -291,7 +291,7 @@ function initOderNumber() {
     debugger
     $('#GateNumber').combobox({
         url: "/depotHead/findDefaultNumber",
-        valueField: 'id',
+        valueField: 'defaultnumber',
         textField: 'defaultnumber',
         filter: function(q, row) {
             var opts = $(this).combobox('options');
@@ -1879,12 +1879,14 @@ function bindEvent(){
                     $.messager.alert('提示','请选择供应商！','warning');
                     return;
                 }
-                // if(!$(".OrderKuan").is(":hidden")){
-                //     if(!$('#GateNumber').combobox('getValue')){
-                //         $.messager.alert('提示','请选择订单编号！','warning');
-                //         return;
-                //     }
-                // }
+                if(!$(".OrderKuan").is(":hidden")){
+
+                }else {
+                    if(!$('#GateNumber').combobox('getValue')){
+                        $.messager.alert('提示','请选择订单编号！','warning');
+                        return;
+                    }
+                }
             }
             else if(listTitle === "采购入库列表"){
                 if(!$('#OrganId').combobox('getValue')){
@@ -2036,7 +2038,7 @@ function bindEvent(){
             }
             if($('#GateNumber').length){
                 GateNumber = $('#GateNumber').combobox('getValue');
-            } 
+            }
             var infoStr=JSON.stringify({
                 Type: listType,
                 SubType: listSubType,

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jsh.erp.datasource.mappers.TypeMapper">
+    <resultMap id="BaseResultMap" type="com.jsh.erp.datasource.entities.Type">
+        <id column="Id" jdbcType="BIGINT" property="id" />
+        <result column="Name" jdbcType="VARCHAR" property="name" />
+        <result column="sales_type" jdbcType="BIGINT" property="sales_type" />
+    </resultMap>
+    <select id="selectType" resultMap="BaseResultMap">
+        SELECT * FROM jsh_type WHERE sales_type IS null
+    </select>
+</mapper>

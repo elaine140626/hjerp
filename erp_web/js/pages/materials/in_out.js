@@ -38,8 +38,8 @@ var mPropertyList = ""; //商品属性列表
 var defaultAccountId = 0; //默认账户id
 var materialId = 0; //商品ID
 
-var MaterialStock = 0;
-var gateStock = 0;
+var MaterialStock = [];
+var gateStock = [];
 var mqk = "";
 var gqk = "";
 var reduceNumber = 0;
@@ -4175,7 +4175,7 @@ function setStatusGate(status) {
 			var ids = "";
 			for(var i = 0;i < row.length; i ++) {
 				if(i == row.length-1) {
-					if(row[i].status == "6" || row[i].status == "2") {
+					if(row[i].status == "6" || row[i].status == "2" || row[i].status == "7") {
 						ids += row[i].id;
 					}
 					break;
@@ -4248,7 +4248,18 @@ var loop = 0;
 var depotIdMg = []; //仓库id
 //出库提示弹出框
 function outEject(res) {
-	debugger
+	str = "";
+	Machinetype_id = [];
+	Gatetype_id = [];
+	MHandsPersonId = 0;
+	MorganId = 0;
+	GHandsPersonId = 0;
+	GorganId = 0;
+	Salesman = "";
+	AllPrice = [];
+	bjts = 0;
+	xsts = 0;
+	depotIdMg = []; //仓库id
 	xsts = 0;
 	loop = res.data.length;
 	for (i = 0; i < res.data.length;i++) {
@@ -4264,9 +4275,9 @@ function outEject(res) {
 		}
 	}
 	for (i = 0; i < res.data.length;i++){
-		str = str + '<div class="out-content-tmp'+i+'" id="'+(bqdiv+i)+'">' +
-			'			  <p>'+(i+1)+'.你将出库的&nbsp;&nbsp;<span class="product" name="product" id="product">'+  res.data[i].MaterialName + '</span>&nbsp;&nbsp;其中包括：</p>' +
-			'			  <td id="display1" >' +
+		str = str + '<div class="out-content-tmp'+i+'">' +
+			'          <p>'+(i+1)+'.您将出库的&nbsp;&nbsp;<span class="product" name="product" id="product">'+  res.data[i].MaterialName + '</span>&nbsp;&nbsp;其中包括：</p >' +
+			'          <td id="display1" >' +
 			'            <span name="outId" id="outId" style="display: none">'+ res.data[i].Id +'</span>' +
 			'            <input type="text" name="OutNumber" id="OutNumber"  style="width: 150px;display: none"/>' +
 			'            <span class="face" name="face" id="face">'+ res.data[i].machine_type +'</span>' +
@@ -4295,6 +4306,8 @@ function outEject(res) {
 //保存出库信息
 function saveoutStockDlg(){
 	debugger
+    var faceunits = document.getElementsByName("faceunit");
+	var gateunits = document.getElementsByName("gateunit");
 	var outIds = document.getElementsByName("outId");
 	var faces = document.getElementsByName("face");
 	var gates = document.getElementsByName("gate");
@@ -4303,8 +4316,10 @@ function saveoutStockDlg(){
 	var facecount2s = document.getElementsByName("facecount2");
 	var gatecount2s = document.getElementsByName("gatecount2");
 
-	for (i = 0; i <= loop; i++){
+	for (i = 0; i < loop; i++){
 		var  num = 0;
+        var faceunit = faceunits[i].innerHTML;
+		var gateunit = gateunits[i].innerHTML;
 		var outId = outIds[i].innerHTML;
 		var face = faces[i].innerHTML;
 		var gate = gates[i].innerHTML;
@@ -4380,28 +4395,50 @@ function saveoutStockDlg(){
 			BasicNumber:machine_number2,//人脸机发货数量
 			DepotId:depotIdMg[i],
 			MaterialId:Machinetype_id[i],//材料id
+			machinetype_id:Machinetype_id[i],//材料id
+            Unit:faceunit,
+            UnitPrice:3838,
+            TaxUnitPrice:3838,
+            AllPrice:3838,
+            Remark:"",
+            AnotherDepotId:"",
+            TaxRate:"",
+            TaxMoney:3838,
+            TaxLastMoney:3838,
+
 		});
 		var inserted2 = JSON.stringify({
 			OperNumber:gate_number2,//闸机发货数量
 			BasicNumber:gate_number2,//闸机发货数量
 			DepotId:depotIdMg[i],
+            gatetype_id:Gatetype_id[i],
 			MaterialId:Gatetype_id[i],
-		});
-		if (machine_number2 > 0 && MaterialStock[i] - machine_number2 >= 0) {
+            Unit:gateunit,
+            UnitPrice:3838,
+            TaxUnitPrice:3838,
+            AllPrice:3838,
+            Remark:"",
+            AnotherDepotId:"",
+            TaxRate:"",
+            TaxMoney:3838,
+            TaxLastMoney:3838,
+
+        });
+		if (Machinetype_id[i] != null && machine_number2 > 0 && MaterialStock[i] - machine_number2 >= 0) {
 			addDepotHeadAndDetails2(url1,infoStr1,1,inserted1,face);
-		}else if (MaterialStock[i] - machine_number2[i] < 0) {
+		}else if (MaterialStock[i] - machine_number2 < 0) {
 			mqk = mqk+face+"库存不足,";
 			num += 1;
 		}
 
-		if (gate_number2 > 0 && gateStock - gate_number2 >= 0){
+		if (Gatetype_id[i] != null && gate_number2 > 0 && gateStock[i] - gate_number2 >= 0){
 			addDepotHeadAndDetails2(url1,infoStr2,2,inserted2,gate);
-		}else if (gateStock[i] - gate_number2[i] < 0) {
+		}else if (gateStock[i] - gate_number2 < 0) {
 			gqk =gqk+gate+"库存不足,"
 			num += 1;
 		}
 		if (num <= 1){
-			updateNumber2(machine_number2,gate_number2,machine_number,gate_number,outId);
+			updateNumber2(machine_number2,gate_number2,machine_number,gate_number,outIds[i].innerHTML);
 		}
 	}
 	$.messager.alert('提示', ''+mqk+''+gqk, 'info');
@@ -4451,12 +4488,12 @@ function findTypeId(mId,pd,tId) {
 	}
 }
 //修改未发货数量
-function updateNumber2(machine_number2,gate_number2,facecount2,gatecount2,Id) {
+function updateNumber2(machine_number2,gate_number2,machine_number,gate_number,Id) {
 	debugger
 	var gnumber = 0;
 	var mnumber = 0;
-	gnumber = gatecount2 - gate_number2;
-	mnumber = facecount2 - machine_number2;
+	gnumber = gate_number - gate_number2;
+	mnumber = machine_number - machine_number2;
 	if (gnumber < 0) {
 		gnumber = 0;
 	}
@@ -4467,8 +4504,8 @@ function updateNumber2(machine_number2,gate_number2,facecount2,gatecount2,Id) {
 		type: "get",
 		url: '/depotItem/updateDepotNumber',
 		data: {
-			gate_number2:gnumber,
-			machine_number2:mnumber,
+			gate_numberjs2:gnumber,
+			machine_numberjs2:mnumber,
 			Id:Id
 		},
 		dataType: "json",
@@ -6461,7 +6498,7 @@ function addDepotHeadAndDetails2(url,infoStr,pd,inserted,cp){
 		async :  false,
 		data: ({
 			info:infoStr,
-			inserted: JSON.stringify(inserted),
+			inserted: "["+inserted+"]",
 			deleted: JSON.stringify(deleted),
 			updated: JSON.stringify(updated)
 		}),
@@ -6495,6 +6532,7 @@ function addDepotHeadAndDetails2(url,infoStr,pd,inserted,cp){
 }
 //修改单据主表及单据子表
 function updateDepotHeadAndDetail(url,infoStr,preTotalPrice) {
+	debugger
 	var inserted = $("#materialData").datagrid('getChanges', "inserted");
 	var deleted = $("#materialData").datagrid('getChanges', "deleted");
 	var updated = $("#materialData").datagrid('getChanges', "updated");
