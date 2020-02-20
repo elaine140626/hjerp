@@ -194,7 +194,7 @@
       UnitId, FirstOutUnit, FirstInUnit, 
       PriceStrategy, Enabled, OtherField1, 
       OtherField2, OtherField3, enableSerialNumber, 
-      tenant_id, delete_Flag, BarCode,organId,sales_typeId,type_typeId
+      tenant_id, delete_Flag, BarCode,organId,level,sales_typeId,type_typeId
       )
     values (#{id,jdbcType=BIGINT}, #{categoryid,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, 
       #{mfrs,jdbcType=VARCHAR}, #{packing,jdbcType=DECIMAL}, #{safetystock,jdbcType=DECIMAL}, 
@@ -205,7 +205,7 @@
       #{pricestrategy,jdbcType=VARCHAR}, #{enabled,jdbcType=BIT}, #{otherfield1,jdbcType=VARCHAR}, 
       #{otherfield2,jdbcType=VARCHAR}, #{otherfield3,jdbcType=VARCHAR}, #{enableserialnumber,jdbcType=VARCHAR}, 
       #{tenantId,jdbcType=BIGINT}, #{deleteFlag,jdbcType=VARCHAR}, #{barcode,jdbcType=VARCHAR},
-      #{organId,jdbcType=BIGINT},#{sales_typeId,jdbcType=VARCHAR},#{type_typeId,jdbcType=BIGINT}}
+      #{organId,jdbcType=BIGINT},#{level,jdbcType=VARCHAR},#{sales_typeId,jdbcType=VARCHAR},#{type_typeId,jdbcType=BIGINT}}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.jsh.erp.datasource.entities.Material">
@@ -299,9 +299,9 @@
       <if test="organId != null">
         organId,
       </if>
-      <!--if<if test="level != null">-->
-      <!--level,-->
-    <!--</if>if-->
+      if<if test="level != null">
+      level,
+    </if>if
       <if test="sales_typeId != null">
         sales_typeId,
       </if>
@@ -394,9 +394,9 @@
       <if test="organId != null">
         #{organId,jdbcType=BIGINT},
       </if>
-      <!--<if test="level != null">-->
-        <!--#{level,jdbcType=BIGINT},-->
-      <!--</if>-->
+      <if test="level != null">
+      #{level,jdbcType=VARCHAR},
+      </if>
       <if test="sales_typeId != null">
         #{sales_typeId,jdbcType=VARCHAR},
       </if>

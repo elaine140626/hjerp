@@ -4546,7 +4546,7 @@ function saveoutStockDlg(){
 		if (Gatetype_id[i] != null && gate_number2 > 0 && gateStock[i] - gate_number2 >= 0){
 			addDepotHeadAndDetails2(url1,infoStr2,2,inserted2,gate);
 		}else if (gateStock[i] - gate_number2 < 0) {
-			gqk =gqk+gate+"库存不足,"
+			gqk =gqk+gate+"库存不足"
 			num += 1;
 		}
 		if (num <= 1){
