@@ -124,6 +124,9 @@
          SELECT supplier FROM jsh_supplier WHERE id = ${id}
    </select>
 
+  <select id="findSalesType" resultType="java.lang.String">
+        SELECT sales_type FROM jsh_supplier WHERE id = ${sId}
+  </select>
 
   <select id="selectByExample" parameterType="com.jsh.erp.datasource.entities.SupplierExample" resultMap="BaseResultMap">
     <!--

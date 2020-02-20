@@ -6,9 +6,18 @@ import java.util.List;
 
 public interface TypeMapper {
     /**
-     * 查询产品类型
+     * 查询1级产品类型
      * @return
      */
     List<Type> selectType();
+
+
+    /**
+     * 查询2级产品类型
+     * @return
+     */
+    List<Type> selectTypeId(Type type);
+
+
 
 }

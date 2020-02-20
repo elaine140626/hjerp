@@ -10,8 +10,9 @@ $(function() {
     ininPager();
     bindEvent();
     initSupplier();//初始化供应商
-    initMaterialId();//初始化产品和套餐
-    initType();//初始化产品类型
+    // initMaterialId();//初始化产品和套餐
+    initSales_Type();//初始化产品类型
+    initType_Types(0);
 });
 
 //根据名称获取类型
@@ -464,23 +465,36 @@ function  AddMaterial() {
     // if (checkSupplierName()) {
     //     return;
     // }
-    var levelStr = "";
-    var level = $('#level').combobox('getValues').toString(); //销售人员
-    if(level) {
-        var levelArray = level.split(",");
-        for (var i = 0; i < levelArray.length; i++) {
-            if (i === levelArray.length - 1) {
-                levelStr += "<" + levelArray[i] + ">";
-            }
-            else {
-                levelStr += "<" + levelArray[i] + ">,";
-            }
+    // var levelStr = "";
+    // var level = $('#level').combobox('getValues').toString(); //销售人员
+    // if(level) {
+    //     var levelArray = level.split(",");
+    //     for (var i = 0; i < levelArray.length; i++) {
+    //         if (i === levelArray.length - 1) {
+    //             levelStr += "<" + levelArray[i] + ">";
+    //         }
+    //         else {
+    //             levelStr += "<" + levelArray[i] + ">,";
+    //         }
+    //     }
+    // }
+    var sales_types = "";
+    if ($('#sales_types').length){
+        var typejs = $('#sales_types').combobox('getValue');
+        if(typejs == 1){
+            sales_types = "人脸机";
+        }else if(typejs == 2){
+            sales_types = "闸机";
+        }else if(typejs == 3){
+            sales_types = "身份证识别器";
         }
     }
 
     var infoStr=JSON.stringify({
         organId:$('#organId').combobox('getValue'),
-        level:levelStr,
+        //level:levelStr,
+        sales_typeId:sales_types,
+        type_typeId:$('#type_type').combobox('getValue'),
         name:$.trim($("#name").val()),
         model:$.trim($("#model").val()),
         retailprice:$.trim($("#retailprice").val()),
@@ -536,31 +550,16 @@ function initSupplier(){
             return row[opts.textField].indexOf(q) >-1;
         },
         onSelect: function(rec){
-            $.ajax({
-                type:"get",
-                url: "/supplier/findById",
-                data: {
-                    supplierId: rec.id
-                },
-                dataType: "json",
-                success: function (res){
-                    if(res && res.code === 200) {
-                        if(res.data && res.data[0]){
-                            thisTaxRate = res.data[0].taxRate; //设置当前的税率
-                        }
-                    }
-                },
-                error:function(){
-
-                }
-            });
+            debugger
+            var sId = rec.id;
+            initSales_Types(sId);
         }
     });
 }
 
 
 //初始化产品类型
-function initType(){
+function initSales_Type(){
     $('#sales_type').combobox({
         url: "/type/selectType",
         mathod:'post',
@@ -601,47 +600,89 @@ function initType(){
 }
 
 
-//初始化产品和套餐
-function initMaterialId() {
+//初始化1级产品类型
+function initSales_Types(sId){
     debugger
-    $('#level').combobox({
-        url: "/material/findMaterialId",
+    $('#sales_types').combobox({
+        url: "/supplier/findSalesType?sId="+sId,
         mathod:'post',
         valueField:'Id',
-        textField:'MaterialName',
-        multiple: true,
-        formatter: function(row) {
+        textField:'tName',
+        filter: function(q, row){
             var opts = $(this).combobox('options');
-            return '<input type="checkbox" class="combobox-checkbox">'+ row[opts.textField];
+            return row[opts.textField].indexOf(q) >-1;
         },
-        onLoadSuccess: function () {  //下拉框数据加载成功调用
-            var opts = $(this).combobox('options');
-            var target = this;
-            var values = $(target).combobox('getValues');//获取选中的值的values
-            $.map(values, function (value) {
-                var el = opts.finder.getEl(target, value);
-                el.find('input.combobox-checkbox')._propAttr('checked', true);
-            })
-        },
-        onSelect: function (row) { //选中一个选项时调用
-            var opts = $(this).combobox('options');
-            //获取选中的值的values
-            $('#level').val($(this).combobox('getValues'));
-
-            //设置选中值所对应的复选框为选中状态
-            var el = opts.finder.getEl(this, row[opts.valueField]);
-            el.find('input.combobox-checkbox')._propAttr('checked', true);
-        },
-        onUnselect: function (row) {//不选中一个选项时调用
-            var opts = $(this).combobox('options');
-            //获取选中的值的values
-            $('#level').val($(this).combobox('getValues'));
-
-            var el = opts.finder.getEl(this, row[opts.valueField]);
-            el.find('input.combobox-checkbox')._propAttr('checked', false);
+        onSelect: function(rec){
+            debugger
+            var tId = rec.Id;
+            initType_Types(tId);
         }
     });
 }
+
+
+//初始化2级类型分类
+function initType_Types(tId){
+    debugger
+    $('#type_type').combobox({
+        url: "/type/selectTypeId?tId="+tId,
+        mathod:'post',
+        valueField:'Id',
+        textField:'Name',
+        filter: function(q, row){
+            var opts = $(this).combobox('options');
+            return row[opts.textField].indexOf(q) >-1;
+        },
+        onSelect: function(rec){
+
+        }
+    });
+}
+
+
+//初始化产品和套餐
+// function initMaterialId() {
+//     debugger
+//     $('#level').combobox({
+//         url: "/material/findMaterialId",
+//         mathod:'post',
+//         valueField:'Id',
+//         textField:'MaterialName',
+//         multiple: true,
+//         formatter: function(row) {
+//             var opts = $(this).combobox('options');
+//             return '<input type="checkbox" class="combobox-checkbox">'+ row[opts.textField];
+//         },
+//         onLoadSuccess: function () {  //下拉框数据加载成功调用
+//             var opts = $(this).combobox('options');
+//             var target = this;
+//             var values = $(target).combobox('getValues');//获取选中的值的values
+//             $.map(values, function (value) {
+//                 var el = opts.finder.getEl(target, value);
+//                 el.find('input.combobox-checkbox')._propAttr('checked', true);
+//             })
+//         },
+//         onSelect: function (row) { //选中一个选项时调用
+//             var opts = $(this).combobox('options');
+//             //获取选中的值的values
+//             $('#level').val($(this).combobox('getValues'));
+//
+//             //设置选中值所对应的复选框为选中状态
+//             var el = opts.finder.getEl(this, row[opts.valueField]);
+//             el.find('input.combobox-checkbox')._propAttr('checked', true);
+//         },
+//         onUnselect: function (row) {//不选中一个选项时调用
+//             var opts = $(this).combobox('options');
+//             //获取选中的值的values
+//             $('#level').val($(this).combobox('getValues'));
+//
+//             var el = opts.finder.getEl(this, row[opts.valueField]);
+//             el.find('input.combobox-checkbox')._propAttr('checked', false);
+//         }
+//     });
+// }
+
+
 function bindEvent(){
     //导入excel对话框
     $('#importExcelDlg').dialog({
