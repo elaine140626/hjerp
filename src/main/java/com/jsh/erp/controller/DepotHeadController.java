@@ -692,42 +692,45 @@ public class DepotHeadController {
     }
     @Resource
     private SupplierMapper supplierMapper;
-    @GetMapping(value = "/exportDepotItemMSExcel")
-    public int exportDepotItemMSExcel(HttpServletRequest request, HttpServletResponse response)throws Exception {
+    @PostMapping(value = "/exportDepotItemMSExcel")
+    public int exportDepotItemMSExcel(@RequestParam("ids") String ids, HttpServletRequest request, HttpServletResponse response)throws Exception {
         int res = 0;
+        String product_number=request.getParameter("ids");
         try {
-            List<DepotHeadVo4List> dataList = depotHeadMapperEx.selectByConditionDepotHead("其它","销售订单",null,null,null,null,null,0,100);
+            String [] headIds=ids.split(",");
             //存放数据json数组
             String[] names = {"合同编号", "客户名称", "供应商","工程名称", "采购型号", "数量","单价", "总价", "合同总额",
                     "收款日期", "已收款金额", "未收款金额"};
             String title = "项目对账表";
             List<String[]> objects = new ArrayList<String[]>();
-            if (null != dataList) {
-                for (DepotHeadVo4List diEx : dataList) {
-                    String[] objs = new String[12];
-                    objs[0] = diEx.getConyract_number()== null ? " ":diEx.getConyract_number().toString();
-                    String companyName = supplierMapper.seleSupplier(Long.valueOf(diEx.getSupplier_id()));
-                    objs[1] = companyName;//公司名称
-                    objs[2] = "一虎电子";
-                    objs[3] = diEx.getSupplier()== null ? "0":diEx.getSupplier().toString();
-                    String name = depotHeadMapperEx.findMaterialsListByHeaderId(diEx.getHeaderId());
-                    objs[4] = name;//采购型号
-                    objs[5] = diEx.getOperNumber()== null ? "0":diEx.getOperNumber().toString();//数量
-                    objs[6] = diEx.getUnitPrice()== null ? " ":diEx.getUnitPrice().toString();//单价
-                    objs[7] = diEx.getTotalprice()== null ? " ":diEx.getTotalprice().setScale(0,BigDecimal.ROUND_DOWN).toString();
-                    objs[8] = diEx.getTotalprice() == null ? " ":diEx.getTotalprice().setScale(0,BigDecimal.ROUND_DOWN).toString();
-                    objs[9] = diEx.getInstaller_time() == null ? " ":diEx.getInstaller_time().toString();
-                    if (diEx.getPayment().equals("是")){
-                        objs[10] = diEx.getTotalprice() == null ? " ":diEx.getTotalprice().setScale(0,BigDecimal.ROUND_DOWN).toString();
-                        objs[11] = "0.00";
-                    }else {
-                        objs[10] = "0.00";
-                        objs[11] = diEx.getTotalprice() == null ? " ":diEx.getTotalprice().setScale(0,BigDecimal.ROUND_DOWN).toString();
+            for(int i=0;i<headIds.length;i++){
+                List<DepotHeadVo4List> dataList = depotHeadMapperEx.selectByConditionDepotHead("其它","销售订单",null,null,null,null,null,0,100,Integer.parseInt(headIds[i]));
+                if (null != dataList) {
+                    for (DepotHeadVo4List diEx : dataList) {
+                        String[] objs = new String[12];
+                        objs[0] = diEx.getConyract_number() == null ? " " : diEx.getConyract_number().toString();
+                        String companyName = supplierMapper.seleSupplier(Long.valueOf(diEx.getSupplier_id()));
+                        objs[1] = companyName;//公司名称
+                        objs[2] = "一虎电子";
+                        objs[3] = diEx.getSupplier() == null ? "0" : diEx.getSupplier().toString();
+                        String name = depotHeadMapperEx.findMaterialsListByHeaderId(diEx.getHeaderId());
+                        objs[4] = name;//采购型号
+                        objs[5] = diEx.getOperNumber() == null ? "0" : diEx.getOperNumber().toString();//数量
+                        objs[6] = diEx.getUnitPrice() == null ? " " : diEx.getUnitPrice().toString();//单价
+                        objs[7] = diEx.getTotalprice() == null ? " " : diEx.getTotalprice().setScale(0, BigDecimal.ROUND_DOWN).toString();
+                        objs[8] = diEx.getTotalprice() == null ? " " : diEx.getTotalprice().setScale(0, BigDecimal.ROUND_DOWN).toString();
+                        objs[9] = diEx.getInstaller_time() == null ? " " : diEx.getInstaller_time().toString();
+                        if (diEx.getPayment().equals("是")) {
+                            objs[10] = diEx.getTotalprice() == null ? " " : diEx.getTotalprice().setScale(0, BigDecimal.ROUND_DOWN).toString();
+                            objs[11] = "0.00";
+                        } else {
+                            objs[10] = "0.00";
+                            objs[11] = diEx.getTotalprice() == null ? " " : diEx.getTotalprice().setScale(0, BigDecimal.ROUND_DOWN).toString();
+                        }
+                        objects.add(objs);
                     }
-                    objects.add(objs);
+                    res = 1;
                 }
-                res = 1;
-
             }
             File file = ExcelUtils.exportObjectsWithoutTitle(title, names, title, objects);
             ExportExecUtil.showExec(file, file.getName(), response);
@@ -744,7 +747,7 @@ public class DepotHeadController {
     public int exportDepotItemMSExcelBaoDin(HttpServletRequest request, HttpServletResponse response)throws Exception {
         int res = 0;
         try {
-            List<DepotHeadVo4List> dataList = depotHeadMapperEx.selectByConditionDepotHead("其它","销售订单",null,null,null,null,null,0,100);
+            List<DepotHeadVo4List> dataList = depotHeadMapperEx.selectByConditionDepotHead("其它","销售订单",null,null,null,null,null,0,100,null);
             //存放数据json数组
             String[] names = {"申请日期", "开票单位全称", "发票抬头","保定清研订单号（合同编号）", "发票类型", "订单总金额","收税分类编码+货物名称", "规格型号", "单位",
                     "数量", "含税价格", "含税开票金额","公司名称","纳税号","公司地址","公司电话","开户行","账号","备注"};

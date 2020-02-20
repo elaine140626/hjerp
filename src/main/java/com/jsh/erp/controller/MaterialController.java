@@ -503,7 +503,7 @@ public class MaterialController {
         if (list.size()>0) {
             for (Material material1 : list) {
                 JSONObject object = new JSONObject();
-                object.put("id", material1.getName());
+                object.put("id", material1.getId());
                 object.put("depotName", material1.getName());
                 array.add(object);
             }

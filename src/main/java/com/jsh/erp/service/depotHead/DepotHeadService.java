@@ -83,7 +83,7 @@ public class DepotHeadService {
         List<DepotHeadVo4List> resList = new ArrayList<DepotHeadVo4List>();
         List<DepotHeadVo4List> list=null;
         try{
-            list=depotHeadMapperEx.selectByConditionDepotHead(type, subType, number, beginTime, endTime, materialParam, depotIds, offset, rows);
+            list=depotHeadMapperEx.selectByConditionDepotHead(type, subType, number, beginTime, endTime, materialParam, depotIds, offset, rows,null);
         }catch(Exception e){
             JshException.readFail(logger, e);
         }
@@ -541,7 +541,6 @@ public class DepotHeadService {
         User userInfo=userService.getCurrentUser();
         depotHead.setOperpersonname(userInfo==null?null:userInfo.getUsername());
         depotHead.setOpertime(new Timestamp(System.currentTimeMillis()));
-
         DepotItem depotItem = new DepotItem();
         depotItem.setId(id);
         depotItem.setGate(temp.getString("gate"));

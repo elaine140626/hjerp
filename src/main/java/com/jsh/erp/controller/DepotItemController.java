@@ -227,6 +227,7 @@ public class DepotItemController {
                     item.put("contacts",diEx.getContacts());
                     item.put("phonenum",diEx.getPhonenum());
                     item.put("description",diEx.getDescription());
+                    item.put("invoice_number",diEx.getInvoice_number());
                     dataArray.add(item);
                 }
             }

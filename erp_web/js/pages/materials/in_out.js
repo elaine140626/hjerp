@@ -1762,7 +1762,34 @@ function initTableData_material(type,TotalPrice,biaoshi,roleID){
 							valueField: 'id',
 							textField: 'depotName',
 							// data: face
-							panelHeight: 100
+							panelHeight: 100,
+							onSelect:function(rec){
+								debugger
+								$.ajax({
+									url: "/material/machineType?id="+materialId,
+									type: "get",
+									dataType: "json",
+									success : function(result) {
+										var ed1 = $('#materialData').datagrid('getEditor', {index:bianliang,field:'machine_type_model'});
+										$(ed1.target).combobox('loadData', result);
+									}
+								});
+							}
+						}
+					}
+				},
+				{ title: '人脸机型号',field: 'machine_type_model',width:150,
+					editor: {
+						type: 'combobox',
+						options: {
+							required: true,
+							editable:false,
+							missingMessage: '请选择',
+							url: '/material/machineType?id='+materialId,
+							valueField: 'id',
+							textField: 'depotName',
+							// data: face
+							panelHeight: 100,
 						}
 					}
 				},
@@ -1778,10 +1805,37 @@ function initTableData_material(type,TotalPrice,biaoshi,roleID){
                             valueField: 'id',
                             textField: 'depotName',
                             // data: face
-                            panelHeight: 100
+                            panelHeight: 100,
+							onSelect:function(rec){
+								debugger
+								$.ajax({
+									url: "/material/machineType?id="+materialId,
+									type: "get",
+									dataType: "json",
+									success : function(result) {
+										var ed2 = $('#materialData').datagrid('getEditor', {index:bianliang,field:'gate_type_model'});
+										$(ed2.target).combobox('loadData', result);
+									}
+								});
+							}
                         }
                     }
                 },
+				{ title: '闸机型号',field: 'gate_type_model',width:150,
+					editor: {
+						type: 'combobox',
+						options: {
+							required: true,
+							editable:false,
+							missingMessage: '请选择',
+							url: '/material/machineType?id='+materialId,
+							valueField: 'id',
+							textField: 'depotName',
+							// data: face
+							panelHeight: 100,
+						}
+					}
+				},
 				{ title: '闸机数量',field: 'gate_number',editor:'validatebox',width:78},
 				{ title: '品名-别',field: 'OtherField1',editor:'validatebox',hidden:otherColumns,width:60},
 				{ title: '型号-别',field: 'OtherField2',editor:'validatebox',hidden:otherColumns,width:60},
@@ -4038,10 +4092,10 @@ function skipDepotHead(index){
 //批量删除单据信息
 function batDeleteDepotHead(){
 	var row = $('#tableData').datagrid('getChecked');
-	if(row.length == 0) {
-		$.messager.alert('删除提示','没有记录被选中！','info');
-		return;
-	}
+    if(row.length == 0) {
+        $.messager.alert('删除提示','没有记录被选中！','info');
+        return;
+    }
 	if(row.length > 0) {
 		$.messager.confirm('删除确认','确定要删除选中的' + row.length + '条单据信息吗？',function(r) {
 			if (r) {
@@ -4175,7 +4229,7 @@ function setStatusGate(status) {
 			var ids = "";
 			for(var i = 0;i < row.length; i ++) {
 				if(i == row.length-1) {
-					if(row[i].status == "6" || row[i].status == "2") {
+					if(row[i].status == "6" || row[i].status == "2" || row[i].status == "7") {
 						ids += row[i].id;
 					}
 					break;
@@ -4248,7 +4302,18 @@ var loop = 0;
 var depotIdMg = []; //仓库id
 //出库提示弹出框
 function outEject(res) {
-	debugger
+	str = "";
+	Machinetype_id = [];
+	Gatetype_id = [];
+	MHandsPersonId = 0;
+	MorganId = 0;
+	GHandsPersonId = 0;
+	GorganId = 0;
+	Salesman = "";
+	AllPrice = [];
+	bjts = 0;
+	xsts = 0;
+	depotIdMg = []; //仓库id
 	xsts = 0;
 	loop = res.data.length;
 	for (i = 0; i < res.data.length;i++) {
@@ -4264,9 +4329,9 @@ function outEject(res) {
 		}
 	}
 	for (i = 0; i < res.data.length;i++){
-		str = str + '<div class="out-content-tmp'+i+'" id="'+(bqdiv+i)+'">' +
-			'			  <p>'+(i+1)+'.你将出库的&nbsp;&nbsp;<span class="product" name="product" id="product">'+  res.data[i].MaterialName + '</span>&nbsp;&nbsp;其中包括：</p>' +
-			'			  <td id="display1" >' +
+		str = str + '<div class="out-content-tmp'+i+'">' +
+			'          <p>'+(i+1)+'.你将出库的&nbsp;&nbsp;<span class="product" name="product" id="product">'+  res.data[i].MaterialName + '</span>&nbsp;&nbsp;其中包括：</p >' +
+			'          <td id="display1" >' +
 			'            <span name="outId" id="outId" style="display: none">'+ res.data[i].Id +'</span>' +
 			'            <input type="text" name="OutNumber" id="OutNumber"  style="width: 150px;display: none"/>' +
 			'            <span class="face" name="face" id="face">'+ res.data[i].machine_type +'</span>' +
@@ -4482,9 +4547,6 @@ function updateNumber2(machine_number2,gate_number2,facecount2,gatecount2,Id) {
 		}
 	})
 }
-
-
-
 function setStatusStatus(status) {
 	var row = $('#tableData').datagrid('getChecked');
 	if(row.length == 0) {
@@ -4579,17 +4641,49 @@ function setStatusFunMPI(status) {
 		}
 	}
 }
-
-
 //导出所有订单信息
 function exportDepotItem() {
 	//要导出的json数据
 	window.location.href="/depotItem/exportDepotItemExcel";
 }
-
 function exportDepotItemMExcel() {
-	//要导出的json数据
-	window.location.href="/depotHead/exportDepotItemMSExcel";
+    var row = $('#tableData').datagrid('getChecked');
+    if(row.length == 0) {
+        $.messager.alert('导出提示','没有记录被选中！','info');
+        return;
+    }
+    if(row.length > 0) {
+        $.messager.confirm('导出确认','确定要导出选中的' + row.length + '条单据信息吗？',function(r) {
+            debugger
+            if (r) {
+                var ids = "";
+                for (var i = 0; i < row.length; i++) {
+                    if (i == row.length) {
+                        if (row[i].status == 0) {
+                            ids += row[i].id;
+                        }
+                        break;
+                    }
+                    ids += row[i].id + ",";
+                }
+                if (ids) {
+					$.ajax({
+						type:"post",
+						url: "/depotHead/exportDepotItemMSExcel",
+						dataType: "json",
+						contentType:"application/x-www-form-urlencoded",
+						async :  false,
+						data: ({
+							ids : ids
+						}),
+					});
+					//要导出的json数据
+					//window.location.href="/depotHead/exportDepotItemMSExcel?ids"+encodeURI(encodeURI(ids));
+					// $.download('/depotHead/exportDepotItemMSExcel','ids','get' );
+                }
+            }
+        });
+    }
 }
 function exportDepotItemMSGExcel() {
 	window.location.href="/depotHead/exportDepotItemMSExcelBaoDin";
@@ -4608,8 +4702,6 @@ function exportMSGDAN(index,res) {
 	var ids = res.id;
 	window.location.href = "/msg/downloadMsg?id="+ids;
 }
-
-
 //生成单据编号
 function buildNumber() {
 	$.ajax({
@@ -4635,6 +4727,12 @@ function addDepotHead(){
 	$("#fileformsMsg1").hide();//隐藏
 	$("#fileformsMsg2").hide();//隐藏
 	$("#fileformsMsg3").hide();//隐藏
+	$("#conyract_number1").hide();//隐藏
+	$("#conyract_number2").hide();//隐藏
+	$("#OperTimes1").hide();//隐藏
+	$("#OperTimes2").hide();//隐藏
+	$("#fapiao1").hide();//隐藏
+	$("#fapiao2").hide();//隐藏
 	$("#fileformsBJ1").show();
 	$("#fileformsBJ2").show();
 	$("#fileformsBJ3").show();
@@ -4644,7 +4742,7 @@ function addDepotHead(){
 	$('#depotHeadFM').form('clear');
 	var thisDateTime = getNowFormatDateTime(); //当前时间
 	$("#OperTime").val(thisDateTime);
-	$("#OperTimes").val(thisDateTime);
+	$("#OperTimes").val();
 	buildNumber(); //生成单据编号
 	//初始化优惠率、优惠金额、优惠后金额、本次付|收款、本次欠款 为0
 	$("#Discount").val(0);
@@ -4746,6 +4844,12 @@ function editDepotHead(index, res){
 	$("#fileformsMsg1").show();//显示
 	$("#fileformsMsg2").show();//显示
 	$("#fileformsMsg3").show();//显示
+    $("#conyract_number1").show();//显示
+    $("#conyract_number2").show();//显示
+    $("#OperTimes1").show();//显示
+    $("#OperTimes2").show();//显示
+    $("#fapiao1").show();//显示
+    $("#fapiao2").show();//显示
 	$("#fileformsBJ1").hide();
 	$("#fileformsBJ2").hide();
 	$("#fileformsBJ3").hide();
@@ -4773,6 +4877,7 @@ function editDepotHead(index, res){
 		$("#Number").val(res.number).attr("data-defaultNumber",res.number);
 		$("#OperTime").val(res.opertimeStr);
 		$("#OperTimes").val(res.operTimes);
+		$("#invoice_number").val(res.invoice_number);
 		$("#conyract_number").val(res.conyract_number);
 		$("#LinkNumber").val(res.linknumber); //关联订单号
 		$("#AccountId").val(res.accountid); //账户Id
@@ -5402,7 +5507,10 @@ function bindEvent(){
 				OtherMoney: $.trim($("#OtherMoney").val()), //采购费用、销售费用
 				OtherMoneyList: $("#OtherMoney").attr("data-itemarr"), //支出项目列表-涉及费用
 				OtherMoneyItem: $("#OtherMoney").attr("data-itemmoneyarr"), //支出项目金额列表-涉及费用
-				AccountDay: $("#AccountDay").val() //结算天数
+				AccountDay: $("#AccountDay").val(),//结算天数
+				myuploadFile: $("#myuploadFile").val(),
+                myuploadFiles: $("#myuploadFiles").val(),
+				invoice_number: $("#invoice_number").val()
 			});
 			/**
 			 * 零售出库，单独操作
@@ -5928,11 +6036,41 @@ function bindSupplierCompany() {
 				return;
 			}
 			var reg = /^([0-9])+$/;
-			var phonenum = $.trim($("#phonenum").val());
-			var beginNeedGet = $.trim($("#BeginNeedGet").val());
-			var beginNeedPay = $.trim($("#BeginNeedPay").val());
-			if(beginNeedGet && beginNeedPay) {
-				$.messager.alert('提示','期初应收和期初应付不能同时输入','info');
+			debugger
+			var contacts = $.trim($("#contacts").val());//联系人
+			var phonenum = $.trim($("#phonenum").val());//联系人电话
+			var taxNum = $.trim($("#taxNum").val());//纳税识别号
+			var bankName = $.trim($("#bankName").val());//开户行
+			var accountNumber = $.trim($("#accountNumber").val());//银行账号
+			var telephone = $.trim($("#telephone").val());//公司电话
+			var address = $.trim($("#address").val());//公司地址
+
+			if(address =="") {
+				$.messager.alert('提示','公司地址不能为空','info');
+				return;
+			}
+			if(telephone =="") {
+				$.messager.alert('提示','公司电话不能为空','info');
+				return;
+			}
+			if(accountNumber =="") {
+				$.messager.alert('提示','银行账户不能为空','info');
+				return;
+			}
+			if(bankName =="") {
+				$.messager.alert('提示','开户行不能为空','info');
+				return;
+			}
+			if(taxNum =="") {
+				$.messager.alert('提示','纳税人识别号不能为空','info');
+				return;
+			}
+			if(contacts =="") {
+				$.messager.alert('提示','联系人不能为空','info');
+				return;
+			}
+			if(phonenum =="") {
+				$.messager.alert('提示','联系人电话不能为空','info');
 				return;
 			}
 			var url = '/supplier/add';
@@ -6013,6 +6151,7 @@ function bindSupplierEvent() {
 
 		//保存项目信息
 		$("#saveSupplier").off("click").on("click",function() {
+			debugger
 			if(validateForm("supplierFM")) {
 				return;
 			}
@@ -6020,11 +6159,25 @@ function bindSupplierEvent() {
 				return;
 			}
 			var reg = /^([0-9])+$/;
-			var phonenum = $.trim($("#phonenum").val());
-			if(phonenum.length>0 && !reg.test(phonenum))
+			var phonenum = $("#phonenum").val();
+			var contacts = $.trim($("#contacts").val());
+			var telephone = $("#telephone").val();
+
+			if(telephone == " ")
 			{
-				$.messager.alert('提示','电话号码只能是数字','info');
-				$("#phonenum").val("").focus();
+				$.messager.alert('提示','电话号码不能为空','info');
+				$("#telephone").val("").focus();
+				return;
+			}
+
+			if (contactss == ""){
+				$.messager.alert('提示','项目联系人不能为空');
+				return;
+			}
+
+			if(phonenum == "")
+			{
+				$.messager.alert('提示','项目地址不能为空');
 				return;
 			}
 			var beginNeedGet = $.trim($("#BeginNeedGet").val());
@@ -6495,16 +6648,31 @@ function addDepotHeadAndDetails2(url,infoStr,pd,inserted,cp){
 }
 //修改单据主表及单据子表
 function updateDepotHeadAndDetail(url,infoStr,preTotalPrice) {
+	debugger
 	var inserted = $("#materialData").datagrid('getChanges', "inserted");
 	var deleted = $("#materialData").datagrid('getChanges', "deleted");
 	var updated = $("#materialData").datagrid('getChanges', "updated");
+	var infoStrInfo = JSON.parse(infoStr);
+
 	if (updated.length){
 		if (contract == "否") {
 			if (updated[0].contract == "是") {
-				setStatusFunMPI("1");
+				if (infoStrInfo.conyract_number == "" || infoStrInfo.myuploadFile == "") {
+					if (infoStrInfo.conyract_number != ""){
+						setStatusFunMPI("1");
+						$.messager.alert('提示：', '您还为上传合同，请后续上传合同')
+					} else if (infoStrInfo.myuploadFile == "") {
+                        $.messager.alert('提示：', '合同编号未填写，请输入合同编号在进行修改合同状态,您还为上传合同，请后续上传合同')
+                        return;
+                    } else {
+                        $.messager.alert('提示：', '合同编号未填写，请输入合同编号在进行修改合同状态')
+                        return;
+                    }
+				} else {
+					setStatusFunMPI("1");
+				}
 			}
 		}
-
 		if (payment == "否") {
 			if (updated[0].payment == "是") {
 				if (contract == "是") {
@@ -6518,6 +6686,10 @@ function updateDepotHeadAndDetail(url,infoStr,preTotalPrice) {
 		if (invoice == "否") {
 			if (updated[0].invoice == "是") {
 				if (contract == "是" && payment == "是") {
+				    if (infoStrInfo.invoice_number =="" || infoStrInfo.myuploadFiles==""){
+                        $.messager.alert('提示：', '请完整填写发票信息！发票编号和上传底单！')
+                        return;
+                    }
 					setStatusFunMPI("7");
 				} else {
 					$.messager.alert('提示：', '订单处于为未收款	，开票不能被修改');
@@ -6535,6 +6707,16 @@ function updateDepotHeadAndDetail(url,infoStr,preTotalPrice) {
 				}
 			}
 		}
+        if (install == "否") {
+            if (updated[0].install == "是") {
+                if (contract == "是" && payment == "是" && invoice == "是" && gate == "是") {
+                    setStatusFunMPI("4");
+                } else {
+                    $.messager.alert('提示：', '订单处于为未发货	，安装不能被修改');
+                    return;
+                }
+            }
+        }
 		if (gate == "是") {
 			if (userdepot == "[10]") {
 

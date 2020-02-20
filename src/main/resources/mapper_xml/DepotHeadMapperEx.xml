@@ -89,6 +89,9 @@
         <if test="endTime != null">
             and dh.OperTime &lt;= '${endTime}'
         </if>
+        <if test="id != null ">
+            and dh.id = '${id}'
+        </if>
         <if test="materialParam != null">
             and (m.`Name` like '%${materialParam}%' or m.Model like '%${materialParam}%')
         </if>
@@ -487,6 +490,9 @@
             </if>
             <if test="operTimes != null">
                 OperTimes = #{operTimes,jdbcType=VARCHAR},
+            </if>
+            <if test="invoice_number != null">
+                invoice_number = #{invoice_number,jdbcType=VARCHAR},
             </if>
         </set>
         where Id = #{id,jdbcType=BIGINT}
