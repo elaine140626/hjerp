@@ -36,6 +36,8 @@
     <result column="organId" jdbcType="BIGINT" property="organId" />
     <result column="level" jdbcType="VARCHAR" property="level" />
     <result column="HandsPersonId" jdbcType="BIGINT" property="handspersonid" />
+    <result column="sales_typeId" jdbcType="VARCHAR" property="sales_typeId" />
+    <result column="type_typeId" jdbcType="BIGINT" property="type_typeId" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <!--
@@ -192,7 +194,7 @@
       UnitId, FirstOutUnit, FirstInUnit, 
       PriceStrategy, Enabled, OtherField1, 
       OtherField2, OtherField3, enableSerialNumber, 
-      tenant_id, delete_Flag, BarCode,organId,level
+      tenant_id, delete_Flag, BarCode,organId,sales_typeId,type_typeId
       )
     values (#{id,jdbcType=BIGINT}, #{categoryid,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, 
       #{mfrs,jdbcType=VARCHAR}, #{packing,jdbcType=DECIMAL}, #{safetystock,jdbcType=DECIMAL}, 
@@ -202,7 +204,8 @@
       #{unitid,jdbcType=BIGINT}, #{firstoutunit,jdbcType=VARCHAR}, #{firstinunit,jdbcType=VARCHAR}, 
       #{pricestrategy,jdbcType=VARCHAR}, #{enabled,jdbcType=BIT}, #{otherfield1,jdbcType=VARCHAR}, 
       #{otherfield2,jdbcType=VARCHAR}, #{otherfield3,jdbcType=VARCHAR}, #{enableserialnumber,jdbcType=VARCHAR}, 
-      #{tenantId,jdbcType=BIGINT}, #{deleteFlag,jdbcType=VARCHAR}, #{barcode,jdbcType=VARCHAR},#{organId,jdbcType=BIGINT},#{level,jdbcType=VARCHAR}
+      #{tenantId,jdbcType=BIGINT}, #{deleteFlag,jdbcType=VARCHAR}, #{barcode,jdbcType=VARCHAR},
+      #{organId,jdbcType=BIGINT},#{sales_typeId,jdbcType=VARCHAR},#{type_typeId,jdbcType=BIGINT}}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.jsh.erp.datasource.entities.Material">
@@ -296,8 +299,14 @@
       <if test="organId != null">
         organId,
       </if>
-      <if test="level != null">
-        level,
+      <!--if<if test="level != null">-->
+      <!--level,-->
+    <!--</if>if-->
+      <if test="sales_typeId != null">
+        sales_typeId,
+      </if>
+      <if test="type_typeId != null">
+        type_typeId,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -385,8 +394,14 @@
       <if test="organId != null">
         #{organId,jdbcType=BIGINT},
       </if>
-      <if test="level != null">
-        #{level,jdbcType=BIGINT},
+      <!--<if test="level != null">-->
+        <!--#{level,jdbcType=BIGINT},-->
+      <!--</if>-->
+      <if test="sales_typeId != null">
+        #{sales_typeId,jdbcType=VARCHAR},
+      </if>
+      <if test="type_typeId != null">
+        #{type_typeId,jdbcType=BIGINT}
       </if>
     </trim>
   </insert>

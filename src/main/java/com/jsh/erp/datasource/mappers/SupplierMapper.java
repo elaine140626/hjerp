@@ -126,4 +126,11 @@ public interface SupplierMapper {
      * @mbggenerated
      */
     List<Supplier> seleSuppliers(@Param("id") Long id);
+
+    /**
+     * 查询供应商对应的产品类型
+     * @param id
+     * @return
+     */
+    String findSalesType(@Param("sId")Long id);
 }
