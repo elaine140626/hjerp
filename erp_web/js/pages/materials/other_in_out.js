@@ -48,6 +48,7 @@ $(function(){
     initSalesman(); //销售人员
     initOutItemList(); //初始化支出项目
     initMProperty(); //初始化商品属性
+    gateNumberhide();
     initTableData();
     ininPager();
     initForm();
@@ -298,6 +299,12 @@ function initOderNumber() {
             return row[opts.textField].indexOf(q) > -1;
         }
     });
+}
+
+//初始化隐藏订单编号
+function  gateNumberhide() {
+    $(".OrderZi").hide();
+    $(".OrderKuan").hide();
 }
 
 //初始化销售人员
@@ -1880,12 +1887,10 @@ function bindEvent(){
                     return;
                 }
                 if(!$(".OrderKuan").is(":hidden")){
-
-                }else {
-                    if(!$('#GateNumber').combobox('getValue')){
+                    if($('#GateNumber').combobox('getValue') == null || $('#GateNumber').combobox('getValue') ==""){
                         $.messager.alert('提示','请选择订单编号！','warning');
                         return;
-                    }
+                }
                 }
             }
             else if(listTitle === "采购入库列表"){
