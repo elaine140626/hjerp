@@ -358,15 +358,15 @@ public class DepotItemController {
 
     //修改数量
     @GetMapping(value = "/updateDepotNumber")
-    public BaseResponseInfo updateDepotNumber(@RequestParam("gate_number2") int gate_number2,@RequestParam("machine_number2") int machine_number2,
+    public BaseResponseInfo updateDepotNumber(@RequestParam("gate_numberjs2") int gate_numberjs2,@RequestParam("machine_numberjs2") int machine_numberjs2,
                                               @RequestParam("Id") Long Id, HttpServletRequest request)throws Exception {
         BaseResponseInfo res = new BaseResponseInfo();
         Long tenantId = Long.parseLong(request.getSession().getAttribute("tenantId").toString());
         int result = 0;
         try {
             DepotItem depotItem = new DepotItem();
-            depotItem.setMachine_number2(machine_number2);
-            depotItem.setGate_number2(gate_number2);
+            depotItem.setMachine_number2(gate_numberjs2);
+            depotItem.setGate_number2(machine_numberjs2);
             depotItem.setId(Id);
             result = depotItemService.updateDepotItemWithObj(depotItem);
             res.code = 200;

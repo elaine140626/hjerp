@@ -45,6 +45,7 @@
                 <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-redo" id="searchResetBtn">重置</a>
             </td>
         </tr>
+
     </table>
     <table id="tableData" style="top:300px;border-bottom-color:#FFFFFF"></table>
 </div>
@@ -58,22 +59,28 @@
                     <input name="supplier" id="supplier" class="easyui-validatebox"
                            data-options="required:true,validType:'length[2,30]'" style="width: 160px;height: 20px"/>
                 </td>
+                <td>产品类型</td>
+                <td style="padding:1px">
+                    <div class="org-list">
+                        <input id="sales_type" name="sales_type" style="width: 160px;height: 20px" class="easyui-combobox" />
+                    </div>
+                </td>
+            </tr>
+            <tr>
                 <td style="width: 60px;height: 20px">联系人</td>
                 <td style="width:180px;padding:1px;">
                     <input name="contacts" id="contacts" class="easyui-validatebox" style="width: 160px;height: 20px"/>
                 </td>
-            </tr>
-            <tr>
                 <td>手机号码</td>
                 <td style="padding:1px;">
                     <input name="telephone" id="telephone" class="easyui-validatebox"
                            style="width: 160px;height: 20px"/>
                 </td>
-                <td>电子邮箱</td>
-                <td style="padding:1px">
-                    <input name="email" id="email" class="easyui-validatebox" validType="email"
-                           style="width: 160px;height: 20px"/>
-                </td>
+                <!--<td>邮箱</td>-->
+                <!--<td style="padding:1px">-->
+                    <!--<input name="email" id="email" class="easyui-validatebox" validType="email"-->
+                           <!--style="width: 160px;height: 20px"/>-->
+                <!--</td>-->
             </tr>
             <tr>
                 <td>技术人员姓名</td>

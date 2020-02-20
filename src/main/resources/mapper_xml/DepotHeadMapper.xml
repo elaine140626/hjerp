@@ -716,6 +716,6 @@
   </update>
 
   <select id="findDefaultNumber" resultMap="BaseResultMap">
-      SELECT DefaultNumber FROM jsh_depothead
+      SELECT * FROM jsh_depothead
   </select>
 </mapper>

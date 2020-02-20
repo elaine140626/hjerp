@@ -38,8 +38,8 @@ var mPropertyList = ""; //商品属性列表
 var defaultAccountId = 0; //默认账户id
 var materialId = 0; //商品ID
 
-var MaterialStock = 0;
-var gateStock = 0;
+var MaterialStock = [];
+var gateStock = [];
 var mqk = "";
 var gqk = "";
 var reduceNumber = 0;
@@ -4360,6 +4360,8 @@ function outEject(res) {
 //保存出库信息
 function saveoutStockDlg(){
 	debugger
+    var faceunits = document.getElementsByName("faceunit");
+	var gateunits = document.getElementsByName("gateunit");
 	var outIds = document.getElementsByName("outId");
 	var faces = document.getElementsByName("face");
 	var gates = document.getElementsByName("gate");
@@ -4368,8 +4370,10 @@ function saveoutStockDlg(){
 	var facecount2s = document.getElementsByName("facecount2");
 	var gatecount2s = document.getElementsByName("gatecount2");
 
-	for (i = 0; i <= loop; i++){
+	for (i = 0; i < loop; i++){
 		var  num = 0;
+        var faceunit = faceunits[i].innerHTML;
+		var gateunit = gateunits[i].innerHTML;
 		var outId = outIds[i].innerHTML;
 		var face = faces[i].innerHTML;
 		var gate = gates[i].innerHTML;
@@ -4445,28 +4449,50 @@ function saveoutStockDlg(){
 			BasicNumber:machine_number2,//人脸机发货数量
 			DepotId:depotIdMg[i],
 			MaterialId:Machinetype_id[i],//材料id
+			machinetype_id:Machinetype_id[i],//材料id
+            Unit:faceunit,
+            UnitPrice:3838,
+            TaxUnitPrice:3838,
+            AllPrice:3838,
+            Remark:"",
+            AnotherDepotId:"",
+            TaxRate:"",
+            TaxMoney:3838,
+            TaxLastMoney:3838,
+
 		});
 		var inserted2 = JSON.stringify({
 			OperNumber:gate_number2,//闸机发货数量
 			BasicNumber:gate_number2,//闸机发货数量
 			DepotId:depotIdMg[i],
+            gatetype_id:Gatetype_id[i],
 			MaterialId:Gatetype_id[i],
-		});
-		if (machine_number2 > 0 && MaterialStock[i] - machine_number2 >= 0) {
+            Unit:gateunit,
+            UnitPrice:3838,
+            TaxUnitPrice:3838,
+            AllPrice:3838,
+            Remark:"",
+            AnotherDepotId:"",
+            TaxRate:"",
+            TaxMoney:3838,
+            TaxLastMoney:3838,
+
+        });
+		if (Machinetype_id[i] != null && machine_number2 > 0 && MaterialStock[i] - machine_number2 >= 0) {
 			addDepotHeadAndDetails2(url1,infoStr1,1,inserted1,face);
-		}else if (MaterialStock[i] - machine_number2[i] < 0) {
+		}else if (MaterialStock[i] - machine_number2 < 0) {
 			mqk = mqk+face+"库存不足,";
 			num += 1;
 		}
 
-		if (gate_number2 > 0 && gateStock - gate_number2 >= 0){
+		if (Gatetype_id[i] != null && gate_number2 > 0 && gateStock[i] - gate_number2 >= 0){
 			addDepotHeadAndDetails2(url1,infoStr2,2,inserted2,gate);
-		}else if (gateStock[i] - gate_number2[i] < 0) {
+		}else if (gateStock[i] - gate_number2 < 0) {
 			gqk =gqk+gate+"库存不足,"
 			num += 1;
 		}
 		if (num <= 1){
-			updateNumber2(machine_number2,gate_number2,machine_number,gate_number,outId);
+			updateNumber2(machine_number2,gate_number2,machine_number,gate_number,outIds[i].innerHTML);
 		}
 	}
 	$.messager.alert('提示', ''+mqk+''+gqk, 'info');
@@ -4516,12 +4542,12 @@ function findTypeId(mId,pd,tId) {
 	}
 }
 //修改未发货数量
-function updateNumber2(machine_number2,gate_number2,facecount2,gatecount2,Id) {
+function updateNumber2(machine_number2,gate_number2,machine_number,gate_number,Id) {
 	debugger
 	var gnumber = 0;
 	var mnumber = 0;
-	gnumber = gatecount2 - gate_number2;
-	mnumber = facecount2 - machine_number2;
+	gnumber = gate_number - gate_number2;
+	mnumber = machine_number - machine_number2;
 	if (gnumber < 0) {
 		gnumber = 0;
 	}
@@ -4532,8 +4558,8 @@ function updateNumber2(machine_number2,gate_number2,facecount2,gatecount2,Id) {
 		type: "get",
 		url: '/depotItem/updateDepotNumber',
 		data: {
-			gate_number2:gnumber,
-			machine_number2:mnumber,
+			gate_numberjs2:gnumber,
+			machine_numberjs2:mnumber,
 			Id:Id
 		},
 		dataType: "json",
@@ -6614,7 +6640,7 @@ function addDepotHeadAndDetails2(url,infoStr,pd,inserted,cp){
 		async :  false,
 		data: ({
 			info:infoStr,
-			inserted: JSON.stringify(inserted),
+			inserted: "["+inserted+"]",
 			deleted: JSON.stringify(deleted),
 			updated: JSON.stringify(updated)
 		}),
