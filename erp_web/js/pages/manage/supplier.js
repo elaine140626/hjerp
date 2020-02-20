@@ -12,6 +12,7 @@ $(function() {
     initSupplier();//初始化供应商
     // initMaterialId();//初始化产品和套餐
     initSales_Type();//初始化产品类型
+    initSales_Types(0)
     initType_Types(0);
 });
 
@@ -478,6 +479,7 @@ function  AddMaterial() {
     //         }
     //     }
     // }
+
     var sales_types = "";
     if ($('#sales_types').length){
         var typejs = $('#sales_types').combobox('getValue');
@@ -488,11 +490,41 @@ function  AddMaterial() {
         }else if(typejs == 3){
             sales_types = "身份证识别器";
         }
+        var level ="";
+        var type_typejs = $('#type_type').combobox('getValue');
+        if(type_typejs == 4){
+            level = "623,624,625,626,627,629";
+        }else if(type_typejs == 5){
+            level = "623,624,625,626,627,629";
+        }else if(type_typejs == 6){
+            level = "628";
+        }else if(type_typejs == 7){
+            level = "623,624,625,626,627,631";
+        }else if(type_typejs == 8){
+            level = "634,635";
+        }else if(type_typejs == 9){
+            level = "632,633";
+        }else if(type_typejs == 10){
+            level = "630";
+        }
+    }
+
+    var levelStr = "";
+    if(level) {
+        var levelArray = level.split(",");
+        for (var i = 0; i < levelArray.length; i++) {
+            if (i === levelArray.length - 1) {
+                levelStr += "<" + levelArray[i] + ">";
+            }
+            else {
+                levelStr += "<" + levelArray[i] + ">,";
+            }
+        }
     }
 
     var infoStr=JSON.stringify({
         organId:$('#organId').combobox('getValue'),
-        //level:levelStr,
+        level:levelStr,
         sales_typeId:sales_types,
         type_typeId:$('#type_type').combobox('getValue'),
         name:$.trim($("#name").val()),
@@ -553,6 +585,7 @@ function initSupplier(){
             debugger
             var sId = rec.id;
             initSales_Types(sId);
+            initType_Types(0);
         }
     });
 }
@@ -616,6 +649,7 @@ function initSales_Types(sId){
             debugger
             var tId = rec.Id;
             initType_Types(tId);
+
         }
     });
 }
@@ -739,7 +773,7 @@ function bindEvent(){
             return;
         }
         var sales_typeStr = "";
-        var sales_type = $('#sales_type').combobox('getValues').toString(); //销售人员
+        var sales_type = $('#sales_type').combobox('getValues').toString();
         if(sales_type) {
             var sales_typeArray = sales_type.split(",");
             for (var i = 0; i < sales_typeArray.length; i++) {

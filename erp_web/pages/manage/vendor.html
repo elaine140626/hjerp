@@ -62,19 +62,18 @@
                 <td>产品类型</td>
                 <td style="padding:1px">
                     <div class="org-list">
-                        <input id="sales_type" name="sales_type" style="width: 160px;height: 20px" class="easyui-combobox" />
+                        <input id="sales_type" name="sales_type" style="width: 160px;height: 20px" class="easyui-combobox" required="true"/>
                     </div>
                 </td>
             </tr>
             <tr>
                 <td style="width: 60px;height: 20px">联系人</td>
                 <td style="width:180px;padding:1px;">
-                    <input name="contacts" id="contacts" class="easyui-validatebox" style="width: 160px;height: 20px"/>
+                    <input name="contacts" id="contacts" class="easyui-validatebox" required="true" style="width: 160px;height: 20px"/>
                 </td>
                 <td>手机号码</td>
                 <td style="padding:1px;">
-                    <input name="telephone" id="telephone" class="easyui-validatebox"
-                           style="width: 160px;height: 20px"/>
+                    <input name="telephone" id="telephone" class="easyui-validatebox" required="true" style="width: 160px;height: 20px"/>
                 </td>
                 <!--<td>邮箱</td>-->
                 <!--<td style="padding:1px">-->
@@ -89,7 +88,7 @@
                 </td>
                 <td>技术人员联系方式</td>
                 <td style="padding:1px">
-                    <input name="fax" id="fax" class="easyui-validatebox" style="width: 160px;height: 20px"/>
+                    <input name="fax" id="fax" class="easyui-validatebox" required="true" style="width: 160px;height: 20px"/>
                 </td>
             </tr>
             <tr>
@@ -99,17 +98,17 @@
                 </td>
                 <td>付款方式</td>
                 <td style="padding:1px">
-                    <input name="method" id="method" type="text" style="width: 160px;height: 20px"/>
+                    <input name="method" id="method" class="easyui-validatebox" required="true"  type="text" style="width: 160px;height: 20px"/>
                 </td>
             </tr>
             <tr>
                 <td>纳税人识别号</td>
                 <td style="padding:1px">
-                    <input name="taxNum" id="taxNum" class="easyui-validatebox" style="width: 160px;height: 20px"/>
+                    <input name="taxNum" id="taxNum" class="easyui-validatebox" required="true" style="width: 160px;height: 20px"/>
                 </td>
                 <td>税率(%)</td>
                 <td style="padding:1px">
-                    <input name="taxRate" id="taxRate" class="easyui-numberbox" data-options="validType:'length[1,2]'" style="width: 160px;height: 20px"/>
+                    <input name="taxRate" id="taxRate" class="easyui-numberbox" required="true" data-options="validType:'length[1,2]'" style="width: 160px;height: 20px"/>
                 </td>
             </tr>
             <tr>
@@ -119,8 +118,7 @@
                 </td>
                 <td>账号</td>
                 <td style="padding:1px">
-                    <input name="accountNumber" id="accountNumber" class="easyui-validatebox"
-                           style="width: 160px;height: 20px"/>
+                    <input name="accountNumber" id="accountNumber" class="easyui-validatebox" required="true" style="width: 160px;height: 20px"/>
                 </td>
             </tr>
             <tr>
@@ -153,13 +151,13 @@
                 <td >供应商：</td>
                 <td style="width:170px;">
                     <div class="org-list">
-                        <input id="organId" name="organId" style="width:160px;" class="easyui-combobox"/>
+                        <input id="organId" name="organId" style="width:160px;" class="easyui-combobox" required="true"/>
                     </div>
                 </td>
                 <td >产品类型：</td>
                 <td style="width:170px;">
                     <div class="org-list">
-                        <input id="sales_types" name="sales_types" style="width: 160px;" class="easyui-combobox" />
+                        <input id="sales_types" name="sales_types" style="width: 160px;" class="easyui-combobox" required="true" />
                     </div>
                 </td>
             </tr>
@@ -167,12 +165,12 @@
                 <td >类型分类：</td>
                 <td style="width:170px;">
                     <div class="org-list">
-                        <input id="type_type" name="type_type" style="width: 160px;" class="easyui-combobox"/>
+                        <input id="type_type" name="type_type" style="width: 160px;" class="easyui-combobox" required="true"/>
                     </div>
                 </td>
                 <td>产品名称:</td>
                 <td style="padding:1px">
-                    <input name="name" id="name" class="easyui-validatebox" style="width: 160px;height: 20px"/>
+                    <input name="name" id="name" class="easyui-validatebox" required="true" style="width: 160px;height: 20px"/>
                 </td>
             </tr>
             <tr>
@@ -184,17 +182,17 @@
                 <!--</td>-->
                 <td >型号:</td>
                 <td style="padding:1px">
-                    <input name="model" id="model" class="easyui-validatebox" style="width: 160px;height: 20px"/>
+                    <input name="model" id="model" class="easyui-validatebox" required="true" style="width: 160px;height: 20px"/>
                 </td>
                 <td >单价:</td>
                 <td style="padding:1px">
-                    <input name="retailprice" id="retailprice" class="easyui-validatebox" style="width: 160px;height: 20px"/>
+                    <input name="retailprice" id="retailprice" class="easyui-validatebox" required="true" style="width: 160px;height: 20px"/>
                 </td>
             </tr>
             <tr>
                 <td>规格:</td>
                 <td style="padding:1px">
-                    <input name="unit" id="unit" class="easyui-validatebox" style="width: 160px;height: 20px"/>
+                    <input name="unit" id="unit" class="easyui-validatebox" required="true" style="width: 160px;height: 20px"/>
                 </td>
                 <td>备注:</td>
                 <td style="padding:1px">
