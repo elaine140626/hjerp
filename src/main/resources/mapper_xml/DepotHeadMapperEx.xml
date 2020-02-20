@@ -494,6 +494,9 @@
             <if test="invoice_number != null">
                 invoice_number = #{invoice_number,jdbcType=VARCHAR},
             </if>
+            <if test="invoice_date != null">
+                invoice_date = #{invoice_date,jdbcType=VARCHAR},
+            </if>
         </set>
         where Id = #{id,jdbcType=BIGINT}
     </update>

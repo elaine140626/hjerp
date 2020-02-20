@@ -373,16 +373,10 @@ public class DepotItemService {
                     depotItem.setPayment("否");
                     depotItem.setContract("否");
                     if (tempInsertedJson.getString("machine_type") != null && !tempInsertedJson.getString("machine_type").equals("") && !tempInsertedJson.getString("machine_type").equals("无")) {
-                        Material material = new Material();
-                        material.setName(tempInsertedJson.getString("machine_type"));
-                        Material materialList = materialMapper.machineSeleAlls(material);
-                        depotItem.setMachinetype_id(materialList.getId());
+                        depotItem.setMachinetype_id(Long.valueOf(tempInsertedJson.getString("machine_type")));
                     }
                     if (tempInsertedJson.getString("gate_type") != null && !tempInsertedJson.getString("gate_type").equals("") && !tempInsertedJson.getString("gate_type").equals("无")) {
-                        Material material = new Material();
-                        material.setName(tempInsertedJson.getString("gate_type"));
-                        Material materialList = materialMapper.machineSeleAlls(material);
-                        depotItem.setGatetype_id(materialList.getId());
+                        depotItem.setGatetype_id(Long.valueOf(tempInsertedJson.getString("gate_type")));
                     }
                     if (tempInsertedJson.getInteger("machine_number") != null) {
                         Integer ii = tempInsertedJson.getInteger("OperNumber");//数量

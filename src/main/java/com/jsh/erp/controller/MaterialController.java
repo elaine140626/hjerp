@@ -8,6 +8,8 @@ import com.github.pagehelper.PageInfo;
 import com.jsh.erp.constants.BusinessConstants;
 import com.jsh.erp.constants.ExceptionConstants;
 import com.jsh.erp.datasource.entities.*;
+import com.jsh.erp.datasource.mappers.MaterialMapper;
+import com.jsh.erp.datasource.mappers.TypeMapper;
 import com.jsh.erp.exception.BusinessRunTimeException;
 import com.jsh.erp.service.material.MaterialService;
 import com.jsh.erp.service.materialCategory.MaterialCategoryService;
@@ -39,6 +41,11 @@ public class MaterialController {
 
     @Resource
     private MaterialService materialService;
+
+    @Resource
+    private TypeMapper typeMapper;
+    @Resource
+    private MaterialMapper materialMapper;
 
     @Resource
     private MaterialCategoryService materialCategoryService;
@@ -494,17 +501,58 @@ public class MaterialController {
         return dataArray;
     }
 
-    @RequestMapping(value = "machineType")
-    public JSONArray machineType(@RequestParam("id")Long id){
+    @RequestMapping(value = "gateIDType")
+    public JSONArray gateIDType(@RequestParam("id")Long id){
         JSONArray array = new JSONArray();
         Material material = new Material();
         material.setId(id);
-        List<Material> list = materialService.machineType(material);
+        List<Material> list = materialMapper.machineSeleAll(material);
         if (list.size()>0) {
             for (Material material1 : list) {
                 JSONObject object = new JSONObject();
                 object.put("id", material1.getId());
-                object.put("depotName", material1.getName());
+                object.put("depotName", material1.getName()+material1.getModel());
+                array.add(object);
+            }
+        } else {
+            JSONObject object = new JSONObject();
+            object.put("id", "无");
+            object.put("depotName", "无");
+            array.add(object);
+        }
+        return array;
+    }
+
+    @RequestMapping(value = "machineIDType")
+    public JSONArray machineIDType(@RequestParam("id")Long id){
+        JSONArray array = new JSONArray();
+        Material material = new Material();
+        material.setId(id);
+        List<Material> list = materialMapper.machineSeleAll(material);
+        if (list.size()>0) {
+            for (Material material1 : list) {
+                JSONObject object = new JSONObject();
+                object.put("id", material1.getId());
+                object.put("depotName", material1.getName()+material1.getModel());
+                array.add(object);
+            }
+        } else {
+            JSONObject object = new JSONObject();
+            object.put("id", "无");
+            object.put("depotName", "无");
+            array.add(object);
+        }
+        return array;
+    }
+    @RequestMapping(value = "machineType")
+    public JSONArray machineType(@RequestParam("id")Long id){
+        JSONArray array = new JSONArray();
+        List<Type> typeList = typeMapper.selectAll(id);
+        if (typeList.size()>0) {
+            for (Type type : typeList) {
+                JSONObject object = new JSONObject();
+                object.put("id", type.getId());
+                object.put("depotName", type.getName());
                 array.add(object);
             }
         } else {
@@ -519,14 +567,12 @@ public class MaterialController {
     @RequestMapping(value = "machineTypes")
     public JSONArray machineTypes(@RequestParam("id")Long id){
         JSONArray array = new JSONArray();
-        Material material = new Material();
-        material.setId(id);
-        List<Material> list = materialService.machineTypes(material);
-        if (list.size()>0) {
-            for (Material material1 : list) {
+        List<Type> typeList = typeMapper.selectAll(id);
+        if (typeList.size()>0) {
+            for (Type type : typeList) {
                 JSONObject object = new JSONObject();
-                object.put("id", material1.getName());
-                object.put("depotName", material1.getName());
+                object.put("id", type.getId());
+                object.put("depotName", type.getName());
                 array.add(object);
             }
         }else{

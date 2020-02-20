@@ -64,6 +64,7 @@
     <result column="GateNumber" jdbcType="VARCHAR" property="gatenumber" />
     <result column="OperTimes" jdbcType="VARCHAR" property="operTimes" />
     <result column="invoice_number" jdbcType="VARCHAR" property="invoice_number" />
+    <result column="invoice_date" jdbcType="VARCHAR" property="invoice_date " />
   </resultMap>
 
   <sql id="Example_Where_Clause">

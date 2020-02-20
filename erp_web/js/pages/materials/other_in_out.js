@@ -429,6 +429,14 @@ function initTableData(){
             handler:function() {
                 batDeleteDepotHead();
             }
+        },
+        {
+            id:'export',
+            text:'导出供应商对账',
+            iconCls:'icon-ok',
+            handler:function() {
+                exportDepotItemSupplierExcel();
+            }
         }
     ];
     //如果允许的按钮列表中存在就显示，3-代表审核|反审核的权限
@@ -562,6 +570,45 @@ function initTableData(){
         }
     });
     dgResize();
+}
+function exportDepotItemSupplierExcel() {
+    var row = $('#tableData').datagrid('getChecked');
+    if(row.length == 0) {
+        $.messager.alert('导出提示','没有记录被选中！','info');
+        return;
+    }
+    if(row.length > 0) {
+        $.messager.confirm('导出确认','确定要导出选中的' + row.length + '条单据信息吗？',function(r) {
+            debugger
+            if (r) {
+                var ids = "";
+                for (var i = 0; i < row.length; i++) {
+                    if (i == row.length) {
+                        if (row[i].status == 0) {
+                            ids += row[i].id;
+                        }
+                        break;
+                    }
+                    ids += row[i].id + ",";
+                }
+                if (ids) {
+                    // $.ajax({
+                    // 	type:"GET",
+                    // 	url: "/depotHead/exportDepotItemMSExcel",
+                    // 	dataType: "json",
+                    // 	contentType:"application/x-www-form-urlencoded",
+                    // 	async :  false,
+                    // 	data: ({
+                    // 		ids : ids
+                    // 	}),
+                    // });
+                    //要导出的json数据
+                    var url = "/depotHead/exportDepotItemSupplierExcel?ids="+ ids
+                    window.location.href = url
+                }
+            }
+        });
+    }
 }
 //查找库存的方法
 function findStockNumById(depotId, mId, monthTime, body, input, ratio, type){

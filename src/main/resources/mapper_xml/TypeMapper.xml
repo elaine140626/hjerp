@@ -9,4 +9,8 @@
     <select id="selectType" resultMap="BaseResultMap">
         SELECT * FROM jsh_type WHERE sales_type IS null
     </select>
+
+    <select id="selectAll" parameterType="com.jsh.erp.datasource.entities.Type" resultMap="BaseResultMap">
+        SELECT * FROM jsh_type WHERE sales_type = #{sales_type}
+    </select>
 </mapper>
