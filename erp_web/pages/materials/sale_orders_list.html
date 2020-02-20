@@ -131,26 +131,28 @@
                     <input id="Salesman" name="Salesman" style="width:130px;"/>
                 </td>
 
-                <td style="width:70px;">收款日期：</td>
-                <td style="padding:5px">
+                <td style="width:70px;display: none;" id="OperTimes1">收款日期：</td>
+                <td style="padding:5px;display: none;" id="OperTimes2">
                     <input type="text" name="installer_time" id="OperTimes"
                            onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="txt Wdate"
                            style="width:140px;" readonly/>
                 </td>
                 <td style="width:100px;"></td>
-
-<!--                <td id="fileformsMsgs" >-->
-<!--                    <a id="uploadfiles" style="display:none;" onclick="showFiles()" ></a>-->
-<!--                    <form enctype="multipart/form-data" id="fileforms" method="post" action="../uploadFile_project_img_infos.call">-->
-<!--                        <input type="file" name="uploadify" value="" onchange="submitfile(event)" id="myuploadFiles" accept="image/*">-->
-<!--                    </form>-->
-<!--                </td>-->
             </tr>
             <tr>
-
-                <td style="width:80px;">合同编号：</td>
-                <td style="padding:5px">
+                <td style="width:80px;display: none;" id="conyract_number1">合同编号：</td>
+                <td style="padding:5px;display: none;" id="conyract_number2">
                     <input name="conyract_number" id="conyract_number" style="width: 150px;"/>
+                </td>
+                <td style="width:80px;display: none;" id="fapiao1">发票编号：</td>
+                <td style="padding:5px;display: none;" id="fapiao2">
+                    <input name="invoice_number" id="invoice_number" style="width: 150px;"/>
+                </td>
+                <td style="width:80px;display: none;" id="kaipiao1">开票日期：</td>
+                <td style="padding:5px;display: none;" id="kaipiao2">
+                    <input type="text" name="kaipiao" id="kaipiao"
+                           onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="txt Wdate"
+                           style="width:140px;" readonly/>
                 </td>
             </tr>
             <tr>

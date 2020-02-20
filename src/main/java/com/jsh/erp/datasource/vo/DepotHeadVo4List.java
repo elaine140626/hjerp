@@ -29,6 +29,15 @@ public class DepotHeadVo4List extends DepotHead{
     private String UnitPrice;
     private String Munit;
     private String address;
+    private Long materialId;
+
+    public Long getMaterialId() {
+        return materialId;
+    }
+
+    public void setMaterialId(Long materialId) {
+        this.materialId = materialId;
+    }
 
     public String getAddress() {
         return address;

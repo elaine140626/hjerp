@@ -25,7 +25,12 @@ public interface DepotHeadMapperEx {
             @Param("materialParam") String materialParam,
             @Param("depotIds") String depotIds,
             @Param("offset") Integer offset,
-            @Param("rows") Integer rows);
+            @Param("rows") Integer rows,
+            @Param("id") Integer id);
+    List<DepotHeadVo4List> exportDepotItemSupplierExcel(
+            @Param("type") String type,
+            @Param("subType") String subType,
+            @Param("id") Integer id);
 
     Long countsByDepotHead(
             @Param("type") String type,
