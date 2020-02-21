@@ -368,7 +368,7 @@ public class DepotItemController {
             depotItem.setMachine_number2(gate_numberjs2);
             depotItem.setGate_number2(machine_numberjs2);
             depotItem.setId(Id);
-            result = depotItemService.updateDepotItemWithObj(depotItem);
+            result = depotItemService.updateNumber2(depotItem);
             res.code = 200;
             res.data = 1;
         } catch (Exception e) {

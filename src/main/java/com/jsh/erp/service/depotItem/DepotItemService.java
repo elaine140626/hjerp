@@ -218,6 +218,19 @@ public class DepotItemService {
         return result;
     }
 
+
+
+    @Transactional(value = "transactionManager", rollbackFor = Exception.class)
+    public int updateNumber2(DepotItem depotItem)throws Exception {
+        int result =0;
+        try{
+            result = depotItemMapper.updateNumber2(depotItem);
+        }catch(Exception e){
+            JshException.writeFail(logger, e);
+        }
+        return result;
+    }
+
     public List<DepotItemVo4WithInfoEx> getDetailList(Long headerId)throws Exception {
         List<DepotItemVo4WithInfoEx> list =null;
         try{
