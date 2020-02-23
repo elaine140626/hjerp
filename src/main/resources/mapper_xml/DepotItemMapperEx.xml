@@ -3,10 +3,12 @@
 <mapper  namespace="com.jsh.erp.datasource.mappers.DepotItemMapperEx">
 
     <resultMap id="DetailByTypeAndMIdResultMap" type="com.jsh.erp.datasource.entities.DepotItemVo4DetailByTypeAndMId">
+        <result column="GateNumber" jdbcType="VARCHAR" property="gateNumber" />
         <result column="Number" jdbcType="VARCHAR" property="number" />
         <result column="newType" jdbcType="VARCHAR" property="newtype" />
         <result column="b_num" jdbcType="BIGINT" property="bnum" />
         <result column="oTime" jdbcType="TIMESTAMP" property="otime" />
+
     </resultMap>
 
     <resultMap extends="com.jsh.erp.datasource.mappers.DepotItemMapper.BaseResultMap" id="ResultAndMaterialMap" type="com.jsh.erp.datasource.entities.DepotItemVo4Material">
@@ -100,7 +102,7 @@
     </select>
 
     <select id="findDetailByTypeAndMaterialIdList" parameterType="com.jsh.erp.datasource.entities.DepotItemExample" resultMap="DetailByTypeAndMIdResultMap">
-        select dh.Number,concat(dh.SubType,dh.Type) as newType,
+        select dh.GateNumber,dh.Number,concat(dh.SubType,dh.Type) as newType,
         case
             when type='入库' then ifnull(di.BasicNumber,0)
             when type='出库' then 0-di.BasicNumber

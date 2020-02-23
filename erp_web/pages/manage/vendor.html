@@ -88,7 +88,7 @@
                 </td>
                 <td>技术人员联系方式</td>
                 <td style="padding:1px">
-                    <input name="fax" id="fax" class="easyui-validatebox" required="true" style="width: 160px;height: 20px"/>
+                    <input name="fax" id="fax" class="easyui-validatebox"  style="width: 160px;height: 20px"/>
                 </td>
             </tr>
             <tr>
@@ -104,7 +104,7 @@
             <tr>
                 <td>纳税人识别号</td>
                 <td style="padding:1px">
-                    <input name="taxNum" id="taxNum" class="easyui-validatebox" required="true" style="width: 160px;height: 20px"/>
+                    <input name="taxNum" id="taxNum" class="easyui-validatebox"  style="width: 160px;height: 20px"/>
                 </td>
                 <td>税率(%)</td>
                 <td style="padding:1px">
@@ -211,9 +211,9 @@
     </form>
 </div>
 <div id="Material-buttons">
-    <a href="javascript:void(0)" id="saveSupplierMaterial" class="easyui-linkbutton" onclick="AddMaterial()">保存</a>
+    <a href="javascript:void(0)" id="saveSupplierMaterial" class="easyui-linkbutton" iconCls="icon-ok" onclick="AddMaterial()">保存</a>
     <a href="javascript:void(0)" id="cancelSupplierMaterial" class="easyui-linkbutton" iconCls="icon-cancel"
-       onclick="javascript:$('#supplierMaterialDlg').dialog('close')">取消</a>
+       onclick="supplierMaterialClose()">取消</a>
 </div>
 
 <!-- 导入excel表格 -->
