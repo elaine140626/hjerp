@@ -1,10 +1,14 @@
 var supplierID = null;
+var kid = sessionStorage.getItem("userId");
+var userBusinessList=null;
+var userdepot=null;
 //初始化界面
 $(function() {
     var listTitle = ""; //单据标题
     var listType = ""; //类型
     var listTypeEn = ""; //英文类型
     var supplierID = null;
+    initSystemData_UB();
     getType();
     initTableData();
     ininPager();
@@ -33,132 +37,284 @@ function getType(){
     }
 }
 
+//初始化系统基础信息
+function initSystemData_UB(){
+    $.ajax({
+        type:"get",
+        url: "/userBusiness/getBasicData",
+        data: ({
+            KeyId:kid,
+            Type:"UserDepot"
+        }),
+        //设置为同步
+        async:false,
+        dataType: "json",
+        success: function (res) {
+            if (res && res.code === 200) {
+                userBusinessList = res.data.userBusinessList;
+                if(userBusinessList !=null) {
+                    if(userBusinessList.length>0) {
+                        //用户对应的仓库列表 [1][2][3]...
+                        userdepot =userBusinessList[0].value;
+                    }
+                }
+            }
+            else {
+                userBusinessList = null;
+            }
+        }
+    });
+}
+
 //初始化表格数据
 function initTableData() {
     //改变宽度和高度
     $("#searchPanel").panel({width:webW-2});
     $("#tablePanel").panel({width:webW-2});
-    $('#tableData').datagrid({
-        //title:'单位列表',
-        //iconCls:'icon-save',
-        //width:700,
-        height:heightInfo,
-        nowrap: false,
-        rownumbers: false,
-        //动画效果
-        animate:false,
-        //选中单行
-        singleSelect : true,
-        collapsible:false,
-        selectOnCheck:false,
-        //fitColumns:true,
-        //单击行是否选中
-        checkOnSelect : false,
-        //交替出现背景
-        striped : true,
-        pagination: true,
-        //自动截取数据
-        //nowrap : true,
-        //loadFilter: pagerFilter,
-        pageSize: initPageSize,
-        pageList: initPageNum,
-        columns:[[
-            { field: 'id',width:35,align:"center",checkbox:true},
-            { title: '操作',field: 'op',align:"center",width:60,formatter:function(value,rec)
+    if (userdepot == "[10]" || userdepot == "[20]" ) {
+        $('#tableData').datagrid({
+            //title:'单位列表',
+            //iconCls:'icon-save',
+            //width:700,
+            height:heightInfo,
+            nowrap: false,
+            rownumbers: false,
+            //动画效果
+            animate:false,
+            //选中单行
+            singleSelect : true,
+            collapsible:false,
+            selectOnCheck:false,
+            //fitColumns:true,
+            //单击行是否选中
+            checkOnSelect : false,
+            //交替出现背景
+            striped : true,
+            pagination: true,
+            //自动截取数据
+            //nowrap : true,
+            //loadFilter: pagerFilter,
+            pageSize: initPageSize,
+            pageList: initPageNum,
+            columns:[[
+                { field: 'id',width:35,align:"center",checkbox:true},
+                { title: '操作',field: 'op',align:"center",width:60,formatter:function(value,rec)
+                    {
+                        var str = '';
+                        var rowInfo = rec.id + 'AaBb' + rec.supplier +'AaBb' + rec.contacts + 'AaBb'+ rec.phonenum + 'AaBb'+ rec.email + 'AaBb'+ rec.beginneedget + 'AaBb'+ rec.beginneedpay + 'AaBb' + rec.isystem + 'AaBb' + rec.description+ 'AaBb' + rec.type
+                            + 'AaBb' + rec.fax + 'AaBb' + rec.telephone + 'AaBb' + rec.address + 'AaBb' + rec.taxnum + 'AaBb' + rec.bankname + 'AaBb' + rec.accountnumber + 'AaBb' + rec.taxrate;
+                        str += '<img title="编辑" src="/js/easyui-1.3.5/themes/icons/pencil.png" style="cursor: pointer;" onclick="editSupplier(\'' + rowInfo + '\');"/>&nbsp;&nbsp;&nbsp;';
+                        str += '<img title="删除" src="/js/easyui-1.3.5/themes/icons/edit_remove.png" style="cursor: pointer;" onclick="deleteSupplier(\'' + rowInfo + '\');"/>';
+                        return str;
+                    }
+                },
+                { title: '名称',field: 'supplier',width:150},
+                { title: '联系人', field: 'contacts',width:50,align:"center"},
+                { title: '手机号码', field: 'telephone',width:100,align:"center"},
+                { title: '电子邮箱',field: 'email',width:80,align:"center"},
+                { title: '技术人员姓名', field: 'phonenum',width:100,align:"center"},
+                { title: '技术人员联系方式', field: 'fax',width:100,align:"center"},
+                { title: '预付款',field: 'advancein',width:70,align:"center"},
+                { title: '税率(%)', field: 'taxrate',width:50,align:"center"},
+                { title: '供货范围', field: 'supply',width:50,align:"center"},
+                { title: '付款方式', field:'method',width:50,align:"center"},
+                { title: '状态',field: 'enabled',width:70,align:"center",formatter:function(value){
+                        return value? "启用":"禁用";
+                    }}
+            ]],
+            toolbar:[
                 {
-                    var str = '';
-                    var rowInfo = rec.id + 'AaBb' + rec.supplier +'AaBb' + rec.contacts + 'AaBb'+ rec.phonenum + 'AaBb'+ rec.email + 'AaBb'+ rec.beginneedget + 'AaBb'+ rec.beginneedpay + 'AaBb' + rec.isystem + 'AaBb' + rec.description+ 'AaBb' + rec.type
-                        + 'AaBb' + rec.fax + 'AaBb' + rec.telephone + 'AaBb' + rec.address + 'AaBb' + rec.taxnum + 'AaBb' + rec.bankname + 'AaBb' + rec.accountnumber + 'AaBb' + rec.taxrate;
-                    str += '<img title="编辑" src="/js/easyui-1.3.5/themes/icons/pencil.png" style="cursor: pointer;" onclick="editSupplier(\'' + rowInfo + '\');"/>&nbsp;&nbsp;&nbsp;';
-                    str += '<img title="删除" src="/js/easyui-1.3.5/themes/icons/edit_remove.png" style="cursor: pointer;" onclick="deleteSupplier(\'' + rowInfo + '\');"/>';
-                    return str;
+                    id:'addSupplier',
+                    text:'增加',
+                    iconCls:'icon-add',
+                    handler:function() {
+                        addSuppler();
+                    }
+                },'-',
+                {
+                    id:'addSupplierMaterial',
+                    text:'增加供应商产品',
+                    iconCls:'icon-add',
+                    handler:function() {
+                        addSupplerMaterial();
+                    }
+                },'-',
+                {
+                    id:'deleteSupplier',
+                    text:'删除',
+                    iconCls:'icon-remove',
+                    handler:function() {
+                        batDeleteSupplier();
+                    }
+                },'-',
+                {
+                    id:'setEnable',
+                    text:'启用',
+                    iconCls:'icon-ok',
+                    handler:function() {
+                        setEnableFun();
+                    }
+                },'-',
+                {
+                    id:'setDisEnable',
+                    text:'禁用',
+                    iconCls:'icon-no',
+                    handler:function() {
+                        setDisEnableFun();
+                    }
+                },'-',
+                {
+                    id:'setInput',
+                    text:'导入',
+                    iconCls:'icon-excel',
+                    handler:function() {
+                        setInputFun();
+                    }
+                },'-',
+                {
+                    id:'setOutput',
+                    text:'导出',
+                    iconCls:'icon-excel',
+                    handler:function() {
+                        setOutputFun();
+                    }
+                },'-',
+                {
+                    id: 'setExp',
+                    text: '导入模板',
+                    iconCls: 'icon-excel-new',
+                    handler: function () {
+                        setExpFun();
+                    }
                 }
-            },
-            { title: '名称',field: 'supplier',width:150},
-            { title: '联系人', field: 'contacts',width:50,align:"center"},
-            { title: '手机号码', field: 'telephone',width:100,align:"center"},
-            { title: '电子邮箱',field: 'email',width:80,align:"center"},
-            { title: '技术人员姓名', field: 'phonenum',width:100,align:"center"},
-            { title: '技术人员联系方式', field: 'fax',width:100,align:"center"},
-            { title: '预付款',field: 'advancein',width:70,align:"center"},
-            { title: '税率(%)', field: 'taxrate',width:50,align:"center"},
-            { title: '供货范围', field: 'supply',width:50,align:"center"},
-            { title: '付款方式', field:'method',width:50,align:"center"},
-            { title: '状态',field: 'enabled',width:70,align:"center",formatter:function(value){
-                    return value? "启用":"禁用";
-                }}
-        ]],
-        toolbar:[
-            {
-                id:'addSupplier',
-                text:'增加',
-                iconCls:'icon-add',
-                handler:function() {
-                    addSuppler();
-                }
-            },'-',
-            {
-                id:'addSupplierMaterial',
-                text:'增加供应商产品',
-                iconCls:'icon-add',
-                handler:function() {
-                    addSupplerMaterial();
-                }
-            },'-',
-            {
-                id:'deleteSupplier',
-                text:'删除',
-                iconCls:'icon-remove',
-                handler:function() {
-                    batDeleteSupplier();
-                }
-            },'-',
-            {
-                id:'setEnable',
-                text:'启用',
-                iconCls:'icon-ok',
-                handler:function() {
-                    setEnableFun();
-                }
-            },'-',
-            {
-                id:'setDisEnable',
-                text:'禁用',
-                iconCls:'icon-no',
-                handler:function() {
-                    setDisEnableFun();
-                }
-            },'-',
-            {
-                id:'setInput',
-                text:'导入',
-                iconCls:'icon-excel',
-                handler:function() {
-                    setInputFun();
-                }
-            },'-',
-            {
-                id:'setOutput',
-                text:'导出',
-                iconCls:'icon-excel',
-                handler:function() {
-                    setOutputFun();
-                }
-            },'-',
-            {
-                id: 'setExp',
-                text: '导入模板',
-                iconCls: 'icon-excel-new',
-                handler: function () {
-                    setExpFun();
-                }
+            ],
+            onLoadError:function() {
+                $.messager.alert('页面加载提示','页面加载异常，请稍后再试！','error');
+                return;
             }
-        ],
-        onLoadError:function() {
-            $.messager.alert('页面加载提示','页面加载异常，请稍后再试！','error');
-            return;
-        }
-    });
+        });
+    }else if (userdepot == "[24]"){
+        $('#tableData').datagrid({
+            //title:'单位列表',
+            //iconCls:'icon-save',
+            //width:700,
+            height:heightInfo,
+            nowrap: false,
+            rownumbers: false,
+            //动画效果
+            animate:false,
+            //选中单行
+            singleSelect : true,
+            collapsible:false,
+            selectOnCheck:false,
+            //fitColumns:true,
+            //单击行是否选中
+            checkOnSelect : false,
+            //交替出现背景
+            striped : true,
+            pagination: true,
+            //自动截取数据
+            //nowrap : true,
+            //loadFilter: pagerFilter,
+            pageSize: initPageSize,
+            pageList: initPageNum,
+            columns:[[
+                { field: 'id',width:35,align:"center",checkbox:true},
+                { title: '操作',field: 'op',align:"center",width:60,formatter:function(value,rec)
+                    {
+                        var str = '';
+                        var rowInfo = rec.id + 'AaBb' + rec.supplier +'AaBb' + rec.contacts + 'AaBb'+ rec.phonenum + 'AaBb'+ rec.email + 'AaBb'+ rec.beginneedget + 'AaBb'+ rec.beginneedpay + 'AaBb' + rec.isystem + 'AaBb' + rec.description+ 'AaBb' + rec.type
+                            + 'AaBb' + rec.fax + 'AaBb' + rec.telephone + 'AaBb' + rec.address + 'AaBb' + rec.taxnum + 'AaBb' + rec.bankname + 'AaBb' + rec.accountnumber + 'AaBb' + rec.taxrate;
+                        str += '<img title="删除" src="/js/easyui-1.3.5/themes/icons/edit_remove.png" style="cursor: pointer;" onclick="deleteSupplier(\'' + rowInfo + '\');"/>';
+                        return str;
+                    }
+                },
+                { title: '名称',field: 'supplier',width:150},
+                { title: '联系人', field: 'contacts',width:50,align:"center"},
+                { title: '手机号码', field: 'telephone',width:100,align:"center"},
+                { title: '电子邮箱',field: 'email',width:80,align:"center"},
+                { title: '技术人员姓名', field: 'phonenum',width:100,align:"center"},
+                { title: '技术人员联系方式', field: 'fax',width:100,align:"center"},
+                { title: '预付款',field: 'advancein',width:70,align:"center"},
+                { title: '税率(%)', field: 'taxrate',width:50,align:"center"},
+                { title: '供货范围', field: 'supply',width:50,align:"center"},
+                { title: '付款方式', field:'method',width:50,align:"center"},
+                { title: '状态',field: 'enabled',width:70,align:"center",formatter:function(value){
+                        return value? "启用":"禁用";
+                    }}
+            ]],
+            toolbar:[
+                {
+                    id:'addSupplier',
+                    text:'增加',
+                    iconCls:'icon-add',
+                    handler:function() {
+                        addSuppler();
+                    }
+                },'-',
+                {
+                    id:'addSupplierMaterial',
+                    text:'增加供应商产品',
+                    iconCls:'icon-add',
+                    handler:function() {
+                        addSupplerMaterial();
+                    }
+                },'-',
+                {
+                    id:'deleteSupplier',
+                    text:'删除',
+                    iconCls:'icon-remove',
+                    handler:function() {
+                        batDeleteSupplier();
+                    }
+                },'-',
+                {
+                    id:'setEnable',
+                    text:'启用',
+                    iconCls:'icon-ok',
+                    handler:function() {
+                        setEnableFun();
+                    }
+                },'-',
+                {
+                    id:'setDisEnable',
+                    text:'禁用',
+                    iconCls:'icon-no',
+                    handler:function() {
+                        setDisEnableFun();
+                    }
+                },'-',
+                {
+                    id:'setInput',
+                    text:'导入',
+                    iconCls:'icon-excel',
+                    handler:function() {
+                        setInputFun();
+                    }
+                },'-',
+                {
+                    id:'setOutput',
+                    text:'导出',
+                    iconCls:'icon-excel',
+                    handler:function() {
+                        setOutputFun();
+                    }
+                },'-',
+                {
+                    id: 'setExp',
+                    text: '导入模板',
+                    iconCls: 'icon-excel-new',
+                    handler: function () {
+                        setExpFun();
+                    }
+                }
+            ],
+            onLoadError:function() {
+                $.messager.alert('页面加载提示','页面加载异常，请稍后再试！','error');
+                return;
+            }
+        });
+    }
     dgResize();
     showSupplierDetails(1,initPageSize);
 }
@@ -589,6 +745,15 @@ function initSupplier(){
         }
     });
 }
+
+
+//添加供应商产品的关闭方法
+function supplierMaterialClose(){
+    $('#supplierMaterialDlg').dialog('close');
+    initSales_Type();
+}
+
+
 
 
 //初始化产品类型

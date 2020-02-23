@@ -12,6 +12,16 @@ public class DepotItemVo4DetailByTypeAndMId {
 
     private Date otime;
 
+    private String gateNumber;
+
+    public String getGateNumber() {
+        return gateNumber;
+    }
+
+    public void setGateNumber(String gateNumber) {
+        this.gateNumber = gateNumber;
+    }
+
     public String getNumber() {
         return number;
     }
