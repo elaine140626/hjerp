@@ -827,7 +827,7 @@ public class DepotHeadController {
                         Supplier companyName = supplierMapper.selectByPrimaryKey(Long.valueOf(diEx.getSupplier_id()));//公司名称
                         String name = depotHeadMapperEx.findMaterialsListByHeaderId(diEx.getHeaderId());//采购型号
                         String[] objs = new String[15];
-                        objs[0] = diEx.getInvoice_date();//申请日期
+                        objs[0] = diEx.getInvoiceData();//申请日期
                         objs[1] =diEx.getConyract_money();//开票类型
                         Material material = materialMapper.selectByPrimaryKey(diEx.getMaterialId());
                         objs[2] = material.getName();//公司名称

@@ -299,9 +299,9 @@
       <if test="organId != null">
         organId,
       </if>
-      if<if test="level != null">
+      <if test="level != null">
       level,
-    </if>if
+      </if>
       <if test="sales_typeId != null">
         sales_typeId,
       </if>

@@ -1484,29 +1484,29 @@ function initTableData_material(type,TotalPrice,biaoshi,roleID){
 										machineId = 1;
 										gateId = 2;
 									} else if (rec.Id ==  "631"){
-										machineId = 0;
+										machineId = 9999;
 										gateId = 2;
 									} else if (rec.Id ==  "632"){
-										machineId = 0;
+										machineId = 9999;
 										gateId = 2;
 									} else if (rec.Id ==  "633"){
-										machineId = 0;
+										machineId = 9999;
 										gateId = 2;
 									} else if (rec.Id ==  "634"){
-										machineId = 0;
+										machineId = 9999;
 										gateId = 2;
 									} else if (rec.Id ==  "635"){
-										machineId = 0;
+										machineId = 9999;
 										gateId = 2;
 									} else if (rec.Id ==  "630"){
 										machineId = 3;
-										gateId = 0;
+										gateId = 9999;
 									} else if (rec.Id ==  "629"){
 										machineId = 1;
-										gateId = 0;
+										gateId = 9999;
 									} else if (rec.Id ==  "628"){
 										machineId = 1;
-										gateId = 0;
+										gateId = 9999;
 									}
 									$.ajax({
 										url: "/material/findById",
@@ -5675,7 +5675,7 @@ function bindEvent(){
 				myuploadFile: $("#myuploadFile").val(),
                 myuploadFiles: $("#myuploadFiles").val(),
 				invoice_number: $("#invoice_number").val(),
-				invoice_date:$("#kaipiao").val()
+				invoiceData:$("#kaipiao").val()
 			});
 			/**
 			 * 零售出库，单独操作
@@ -6720,8 +6720,8 @@ function CheckData(type) {
 }
 //新增单据主表及单据子表
 function addDepotHeadAndDetail(url,infoStr){
+	debugger
 	var inserted = null;
-
 	if(pageType === "skip") {
 		inserted = $("#materialData").datagrid('getChanges', "updated");
 		var update=$("#materialData").datagrid('getChanges', "inserted");
@@ -6840,6 +6840,10 @@ function updateDepotHeadAndDetail(url,infoStr,preTotalPrice) {
 		}
 		if (payment == "否") {
 			if (updated[0].payment == "是") {
+				if (infoStrInfo.OperTimes ==""){
+					$.messager.alert('提示：', '请选择收款日期！');
+					return;
+				}
 				if (contract == "是") {
 					setStatusFunMPI("6");
 				} else {
@@ -6850,14 +6854,14 @@ function updateDepotHeadAndDetail(url,infoStr,preTotalPrice) {
 		}
 		if (invoice == "否") {
 			if (updated[0].invoice == "是") {
-				if (contract == "是" && payment == "是") {
+				if (infoStrInfo.OperTimes =="") {
 				    if (infoStrInfo.invoice_number =="" || infoStrInfo.myuploadFiles==""){
                         $.messager.alert('提示：', '请完整填写发票信息！发票编号和上传底单！')
                         return;
                     }
 					setStatusFunMPI("7");
 				} else {
-					$.messager.alert('提示：', '订单处于为未收款	，开票不能被修改');
+					$.messager.alert('提示：', '订单处于为未签到合同	，开票不能被修改');
 					return;
 				}
 			}
