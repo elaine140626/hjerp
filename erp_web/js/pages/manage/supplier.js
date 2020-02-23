@@ -225,7 +225,6 @@ function initTableData() {
                         var str = '';
                         var rowInfo = rec.id + 'AaBb' + rec.supplier +'AaBb' + rec.contacts + 'AaBb'+ rec.phonenum + 'AaBb'+ rec.email + 'AaBb'+ rec.beginneedget + 'AaBb'+ rec.beginneedpay + 'AaBb' + rec.isystem + 'AaBb' + rec.description+ 'AaBb' + rec.type
                             + 'AaBb' + rec.fax + 'AaBb' + rec.telephone + 'AaBb' + rec.address + 'AaBb' + rec.taxnum + 'AaBb' + rec.bankname + 'AaBb' + rec.accountnumber + 'AaBb' + rec.taxrate;
-                        str += '<img title="删除" src="/js/easyui-1.3.5/themes/icons/edit_remove.png" style="cursor: pointer;" onclick="deleteSupplier(\'' + rowInfo + '\');"/>';
                         return str;
                     }
                 },
@@ -1086,6 +1085,19 @@ function bindEvent(){
 
 //编辑信息
 function editSupplier(supplierTotalInfo) {
+    var sales_typeStr = "";
+    var sales_type = $('#sales_type').combobox('getValues').toString();
+    if(sales_type) {
+        var sales_typeArray = sales_type.split(",");
+        for (var i = 0; i < sales_typeArray.length; i++) {
+            if (i === sales_typeArray.length - 1) {
+                sales_typeStr += "<" + sales_typeArray[i] + ">";
+            }
+            else {
+                sales_typeStr += "<" + sales_typeArray[i] + ">,";
+            }
+        }
+    }
     var supplierInfo = supplierTotalInfo.split("AaBb");
     var beginNeedGet = supplierInfo[5];
     var beginNeedPay = supplierInfo[6];
@@ -1094,6 +1106,7 @@ function editSupplier(supplierTotalInfo) {
         contacts : supplierInfo[2].replace("undefined",""),
         phonenum : supplierInfo[3].replace("undefined",""),
         email : supplierInfo[4].replace("undefined",""),
+        sales_type:sales_typeStr,
         BeginNeedGet : beginNeedGet == "0"? "":beginNeedGet,
         BeginNeedPay : beginNeedPay == "0"? "":beginNeedPay,
         AllNeedGet: "",
