@@ -217,7 +217,6 @@ public class DepotItemService {
         }
         return result;
     }
-
     @Transactional(value = "transactionManager", rollbackFor = Exception.class)
     public int updateNumber2(DepotItem depotItem)throws Exception {
         int result =0;

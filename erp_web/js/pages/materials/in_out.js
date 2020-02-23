@@ -4389,20 +4389,18 @@ function outEject(res) {
 	for (i = 0; i < res.data.length;i++){
 		str = str + '<div class="out-content-tmp'+i+'">' +
 			'          <p>'+(i+1)+'.你将出库的&nbsp;&nbsp;<span class="product" name="product" id="product">'+  res.data[i].MaterialName + '</span>&nbsp;&nbsp;其中包括：</p >' +
-			'          <td id="display1" >' +
+			'          <div id="display1" style="white-space: nowrap;">' +
 			'            <span name="outId" id="outId" style="display: none">'+ res.data[i].Id +'</span>' +
-			'            <input type="text" name="OutNumber" id="OutNumber"  style="width: 150px;display: none"/>' +
+			'            <input name="OutNumber" id="OutNumber' + i + '" class="easyui-validatebox" style="width: 150px;display: none"/>' +
 			'            <span class="face" name="face" id="face">'+ res.data[i].machine_type +'</span>' +
 			'            <input type="text" style="width: 30px" name="facecount" id="facecount" value="'+res.data[i].machine_number2+'"/>' +
 			'            <span name="facecount2" id="facecount2" style="display: none">'+res.data[i].machine_number2+'</span>' +
 			'            <span class="faceunit" name="faceunit" id="faceunit">'+res.data[i].Unit+'</span>,' +
-			'            </td>' +
-			'            <td id="display2">' +
 			'            <span class="gate" name="gate" id="gate">'+res.data[i].gate_type+'</span>' +
 			'            <input type="text" style="width: 30px" name="gatecount" id="gatecount" value="'+res.data[i].gate_number2+'"/>' +
 			'            <span name="gatecount2" id="gatecount2" style="display: none">'+res.data[i].gate_number2 +'</span>' +
 			'            <span class="gateunit" name="gateunit" id="gateunit">'+res.data[i].Unit+'</span>' +
-			'            </td></div>';
+			'            </div></div>';
 		MaterialStock[i] = res.data[i].MaterialStock;
 		gateStock[i] = res.data[i].gateStock;
 		Salesman = res.data[i].Salesman;
@@ -4413,6 +4411,7 @@ function outEject(res) {
 	}
 	debugger
 	$(".out-dlg").html(str);
+    buildNumber(); //生成单据编号
 
 }
 //保存出库信息
@@ -4442,7 +4441,6 @@ function saveoutStockDlg(){
 		var thisDateTime = getNowFormatDateTime(); //当前时间
 		var ts = "";
 		var url1="/depotHead/addDepotHeadAndDetail";
-		buildNumber(); //生成单据编号
 		findTypeId(Machinetype_id[i],1,outId);
 		findTypeId(Gatetype_id[i],2,outId);
 		listType = "出库";
@@ -4453,8 +4451,8 @@ function saveoutStockDlg(){
 			SubType: listSubType,
 			ProjectId: null,
 			AllocationProjectId: "",
-			DefaultNumber: $("#OutNumber").val(),//初始编号
-			Number: $("#OutNumber").val(),
+			DefaultNumber: $("#OutNumber0").val(),//初始编号
+			Number: $("#OutNumber0").val(),
 			LinkNumber: null,
 			OperTime:thisDateTime,
 			OrganId: MorganId,//人脸机供应商id
@@ -4480,8 +4478,8 @@ function saveoutStockDlg(){
 			SubType: listSubType,
 			ProjectId: null,
 			AllocationProjectId: "",
-			DefaultNumber: $("#OutNumber").val(),//初始编号
-			Number: $("#OutNumber").val(),
+			DefaultNumber: $("#OutNumber0").val(),//初始编号
+			Number: $("#OutNumber0").val(),
 			LinkNumber: null,
 			OperTime:thisDateTime,
 			OrganId: GorganId,//闸机供应商id
@@ -4864,6 +4862,7 @@ function exportMSGDAN(index,res) {
 }
 //生成单据编号
 function buildNumber() {
+	debugger
 	$.ajax({
 		type: "get",
 		url: "/depotHead/buildNumber",
@@ -4873,7 +4872,7 @@ function buildNumber() {
 				var defaultNumber = obj.DefaultNumber;
 				var newNumber = amountNum + defaultNumber;
 				$("#Number").val(newNumber).attr("data-defaultNumber",newNumber);
-				$("#OutNumber").val(newNumber).attr("data-defaultNumber",newNumber);
+				$("#OutNumber0").val(newNumber);
 			}
 		},
 		error:function(){

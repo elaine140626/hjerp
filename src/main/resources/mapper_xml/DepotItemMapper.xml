@@ -853,7 +853,6 @@
     </set>
     where Id = #{id,jdbcType=BIGINT}
   </update>
-
   <update id="updateByPrimaryKey" parameterType="com.jsh.erp.datasource.entities.DepotItem">
     <!--
       WARNING - @mbggenerated

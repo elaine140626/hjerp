@@ -74,6 +74,7 @@ public class DepotItemController {
                 item.put("Type", d.getNewtype()); //进出类型
                 item.put("BasicNumber", d.getBnum()); //数量
                 item.put("OperTime", d.getOtime()); //时间
+                item.put("GateNumber", d.getGateNumber()); //与闸机关联的订单号
                 dataArray.add(item);
             }
         }
