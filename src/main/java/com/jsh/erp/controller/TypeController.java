@@ -35,6 +35,10 @@ public class TypeController {
         try {
             List<Type> typeList = typeService.selectType();
             JSONArray dataArray = new JSONArray();
+            JSONObject item0 = new JSONObject();
+            item0.put("Id", "selectAll");
+            item0.put("tName", "全选");
+            dataArray.add(item0);
             if (null != typeList) {
                 for (Type type : typeList) {
                     JSONObject item = new JSONObject();
