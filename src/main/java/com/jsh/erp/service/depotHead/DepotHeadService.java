@@ -543,6 +543,12 @@ public class DepotHeadService {
         depotHead.setOpertime(new Timestamp(System.currentTimeMillis()));
         DepotItem depotItem = new DepotItem();
         depotItem.setId(id);
+        if (depotHead.getMyuploadFile()!="" && depotHead.getMyuploadFile() != null){
+            depotItem.setContractEnclosure("是");
+        }
+        if (depotHead.getMyuploadFiles()!="" && depotHead.getMyuploadFiles() != null){
+            depotItem.setPaymentSheet("是");
+        }
         depotItem.setGate(temp.getString("gate"));
         depotItem.setInstall(temp.getString("install"));
         depotItem.setInvoice(temp.getString("invoice"));

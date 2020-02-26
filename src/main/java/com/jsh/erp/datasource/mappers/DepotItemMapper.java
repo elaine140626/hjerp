@@ -102,6 +102,4 @@ public interface DepotItemMapper {
      * @return
      */
     List<DepotItem> selectDepotitem();
-
-    int updateNumber2(DepotItem record);
 }

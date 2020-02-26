@@ -788,7 +788,23 @@ function initTableData(){
 						}
 					}
 				},
+				{ title: '合同附件',field: 'contractEnclosure',width:75,formatter:function(value){
+						if (value == "否"){
+							return "<span style='color:red;'>否</span>";
+						}else{
+							return "<span style='color:black;'>是</span>";
+						}
+					}
+				},
 				{ title: '收款',field: 'payment',width:40,formatter:function(value){
+						if (value == "否"){
+							return "<span style='color:red;'>否</span>";
+						}else{
+							return "<span style='color:black;'>是</span>";
+						}
+					}
+				},
+				{ title: '收款底单',field: 'paymentSheet',width:75,formatter:function(value){
 						if (value == "否"){
 							return "<span style='color:red;'>否</span>";
 						}else{
@@ -4387,20 +4403,20 @@ function outEject(res) {
 		}
 	}
 	for (i = 0; i < res.data.length;i++){
-		str = str + '<div class="out-content-tmp'+i+'">' +
-			'          <p>'+(i+1)+'.你将出库的&nbsp;&nbsp;<span class="product" name="product" id="product">'+  res.data[i].MaterialName + '</span>&nbsp;&nbsp;其中包括：</p >' +
-			'          <div id="display1" style="white-space: nowrap;">' +
-			'            <span name="outId" id="outId" style="display: none">'+ res.data[i].Id +'</span>' +
-			'            <input name="OutNumber" id="OutNumber' + i + '" class="easyui-validatebox" style="width: 150px;display: none"/>' +
-			'            <span class="face" name="face" id="face">'+ res.data[i].machine_type +'</span>' +
-			'            <input type="text" style="width: 30px" name="facecount" id="facecount" value="'+res.data[i].machine_number2+'"/>' +
-			'            <span name="facecount2" id="facecount2" style="display: none">'+res.data[i].machine_number2+'</span>' +
-			'            <span class="faceunit" name="faceunit" id="faceunit">'+res.data[i].Unit+'</span>,' +
-			'            <span class="gate" name="gate" id="gate">'+res.data[i].gate_type+'</span>' +
-			'            <input type="text" style="width: 30px" name="gatecount" id="gatecount" value="'+res.data[i].gate_number2+'"/>' +
-			'            <span name="gatecount2" id="gatecount2" style="display: none">'+res.data[i].gate_number2 +'</span>' +
-			'            <span class="gateunit" name="gateunit" id="gateunit">'+res.data[i].Unit+'</span>' +
-			'            </div></div>';
+			str = str + '<div class="out-content-tmp'+i+'">' +
+				'          <p>'+(i+1)+'.你将出库的&nbsp;&nbsp;<span class="product" name="product" id="product">'+  res.data[i].MaterialName + '</span>&nbsp;&nbsp;其中包括：</p >' +
+				'          <div id="display1" style="white-space: nowrap;">' +
+				'            <span name="outId" id="outId" style="display: none">'+ res.data[i].Id +'</span>' +
+				'            <input name="OutNumber" id="OutNumber' + i + '" class="easyui-validatebox" style="width: 150px;display: none"/>' +
+				'            <span class="face" name="face" id="face">'+ res.data[i].machine_type +'</span>' +
+				'            <input type="text" style="width: 30px" name="facecount" id="facecount" value="'+res.data[i].machine_number2+'"/>' +
+				'            <span name="facecount2" id="facecount2" style="display: none">'+res.data[i].machine_number2+'</span>' +
+				'            <span class="faceunit" name="faceunit" id="faceunit">'+res.data[i].Unit+'</span>,' +
+				'            <span class="gate" name="gate" id="gate">'+res.data[i].gate_type+'</span>' +
+				'            <input type="text" style="width: 30px" name="gatecount" id="gatecount" value="'+res.data[i].gate_number2+'"/>' +
+				'            <span name="gatecount2" id="gatecount2" style="display: none">'+res.data[i].gate_number2 +'</span>' +
+				'            <span class="gateunit" name="gateunit" id="gateunit">'+res.data[i].Unit+'</span>' +
+				'            </div></div>';
 		MaterialStock[i] = res.data[i].MaterialStock;
 		gateStock[i] = res.data[i].gateStock;
 		Salesman = res.data[i].Salesman;
@@ -4848,18 +4864,65 @@ function exportDepotItemFinanceExcel() {
 }
 //导出所有合同附件
 function exportMSG() {
+	$('#depotHeadDlg').dialog('open').dialog('setTitle','<img src="/js/easyui-1.3.5/themes/icons/edit_add.png"/>&nbsp;增加' + addTitle);
 	//要导出的json数据
 	window.location.href = "/msg/downloadMsgkk";
 }
 //导出单个订单合同附件
 function exportMSGDAN(index,res) {
-	//要导出的json数据
+	debugger
 	if(!res) {
 		res = $("#tableData").datagrid("getRows")[index];
 	}
 	var ids = res.id;
-	window.location.href = "/msg/downloadMsg?id="+ids;
+	// window.location.href = "/msg/downdanMsg2?id="+ids;
+	var str1 = "";
+	//要导出的json数据
+	$.ajax({
+        type: "post",
+		url: "/msg/downloadMsg?id="+ids,
+		success:function(rest){
+        	debugger
+			if(rest){
+				$('#downloadDlg').dialog('open').dialog('setTitle', '<img src="/js/easyui-1.3.5/themes/icons/pencil.png"/>&nbsp;下载合同附件');
+				//AJAX返回的数据res
+				for (i = 0; i < rest.data.length;i++) {
+					str1 = str1 + '<div class="xiazai" id="downlodaId' + rest.data[i].name + '" name="' + rest.data[i].url +'">'+rest.data[i].name+'</div><br/>';
+				}
+				$(".load-dlg").html(str1);
+				//setTimeout(() => {
+                //    for (let i = 0; i < rest.data.length;i++) {
+                        //$('#downlodaId' + rest.data[i].name).click(function() {
+                            // alert(rest.data[i].url)
+                          //  location.href = rest.data[i].url;
+                      //  })
+                  //  }
+				//}, 500)
+				$('.xiazai').click(function() {
+					// 通过选择器获取img元素，
+					// 将图片的src属性作为URL地址
+					var url = $(this).attr("name");
+					var a = document.createElement('a')
+					var event = new MouseEvent('click')
+
+					a.download = name || '下载图片名称'
+					a.href = url
+
+					a.dispatchEvent(event)
+
+
+				});
+
+			}
+		},
+	});
+
 }
+function download(url) {
+	debugger
+	location.href = url;
+}
+
 //生成单据编号
 function buildNumber() {
 	debugger

@@ -634,14 +634,13 @@ public class DepotHeadController {
     public void uploadFile_project_img_infos(@RequestParam(value = "file", required = false) MultipartFile file,
                                              HttpServletRequest request, HttpServletResponse response) throws IOException {
         //文件上传路径
-        String path = request.getServletContext().getRealPath("/img/");
-        logger.error("假钞1151"+path);
+        String path = request.getServletContext().getRealPath("/img/");;
         //上传文件名
         String filename = file.getOriginalFilename();
         File filepath = new File(path, filename);
         Msg msg = new Msg();
-        msg.setMsgContent(path);
-
+        msg.setMsgContent("http://39.108.103.150:8090/img/");
+        msg.setType(filename);
         String names[] = filename.split("\\.");
         if (names.length >= 1) {
             String uuid = UUID.randomUUID().toString();
