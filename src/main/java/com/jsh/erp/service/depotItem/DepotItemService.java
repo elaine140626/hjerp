@@ -217,9 +217,6 @@ public class DepotItemService {
         }
         return result;
     }
-
-
-
     @Transactional(value = "transactionManager", rollbackFor = Exception.class)
     public int updateNumber2(DepotItem depotItem)throws Exception {
         int result =0;
@@ -385,11 +382,11 @@ public class DepotItemService {
                     depotItem.setInvoice("否");
                     depotItem.setPayment("否");
                     depotItem.setContract("否");
-                    if (tempInsertedJson.getString("machine_type") != null && !tempInsertedJson.getString("machine_type").equals("") && !tempInsertedJson.getString("machine_type").equals("无")) {
-                        depotItem.setMachinetype_id(Long.valueOf(tempInsertedJson.getString("machine_type")));
+                    if (tempInsertedJson.getString("machine_type_model") != null && !tempInsertedJson.getString("machine_type_model").equals("") && !tempInsertedJson.getString("machine_type_model").equals("无")) {
+                        depotItem.setMachinetype_id(Long.valueOf(tempInsertedJson.getString("machine_type_model")));
                     }
-                    if (tempInsertedJson.getString("gate_type") != null && !tempInsertedJson.getString("gate_type").equals("") && !tempInsertedJson.getString("gate_type").equals("无")) {
-                        depotItem.setGatetype_id(Long.valueOf(tempInsertedJson.getString("gate_type")));
+                    if (tempInsertedJson.getString("gate_type_model") != null && !tempInsertedJson.getString("gate_type_model").equals("") && !tempInsertedJson.getString("gate_type_model").equals("无")) {
+                        depotItem.setGatetype_id(Long.valueOf(tempInsertedJson.getString("gate_type_model")));
                     }
                     if (tempInsertedJson.getInteger("machine_number") != null) {
                         Integer ii = tempInsertedJson.getInteger("OperNumber");//数量
@@ -526,7 +523,8 @@ public class DepotItemService {
                         depotItem.setMachine(tempInsertedJson.getString("machine"));
                     }
                     if (tempInsertedJson.get("machine_type") != null) {
-                        depotItem.setMachine_type(tempInsertedJson.getString("machine_type"));
+                        Material material = materialMapper.selectByPrimaryKey(Long.valueOf(tempInsertedJson.getString("machine_type_model")));
+                        depotItem.setMachine_type(material.getName()+material.getModel());
                     }
                     if (tempInsertedJson.get("machine_number") != null) {
                         depotItem.setMachine_number(tempInsertedJson.getString("machine_number"));
@@ -535,7 +533,8 @@ public class DepotItemService {
                         depotItem.setGate(tempInsertedJson.getString("gate"));
                     }
                     if (tempInsertedJson.get("gate_type") != null) {
-                        depotItem.setGate_type(tempInsertedJson.getString("gate_type"));
+                        Material material = materialMapper.selectByPrimaryKey(Long.valueOf(tempInsertedJson.getString("gate_type_model")));
+                        depotItem.setGate_type(material.getName()+material.getModel());
                     }
                     if (tempInsertedJson.get("gate_number") != null) {
                         depotItem.setGate_number(tempInsertedJson.getString("gate_number"));
@@ -666,6 +665,7 @@ public class DepotItemService {
                     depotItem.setOtherfield4(tempUpdatedJson.getString("OtherField4"));
                     depotItem.setOtherfield5(tempUpdatedJson.getString("OtherField5"));
                     depotItem.setMtype(tempUpdatedJson.getString("MType"));
+
                     /**
                      * create by: qiankunpingtai
                      * create time: 2019/3/25 15:18

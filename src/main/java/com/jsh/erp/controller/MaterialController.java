@@ -557,7 +557,7 @@ public class MaterialController {
             }
         } else {
             JSONObject object = new JSONObject();
-            object.put("id", "无");
+            object.put("id", "9999");
             object.put("depotName", "无");
             array.add(object);
         }
@@ -577,7 +577,7 @@ public class MaterialController {
             }
         }else{
             JSONObject object = new JSONObject();
-            object.put("id", "无");
+            object.put("id", "9999");
             object.put("depotName", "无");
             array.add(object);
         }
