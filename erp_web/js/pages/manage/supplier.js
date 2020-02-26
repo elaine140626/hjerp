@@ -753,55 +753,6 @@ function supplierMaterialClose(){
 }
 
 
-
-
-// //初始化产品类型
-// function initSales_Type(){
-//     $('#sales_type').combobox({
-//         url: "/type/selectType",
-//         mathod:'post',
-//         valueField:'Id',
-//         textField:'tName',
-//         multiple: true,
-//         formatter: function(row) {
-//             var opts = $(this).combobox('options');
-//             return '<input type="checkbox" class="combobox-checkbox">'+ row[opts.textField];
-//         },
-//         onLoadSuccess: function () {  //下拉框数据加载成功调用
-//             var opts = $(this).combobox('options');
-//             var target = this;
-//             var values = $(target).combobox('getValues');//获取选中的值的values
-//             $.map(values, function (value) {
-//                 var el = opts.finder.getEl(target, value);
-//                 el.find('input.combobox-checkbox')._propAttr('checked', true);
-//             })
-//         },
-//         onSelect: function (row) { //选中一个选项时调用
-//             var opts = $(this).combobox('options');
-//             //获取选中的值的values
-//             $('#sales_type').val($(this).combobox('getValues'));
-//
-//             //设置选中值所对应的复选框为选中状态
-//             var el = opts.finder.getEl(this, row[opts.valueField]);
-//             el.find('input.combobox-checkbox')._propAttr('checked', true);
-//         },
-//         onUnselect: function (row) {//不选中一个选项时调用
-//             var opts = $(this).combobox('options');
-//             //获取选中的值的values
-//             $('#sales_type').val($(this).combobox('getValues'));
-//
-//             var el = opts.finder.getEl(this, row[opts.valueField]);
-//             el.find('input.combobox-checkbox')._propAttr('checked', false);
-//         }
-//     });
-// }
-
-//关闭增加供应商页面
-function closeInitSales_Type() {
-    $('#supplierDlg').dialog('close');
-    initSales_Type();
-}
-
 //初始化产品类型
 function initSales_Type(){
     $('#sales_type').combobox({
@@ -811,40 +762,85 @@ function initSales_Type(){
         textField:'tName',
         panelHeight: 'auto',//自适应
         multiple: true,
-        formatter: function (row) {
+        editable: false,
+        formatter: function (row) { // formatter方法就是实现了在每个下拉选项前面增加checkbox框的方法
             var opts = $(this).combobox('options');
-            return '<input type="checkbox" class="combobox-checkbox" id="' + row[opts.valueField] + '">' + row[opts.textField]
+            return '<input type="checkbox" id="'+row.Id+'" class="combobox-checkbox">' + row[opts.textField]
         },
-
-        onShowPanel: function () {
-            var opts = $(this).combobox('options');
-            var target = this;
-            var values = $(target).combobox('getValues');
-            $.map(values, function (value) {
-                var el = opts.finder.getEl(target, value);
-                el.find('input.combobox-checkbox')._propAttr('checked', true);
-            })
+        onLoadSuccess: function () { // 下拉框数据加载成功调用
+            // 正常情况下是默认选中“所有”，但我想实现点击所有全选功能，这这样会冲突，暂时默认都不选
+            $("#sales_type").combobox('clear'); //清空
         },
-        onLoadSuccess: function () {
+        onSelect: function (row) { // 选中一个选项时调用
+            debugger
             var opts = $(this).combobox('options');
-            var target = this;
-            var values = $(target).combobox('getValues');
-            $.map(values, function (value) {
-                var el = opts.finder.getEl(target, value);
-                el.find('input.combobox-checkbox')._propAttr('checked', true);
-            })
+            //当点击所有时，则勾中所有的选项
+            if (row.tName === "全选") {
+                var data = $("#sales_type").combobox('getData');
+                if ($("#selectAll")[0].checked == true) {
+                    var list = [];
+                    for (var i = 0; i < data.length; i++) {
+                        if ($("#"+data[0].domId).find("input[type=checkbox]")[0].checked == false) {
+                            $('#' + data[i].domId + ' input[type="checkbox"]').click();
+                        }
+                        $('#' + data[i].domId + ' input[type="checkbox"]').prop("checked", true);
+                        if ($("#"+data[i].domId).find("input[type=checkbox]").attr("id") != "selectAll") {
+                            list.push(data[i].tName);
+                        }
+                    }
+                    $("#sales_type").combobox('setValues', list); // combobox全选
+                }else{
+                    for (var i = 0; i < data.length; i++) {
+                        if ($("#"+data[0].domId).find("input[type=checkbox]")[0].checked == true) {
+                            $('#' + data[i].domId + ' input[type="checkbox"]').click();
+                        }
+                        $('#' + data[i].domId + ' input[type="checkbox"]').prop("checked", false);
+                    }
+                    $("#sales_type").combobox('clear');//清空
+                }
+            } else {
+                //设置选中选项所对应的复选框为选中状态
+                $('#'+row.domId + ' input[type="checkbox"]').prop("checked", true);
+            }
         },
-        onSelect: function (row) {
+        onUnselect: function (row) { // 取消选中一个选项时调用
+            debugger
             var opts = $(this).combobox('options');
-            var el = opts.finder.getEl(this, row[opts.valueField]);
-            el.find('input.combobox-checkbox')._propAttr('checked', true);
-        },
-        onUnselect: function (row) {
-            var opts = $(this).combobox('options');
-            var el = opts.finder.getEl(this, row[opts.valueField]);
-            el.find('input.combobox-checkbox')._propAttr('checked', false);
+            // 当取消全选勾中时，则取消所有的勾选
+            if (row.tName === "全选") {
+                var data = $("#sales_type").combobox('getData');
+                if ($("#selectAll")[0].checked == true) {
+                    var list = [];
+                    for (var i = 0; i < data.length; i++) {
+                        if ($("#" + data[0].domId).find("input[type=checkbox]")[0].checked == false) {
+                            $('#' + data[i].domId + ' input[type="checkbox"]').click();
+                        }
+                        $('#' + data[i].domId + ' input[type="checkbox"]').prop("checked", true);
+                        if ($("#"+data[i].domId).find("input[type=checkbox]").attr("id") != "selectAll") {
+                            list.push(data[i].tName);
+                        }
+                    }
+                    $("#sales_type").combobox('setValues', list); // combobox全选
+                } else {
+                    for (var i = 0; i < data.length; i++) {
+                        if ($("#" + data[0].domId).find("input[type=checkbox]")[0].checked == true) {
+                            $('#' + data[i].domId + ' input[type="checkbox"]').click();
+                        }
+                        $('#' + data[i].domId + ' input[type="checkbox"]').prop("checked", false);
+                    }
+                    $("#sales_type").combobox('clear');//清空
+                }
+            }
+            else {
+                $('#'+row.domId + ' input[type="checkbox"]').prop("checked", false);
+            }
         }
     });
+}
+//关闭增加供应商页面
+function closeInitSales_Type() {
+    $('#supplierDlg').dialog('close');
+    initSales_Type();
 }
 
 
