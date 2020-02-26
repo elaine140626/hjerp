@@ -401,6 +401,9 @@
       <if test="record.email != null">
         email = #{record.email,jdbcType=VARCHAR},
       </if>
+      <if test="record.sales_type != null">
+        sales_type = #{record.sales_type,jdbcType=VARCHAR},
+      </if>
       <if test="record.description != null">
         description = #{record.description,jdbcType=VARCHAR},
       </if>
@@ -471,6 +474,7 @@
       contacts = #{record.contacts,jdbcType=VARCHAR},
       phonenum = #{record.phonenum,jdbcType=VARCHAR},
       email = #{record.email,jdbcType=VARCHAR},
+      sales_type = #{record.sales_type,jdbcType=VARCHAR},
       description = #{record.description,jdbcType=VARCHAR},
       isystem = #{record.isystem,jdbcType=TINYINT},
       type = #{record.type,jdbcType=VARCHAR},
@@ -512,6 +516,9 @@
       </if>
       <if test="email != null">
         email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="sales_type != null">
+        sales_type = #{sales_type,jdbcType=VARCHAR},
       </if>
       <if test="description != null">
         description = #{description,jdbcType=VARCHAR},
