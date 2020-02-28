@@ -607,14 +607,6 @@ function initTableData(){
 						},
 						{
 							id:'export',
-							text:'导出所有合同附件',
-							iconCls:'icon-ok',
-							handler:function() {
-								exportMSG();
-							}
-						},
-						{
-							id:'export',
 							text:'导出项目对账',
 							iconCls:'icon-ok',
 							handler:function() {
@@ -926,7 +918,23 @@ function initTableData(){
 				},
 				// { title: '合同编号',field: 'conyract_number',width:130},
 				// { title: '合同金额',field: 'conyract_money',width:130},
+				{ title: '合同附件',field: 'contractEnclosure',width:75,formatter:function(value){
+						if (value == "否"){
+							return "<span style='color:red;'>否</span>";
+						}else{
+							return "<span style='color:black;'>是</span>";
+						}
+					}
+				},
 				{ title: '收款',field: 'payment',width:40,formatter:function(value){
+						if (value == "否"){
+							return "<span style='color:red;'>否</span>";
+						}else{
+							return "<span style='color:black;'>是</span>";
+						}
+					}
+				},
+				{ title: '收款底单',field: 'paymentSheet',width:75,formatter:function(value){
 						if (value == "否"){
 							return "<span style='color:red;'>否</span>";
 						}else{
@@ -1050,7 +1058,23 @@ function initTableData(){
 				},
 				// { title: '合同编号',field: 'conyract_number',width:130},
 				// { title: '合同金额',field: 'conyract_money',width:130},
+				{ title: '合同附件',field: 'contractEnclosure',width:75,formatter:function(value){
+						if (value == "否"){
+							return "<span style='color:red;'>否</span>";
+						}else{
+							return "<span style='color:black;'>是</span>";
+						}
+					}
+				},
 				{ title: '收款',field: 'payment',width:40,formatter:function(value){
+						if (value == "否"){
+							return "<span style='color:red;'>否</span>";
+						}else{
+							return "<span style='color:black;'>是</span>";
+						}
+					}
+				},
+				{ title: '收款底单',field: 'paymentSheet',width:75,formatter:function(value){
 						if (value == "否"){
 							return "<span style='color:red;'>否</span>";
 						}else{
@@ -1167,7 +1191,23 @@ function initTableData(){
 						}
 					}
 				},
+				{ title: '合同附件',field: 'contractEnclosure',width:75,formatter:function(value){
+						if (value == "否"){
+							return "<span style='color:red;'>否</span>";
+						}else{
+							return "<span style='color:black;'>是</span>";
+						}
+					}
+				},
 				{ title: '收款',field: 'payment',width:40,formatter:function(value){
+						if (value == "否"){
+							return "<span style='color:red;'>否</span>";
+						}else{
+							return "<span style='color:black;'>是</span>";
+						}
+					}
+				},
+				{ title: '收款底单',field: 'paymentSheet',width:75,formatter:function(value){
 						if (value == "否"){
 							return "<span style='color:red;'>否</span>";
 						}else{
@@ -4901,15 +4941,15 @@ function exportMSGDAN(index,res) {
 				$('.xiazai').click(function() {
 					// 通过选择器获取img元素，
 					// 将图片的src属性作为URL地址
-					var url = $(this).attr("name");
-					var a = document.createElement('a')
-					var event = new MouseEvent('click')
-
-					a.download = name || '下载图片名称'
-					a.href = url
-
-					a.dispatchEvent(event)
-
+					// var url = $(this).attr("name");
+					// var a = document.createElement('a')
+					// var event = new MouseEvent('click')
+                    //
+					// a.download = name || '下载图片名称'
+					// a.href = url
+                    //
+					// a.dispatchEvent(event)
+                    window.open($(this).attr("name"));
 
 				});
 
@@ -6906,26 +6946,21 @@ function updateDepotHeadAndDetail(url,infoStr,preTotalPrice) {
 					$.messager.alert('提示：', '请选择收款日期！');
 					return;
 				}
-				if (contract == "是") {
-					setStatusFunMPI("6");
-				} else {
-					$.messager.alert('提示：', '合同处于未签订状态	，收款不能被修改');
-					return;
+				if (infoStrInfo.myuploadFiles == ""){
+					$.messager.alert('提示：', '未上传底单！请后续上传！')
 				}
+				setStatusFunMPI("6");
 			}
 		}
 		if (invoice == "否") {
 			if (updated[0].invoice == "是") {
 				if (infoStrInfo.OperTimes =="") {
-				    if (infoStrInfo.invoice_number =="" || infoStrInfo.myuploadFiles==""){
-                        $.messager.alert('提示：', '请完整填写发票信息！发票编号和上传底单！')
+				    if (infoStrInfo.invoice_number =="" ){
+                        $.messager.alert('提示：', '请完整填写发票信息！发票编号')
                         return;
                     }
-					setStatusFunMPI("7");
-				} else {
-					$.messager.alert('提示：', '订单处于为未签到合同	，开票不能被修改');
-					return;
 				}
+				setStatusFunMPI("7");
 			}
 		}
 		if (gate == "否") {
@@ -7082,7 +7117,7 @@ function submitfile(e){
 				var values=data.split('&');
 				$("#showfile").attr('src','../images/'+values[0]);
 				$("#i_img_url").val(values[0]);
-				$.messager.alert('提示：','保存成功！');
+				$.messager.alert('提示：','保存合同附件成功！');
 			}
 		},
 		error: function (res) {
@@ -7119,7 +7154,7 @@ function submitfiles(e){
 				var values=data.split('&');
 				$("#showfile").attr('src','../images/'+values[0]);
 				$("#i_img_url").val(values[0]);
-				$.messager.alert('提示：','保存成功！');
+				$.messager.alert('提示：','保存发票底单成功！');
 			}
 		},
 		error: function (res) {

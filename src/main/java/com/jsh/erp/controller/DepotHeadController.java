@@ -864,11 +864,11 @@ public class DepotHeadController {
         try {
             String [] headIds=ids.split(",");
             //存放数据json数组
-            String[] names = {"单据日期", "品名","数量","规格", "单价", "供应商","总价","备注"};
-            String title = "与供应商对账表";
+            String[] names = {"供应商","单据日期", "品名","数量","规格", "单价", "总价","备注"};
             List<String[]> objects = new ArrayList<String[]>();
+            String title = "与供应商对账表";
             for(int i=0;i<headIds.length;i++) {
-                List<DepotHeadVo4List> dataList = depotHeadMapperEx.selectByConditionDepotHead("其它", "采购订单", null, null, null, null, null, 0, 100, Integer.parseInt(headIds[i]));
+                List<DepotHeadVo4List> dataList = depotHeadMapperEx.selectByConditionDepotHead("其它", "采购订单", null, null, null, null, null, 0, 100, Integer.parseInt(headIds[i]));;
                 if (null != dataList) {
                     Date currentTime = new Date();
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -880,12 +880,13 @@ public class DepotHeadController {
                         String[] objs = new String[8];
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
                         String date = simpleDateFormat.format(diEx.getCreatetime());
-                        objs[0] = date;//单据日期
-                        objs[1] =material.getName();//名称
+
+                        objs[0] = supplierMapper.seleSupplier(diEx.getOrganid());//供应商
+                        objs[1] = material.getName();//名称
                         objs[2] = diEx.getOperNumber() == null ? "0" : diEx.getOperNumber().toString();//数量
                         objs[3] = diEx.getMunit() == null ? " " : "" + diEx.getMunit().toString();//单位
                         objs[4] = diEx.getUnitPrice() == null ? " " : diEx.getUnitPrice().toString();//含税单价
-                        objs[5] = supplierMapper.seleSupplier(diEx.getOrganid());//供应商
+                        objs[5] = date;//单据日期
                         objs[6] = diEx.getTotalprice() == null ? " " : diEx.getTotalprice().setScale(0, BigDecimal.ROUND_DOWN).toString();//含税总金额
                         objs[7] = diEx.getDescription() == null ? " " : diEx.getDescription().toString();//备注
                         objects.add(objs);

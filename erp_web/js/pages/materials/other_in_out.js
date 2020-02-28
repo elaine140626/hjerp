@@ -586,7 +586,6 @@ function exportDepotItemSupplierExcel() {
     }
     if(row.length > 0) {
         $.messager.confirm('导出确认','确定要导出选中的' + row.length + '条单据信息吗？',function(r) {
-            debugger
             if (r) {
                 var ids = "";
                 for (var i = 0; i < row.length; i++) {
@@ -610,7 +609,7 @@ function exportDepotItemSupplierExcel() {
                     // 	}),
                     // });
                     //要导出的json数据
-                    var url = "/depotHead/exportDepotItemSupplierExcel?ids="+ ids
+                    var url = "/depotHead/exportDepotItemSupplierExcel?ids="+ ids;
                     window.location.href = url
                 }
             }
@@ -2588,6 +2587,7 @@ function showDepotHeadDetails(pageNo,pageSize){
     var materialParam = $.trim($("#searchMaterial").val());
     var beginTime = $.trim($("#searchBeginTime").val());
     var endTime = $.trim($("#searchEndTime").val());
+
     if(beginTime) {
         beginTime = beginTime + ' 00:00:00';
     }
