@@ -400,6 +400,24 @@ public class DepotItem {
     private String conyractMoney;
     private String conyractNumber;
     private String invoice_number;
+    private String contractEnclosure;
+    private String paymentSheet;
+
+    public String getContractEnclosure() {
+        return contractEnclosure;
+    }
+
+    public void setContractEnclosure(String contractEnclosure) {
+        this.contractEnclosure = contractEnclosure;
+    }
+
+    public String getPaymentSheet() {
+        return paymentSheet;
+    }
+
+    public void setPaymentSheet(String paymentSheet) {
+        this.paymentSheet = paymentSheet;
+    }
 
     public String getInvoice_number() {
         return invoice_number;

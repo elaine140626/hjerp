@@ -21,6 +21,12 @@
     <script src="/js/pages/materials/add_company.js"></script>
     <script src="/js/pages/materials/add_temp.js"></script>
     <script src="/js/pages/materials/in_out.js"></script>
+    <script>
+        function download(url) {
+            debugger
+            location.href = url;
+        }
+    </script>
 </head>
 <body>
 <!-- 数据显示table -->
@@ -60,7 +66,7 @@
     <form id="depotHeadFM" method="post" novalidate>
         <table>
             <tr>
-                <td id="fileformsBJ1" style="width:70px;display: none;">集团：</td>
+                <td id="fileformsBJ1" style="width:70px;display: none;" onclick="download('http://39.108.103.150:8090/img/2c262524-fbe3-4e67-874d-c230685bc870.jpg')">集团：</td>
                 <td id="fileformsBJ2" style="padding:5px;display: none;">
                     <div class="org-list">
                         <input id="group" name="group" style="width:130px;"/>
@@ -176,11 +182,12 @@
     <a href="javascript:void(0)" id="cancelDepotHead" class="easyui-linkbutton" iconCls="icon-cancel"
        onclick="javascript:$('#depotHeadDlg').dialog('close')">取消</a>
 </div>
+
 <div id="depotHeadDlgShow" class="easyui-dialog" style="width:1200px;padding:10px 20px;top:60px"
      closed="true" buttons="#dlg-buttons-show" modal="true" cache="false" collapsible="false" closable="true">
     <table>
         <tr>
-            <td style="width:60px;">客户：</td>
+            <td style="width:60px;" >客户：</td>
             <td style="padding:5px;width:130px;">
                 <span id="OrganIdShow"></span>
             </td>
@@ -273,15 +280,23 @@
      closed="true" modal="true" buttons="#outStockDlgBtn" cache="false" collapsible="false" closable="true">
     <div class="out-dlg">
 
-
-
-    <div/>
-</div>
+    </div>
 <div id="outStockDlgBtn">
     <a href="javascript:void(0)" id="saveoutStockDlg" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveoutStockDlg()">确定出库</a>
     <a href="javascript:void(0)" id="canceloutStockDlg" class="easyui-linkbutton" iconCls="icon-cancel"
        onclick="javascript:$('#outStockDlg').dialog('close')">取消</a>
 </div>
 <div id="supplier"></div>
+</div>
+<div id="downloadDlg" class="easyui-dialog" style="width:380px;padding:10px 20px;top:80px"
+     closed="true" modal="true" buttons="#downloadDlgBtn" cache="false" collapsible="false" closable="true">
+    <div class="load-dlg">
+
+    </div>
+    <div id="downloadDlgBtn">
+        <a href="javascript:void(0)" id="canceldownloadDlg" class="easyui-linkbutton" iconCls="icon-cancel"
+           onclick="javascript:$('#downloadDlg').dialog('close')">取消</a>
+    </div>
+</div>
 </body>
 </html>

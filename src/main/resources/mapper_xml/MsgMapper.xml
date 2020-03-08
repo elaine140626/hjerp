@@ -329,7 +329,7 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
   <insert id="insertSelectiveMsg" parameterType="com.jsh.erp.datasource.entities.Msg">
-    insert into jsh_msg(msg_title,msg_content)
-    values (#{msgTitle,jdbcType=VARCHAR},#{msgContent,jdbcType=VARCHAR})
+    insert into jsh_msg(msg_title,msg_content,type)
+    values (#{msgTitle,jdbcType=VARCHAR},#{msgContent,jdbcType=VARCHAR},#{type,jdbcType=VARCHAR})
   </insert>
 </mapper>

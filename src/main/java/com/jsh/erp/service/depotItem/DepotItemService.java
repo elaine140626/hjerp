@@ -382,6 +382,8 @@ public class DepotItemService {
                     depotItem.setInvoice("否");
                     depotItem.setPayment("否");
                     depotItem.setContract("否");
+                    depotItem.setContractEnclosure("否");
+                    depotItem.setPaymentSheet("否");
                     if (tempInsertedJson.getString("machine_type_model") != null && !tempInsertedJson.getString("machine_type_model").equals("") && !tempInsertedJson.getString("machine_type_model").equals("无")) {
                         depotItem.setMachinetype_id(Long.valueOf(tempInsertedJson.getString("machine_type_model")));
                     }
@@ -524,7 +526,9 @@ public class DepotItemService {
                     }
                     if (tempInsertedJson.get("machine_type") != null) {
                         Material material = materialMapper.selectByPrimaryKey(Long.valueOf(tempInsertedJson.getString("machine_type_model")));
-                        depotItem.setMachine_type(material.getName()+material.getModel());
+                        if (material != null) {
+                            depotItem.setMachine_type(material.getName() + material.getModel());
+                        }
                     }
                     if (tempInsertedJson.get("machine_number") != null) {
                         depotItem.setMachine_number(tempInsertedJson.getString("machine_number"));
@@ -534,7 +538,9 @@ public class DepotItemService {
                     }
                     if (tempInsertedJson.get("gate_type") != null) {
                         Material material = materialMapper.selectByPrimaryKey(Long.valueOf(tempInsertedJson.getString("gate_type_model")));
-                        depotItem.setGate_type(material.getName()+material.getModel());
+                        if(material != null) {
+                            depotItem.setGate_type(material.getName() + material.getModel());
+                        }
                     }
                     if (tempInsertedJson.get("gate_number") != null) {
                         depotItem.setGate_number(tempInsertedJson.getString("gate_number"));

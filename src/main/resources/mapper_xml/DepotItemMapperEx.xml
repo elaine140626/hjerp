@@ -339,6 +339,14 @@
             <if test="contract != null">
                 contract = #{contract,jdbcType=VARCHAR},
             </if>
+            <if test="contractEnclosure != null">
+                contractEnclosure = #{contractEnclosure,jdbcType=VARCHAR},
+            </if>
+            <if test="paymentSheet != null">
+                paymentSheet = #{paymentSheet,jdbcType=VARCHAR},
+            </if>
+
+
         </set>
         where HeaderId = #{id,jdbcType=BIGINT}
     </update>
